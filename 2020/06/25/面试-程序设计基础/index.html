@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="google-site-verification" content="Ezui-oQp8Pno7S0Zg3T794uNOShGTYHv9PGKQ5Y1Au0">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+<script src="https://cdn.bootcss.com/echarts/4.1.0-release/echarts.min.js"></script>
+
+
+  
+
+
+
+
+  <meta name="description" content="1 static（静态）变量的有什么作用？在C语言中，关键字static的意思是静态，有3个明显的作用：  在函数体内，静态变量具有“记忆”功能，即一个被声明为静态的变量在这一函数被调用的过程中其值维持不变。 在模块内（但在函数体外），它的作用域范围是有被限制的。只能被模块内的所有函数访问，但不能被模块外其他函数访问。  在C++中，在类内数据成员的声明前加上关键字static，该数据成员就是类内">
+<meta name="keywords" content="面试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面试-程序设计基础">
+<meta property="og:url" content="https://ruleizhou.github.io/2020/06/25/面试-程序设计基础/index.html">
+<meta property="og:site_name" content="ZRL">
+<meta property="og:description" content="1 static（静态）变量的有什么作用？在C语言中，关键字static的意思是静态，有3个明显的作用：  在函数体内，静态变量具有“记忆”功能，即一个被声明为静态的变量在这一函数被调用的过程中其值维持不变。 在模块内（但在函数体外），它的作用域范围是有被限制的。只能被模块内的所有函数访问，但不能被模块外其他函数访问。  在C++中，在类内数据成员的声明前加上关键字static，该数据成员就是类内">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-06-25T12:31:26.028Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="面试-程序设计基础">
+<meta name="twitter:description" content="1 static（静态）变量的有什么作用？在C语言中，关键字static的意思是静态，有3个明显的作用：  在函数体内，静态变量具有“记忆”功能，即一个被声明为静态的变量在这一函数被调用的过程中其值维持不变。 在模块内（但在函数体外），它的作用域范围是有被限制的。只能被模块内的所有函数访问，但不能被模块外其他函数访问。  在C++中，在类内数据成员的声明前加上关键字static，该数据成员就是类内">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://ruleizhou.github.io/2020/06/25/面试-程序设计基础/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>面试-程序设计基础 | ZRL</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ZRL</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ruleizhou.github.io/2020/06/25/面试-程序设计基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rulei.Zhou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/han.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZRL">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">面试-程序设计基础
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-06-25 20:23:18 / 修改时间：20:31:26" itemprop="dateCreated datePublished" datetime="2020-06-25T20:23:18+08:00">2020-06-25</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/面试/" itemprop="url" rel="index"><span itemprop="name">面试</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="static（静态）变量的有什么作用？">1 static（静态）变量的有什么作用？</h1><p>在C语言中，关键字static的意思是静态，有3个明显的作用：</p>
+<ul>
+<li>在函数体内，静态变量具有“记忆”功能，即一个被声明为静态的变量在这一函数被调用的过程中其值维持不变。</li>
+<li>在模块内（但在函数体外），它的作用域范围是有被限制的。只能被模块内的所有函数访问，但不能被模块外其他函数访问。</li>
+</ul>
+<p>在C++中，在类内数据成员的声明前加上关键字static，该数据成员就是类内的静态数据成员。静态数据成员有如下特点：</p>
+<ul>
+<li>对于非静态数据成员，每个类对象都有自己的复制品。而静态数据成员被当作是类的成员。无论这个类的对象被定义多少个，静态数据成员在程序中也只有一份复制品，由该类型的所有对象共享。</li>
+<li>静态数据成员存储在全局数据区。定义时要分配空间，所以不能在类声明中定义。由于静态数据成员属于本类的所有对象共享，所以它不属于特定的类对象，在没有生产对象时其作用域就可见。</li>
+<li>静态数据成员和普通的数据成员一样遵从public、protected、private访问规则。</li>
+<li>static成员变量的初始化是在类外，此时不能带上static关键字。</li>
+</ul>
+<p>与全局变量相比，使用静态数据成员有一下两个优势：</p>
+<ul>
+<li>静态数据成员没有进入程序的全局名字空间，因此不存在与程序中其他全局名字冲突的可能性。</li>
+<li>可以实现信息的隐藏。静态数据成员可以时private，而全局变量不能。</li>
+</ul>
+<p>在C++中，当类的成员函数钱吗添加static关键字后就变成了类的静态成员函数，其特点如下：</p>
+<ul>
+<li>静态成员函数为类的全部服务，而不是为类的具体对象服务。</li>
+<li>静态成员函数是类的内部实现，属于类的一部分。</li>
+<li>普通的成员函数一般都隐含了一个this指针，this指针指向类对象本身。静态成员函数则没有this指针。</li>
+</ul>
+<h2 id="引申1：为什么static变量只初始化一次？">1.1 引申1：为什么static变量只初始化一次？</h2><p>对于所有的对象（不仅仅是静态对象），初始化都只有一次，而由于静态变量具有“记忆”功能，初始化后，一直没有被销毁，而保存在内存区域中，所以不会在被初始化。</p>
+<p>存放在静态区的变量的生命周期一般比较长，一般与整个源程序“同生死、共存亡”，所以它只需要初始化一次。auto变量，即自动变量，由于存放在栈中，一旦调用过程结束，就会立即被注销。</p>
+<h2 id="引申2：在头文件中定义静态变量，是否可行？">1.2 引申2：在头文件中定义静态变量，是否可行？</h2><p>不可行，如该在头文件中定义静态变量，会造成资源的浪费问题，同时也可能引起程序错误。</p>
+<h1 id="const有哪些作用？">2 const有哪些作用？</h1><p>一般而言，const哟一下几方面的作用：</p>
+<ul>
+<li><p>保护被修饰的东西，防止意外的修改，增强了程序的健壮性</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span> i)</span></span>&#123;</span><br><span class="line">    i=<span class="number">10</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对i赋值会导致编译错误</p>
+</li>
+<li><p>进行类型检查，使编译器对处理的内容有了更多的了解，消除一些隐患</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span> i)</span></span>&#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译器就知道i在函数过程中不允许修改</p>
+</li>
+<li><p>节省空间，避免不必要的内存分配。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PI 3.1415926		<span class="comment">//宏定义常量</span></span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">double</span> Pi <span class="number">3.1415926</span>;	<span class="comment">//此时并未激昂Pi放入只读存储器中</span></span><br><span class="line"><span class="keyword">double</span> i=Pi;				<span class="comment">//此时为Pi分配内存，以后不再分配</span></span><br><span class="line"><span class="keyword">double</span> I=PI;				<span class="comment">//编译期间进行宏替换，分配内存</span></span><br><span class="line"><span class="keyword">double</span> j=Pi;				<span class="comment">//没哟内存分配</span></span><br><span class="line"><span class="keyword">double</span> J=PI;				<span class="comment">//再次进行宏替换，又一次分配内存</span></span><br></pre></td></tr></table></figure>
+
+<p>const定义的常量从汇编的角度来看，只是给出了对应的内存地址，而不是想#define一样给出立即数，所以const定义常量在程序运行的过程中只有一份复制品，而#define定义的常量在内存中有若干个复制品。</p>
+</li>
+<li><p>提高了程序的效率。编译器通常不为普通const常量分配存储空间，而是将它们保存在符号表中，这使得它成为编译期间的常量，没有了存储和读写内存的操作，使得它的效率也很高。</p>
+</li>
+</ul>
+<h1 id="volatile在程序设计中有什么作用？">3 volatile在程序设计中有什么作用？</h1><p>被volatile修饰的变量，系统每次用到它的时候是直接从对应的内存中读取，而不是利用cache中的原有数值，以适应它未知何时会发生变化。系统对这种变量的处理不做优化。所以volatile一般用于多线程间的被多个任务共享的变量和并行设备硬件寄存器等。</p>
+<h1 id="断言ASSERT-是什么？">4 断言ASSERT()是什么？</h1><p>ASSERT()一般被称为断言，它是一个调试程序时经常使用的宏。通常用于判断程序中是否出现了非法的数据，在程序运行时它计算括号内的表达式的值。如果表达式的值为false（0），程序报告错误，终止运行，一面导致严重的后果。</p>
+<p>需要注意的是，ASSERT()只在debug版本中有用，编译的Release版本则被忽略。ASSERT()时宏，而assert()是ANSIC标准中规定的函数，其功能类似，但是可以在Release中使用。</p>
+<h1 id="C-里面是不是所有的动作都是main-函数引起的">5 C++里面是不是所有的动作都是main()函数引起的</h1><p>不是。对于C++程序而言，静态变量、全局变量、全局对象的分配早在main()函数之前就以及完成。mian()函数只不过时一个约定的函数入口，在main()函数执行之前，会调用一个由编译器生成的_main()函数进行所有全局对象的构造及初始化工作。</p>
+<h1 id="C语言中操作符优先级问题">6 C语言中操作符优先级问题</h1><p>在C语言中，优先级由高到低的排序主要遵循如下规则：</p>
+<ul>
+<li><p>函数符号<code>()</code>、数组下标<code>[]</code>、  结合性从左往右</p>
+</li>
+<li><p>单目运算符（结合性从右往左）</p>
+<ul>
+<li>逻辑非            ［!］</li>
+<li>按位取反　　［~］</li>
+<li>自增自减　　［++ –］　</li>
+<li>互号　　　　［-］</li>
+<li>类型转换　　［(类型)］</li>
+<li>指针运算符和取地址运算符　［* &amp;］</li>
+<li>长度运算符　［sizeof］</li>
+</ul>
+</li>
+<li><p>算术运算符</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">* / % 	<span class="comment">//结合性从左往右</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+ -		<span class="comment">//结合性从左往右</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>移位运算符</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;&lt; &gt;&gt; &gt;&gt;&gt;	<span class="comment">//结合性从左往右</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>关系运算符</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt; &lt;= &gt; &gt;=	<span class="comment">//结合性从左往右</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">== !=		<span class="comment">//结合性从左往右</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>逻辑运算符</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&amp;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">^</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">|</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>三目运算符</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">? :</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="引申１：-p-与-p-是否等价？">6.1 引申１：*p++与(*p)++是否等价？</h2><p>不等价。前者先完成取值操作，然后在对指针地址进行++操作。后者先完成取值操作，然后对该值进行++操作</p>
+<h1 id="前置运算和后置运算有什么区别">7 前置运算和后置运算有什么区别</h1><ul>
+<li>后置++运算符时先将其值返回，然后其值增1</li>
+<li>前置++运算符时先将其值增1,在返回其值</li>
+</ul>
+<p>需要注意的是，对于迭代器和其他对象使用自增、自减运算符时，一般推荐使用前置运算符，因为前置运算符通常比后置运算符效率更高。</p>
+<h1 id="a是变量，执行-a-a语句是否合法">8 a是变量，执行 (a++) +=a语句是否合法</h1><p>为了更好的说明本题，首先引入两个概念：</p>
+<ul>
+<li><p>左值</p>
+<p>等号左边的值，可以被改变，它是存储数据值的那快内存的地址，也称为变量的地址</p>
+</li>
+<li><p>右值</p>
+<p>指存储在某内存地址中的数据，也称为变量的数据</p>
+</li>
+</ul>
+<p>左值可以作为右值，但是右值不可以作为左值。</p>
+<p>本题不合法，a++不能作为左值使用，++a可以作为左值使用。a++的运算结果并不是a这个变量的引用，而是一个临时变量，其值为a的值（未+1的值）</p>
+<h1 id="如何进行float、bool、int指针变量与“零值”的比较">9 如何进行float、bool、int指针变量与“零值”的比较</h1><ul>
+<li><p>int 类型</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="number">0</span>==n)</span><br><span class="line"><span class="keyword">if</span> (<span class="number">0</span>!=n)</span><br><span class="line"><span class="comment">//不推荐如下写法 容易让人误解n为布尔变量</span></span><br><span class="line"><span class="keyword">if</span> (n)</span><br><span class="line"><span class="keyword">if</span> (!n)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>float</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">float</span> EPSINON=<span class="number">0.00001</span>;</span><br><span class="line"><span class="keyword">if</span> ((x&gt;=-EPSINON) &amp;&amp; (x&lt;=EPSINON)) </span><br><span class="line"><span class="comment">//错误写法 </span></span><br><span class="line"><span class="keyword">if</span> (x==<span class="number">0.0</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>bool</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (flag)</span><br><span class="line"><span class="keyword">if</span> (!flag)</span><br><span class="line"><span class="comment">//不推荐写法</span></span><br><span class="line"><span class="keyword">if</span> (flag==TURE)</span><br><span class="line"><span class="keyword">if</span> (flag==FALSE)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1 id="new-delete与malloc-free的区别是什么？">10 new/delete与malloc/free的区别是什么？</h1><p>malloc/free是C/C++语言的标准库函数，在C语言中需要头文件&lt;stdlib.h&gt;的支持。new/delete是C++的运算符。对于类的对象而言，malloc/free无法满足动态对象的要求，对象在创建的同时要执行构造函数，对象消亡之前需要自动执行析构函数。而malloc/free不在编译器控制权限之内，无法自动执行构造函数和析构函数。</p>
+<p>malloc/free与new/delete的区别主要表现在以下几个方面：</p>
+<ul>
+<li><p>new能够自动计算需要分配的内存空间，而malloc需要手工计算字节数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p1=<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">2</span>];</span><br><span class="line"><span class="keyword">int</span> *p2=<span class="built_in">malloc</span>(<span class="number">2</span>*<span class="keyword">sizeof</span>(<span class="keyword">int</span>))</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>new/delete 直接带具体类型的指针，malloc/free 返回void类型的指针</p>
+</li>
+<li><p>new是类型安全的，而malloc不是。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p1=<span class="keyword">new</span> <span class="keyword">float</span>[<span class="number">2</span>];				<span class="comment">//编译时就会报错</span></span><br><span class="line"><span class="keyword">int</span> *p2=<span class="built_in">malloc</span>(<span class="number">2</span>*<span class="keyword">sizeof</span>(<span class="keyword">float</span>))		<span class="comment">//编译时编译器无法指出错误</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>new一般有两步构成，分别是new操作和构造。new操作对应于malloc，但是new操作可以重载，可以自定义内存分配策略。而malloc不行。</p>
+</li>
+<li><p>new将调用构造函数，而malloc不能。delete将调用析构函数，而free不能。</p>
+</li>
+</ul>
+<p>注意在释放玩内存后，应该将该指针赋值为NULL。防止野指针。</p>
+<h1 id="什么时候需要将引用作为返回值？">11 什么时候需要将引用作为返回值？</h1><p>将引用作为返回值的优点是在内存中不产生被返回值的副本。从而大大提高了程序的安全性与效率。</p>
+<p>需要注意一下几点：</p>
+<ul>
+<li>不能返回局部变量的引用。局部变量由于存储在栈区，在函数返回后会被销毁，因此被返回的引用就成为了“无所指”的引用。程序会进入未知状态，引起程序的错误甚至崩溃。</li>
+<li>不能返回函数内部new分配的内存的引用。这样会导致引用所执行的内存空间无法释放，造成内存的泄露。</li>
+<li>可以返回类成员的引用，单最好时常引用类型。</li>
+<li>流操作符 &lt;&lt; 和 &gt;&gt; 。一般这两个操作符连续使用，因此这两个操作符的返回值应该是一个仍然支持这两个操作符的流引用。</li>
+</ul>
+<h1 id="回调函数">12 回调函数</h1><p>回调函数与应用程序接口（API）非常接近。它们都是跨层调用的函数。但区别是API时低层提供给高层的调用，一般这个函数高层都是已知的。而回调函数正好相反，它是高层提供给低层的调用，对于低层它是未知的，必须由高层进行安装，这个安装函数其实就是一个低层提供的API。安装后低层不知道这个回调函数的名字，但它通过一个函数指针来保存这个回调函数，在需要调用的时，只需引用这个函数指针和相关参数指针即可。</p>
+<h1 id="内存分配">13 内存分配</h1><h1 id="指针">14 指针</h1><h1 id="预处理">15 预处理</h1><h1 id="结构体和类">16 结构体和类</h1><h1 id="位操作">17 位操作</h1><h1 id="函数">18 函数</h1><h1 id="变量">19 变量</h1><h1 id="字符串">20 字符串</h1><h1 id="编译">21 编译</h1><h1 id="面向对象相关">22 面向对象相关</h1><h1 id="虚函数">23 虚函数</h1><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text/javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.2.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.2.0/dist/mindmap.min.css">
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/面试/" rel="tag"># 面试</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/01/16/Calibre导入Kindle电子书/" rel="next" title="Calibre导入Kindle电子书">
+                <i class="fa fa-chevron-left"></i> Calibre导入Kindle电子书
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/06/25/面试-数据结构和算法/" rel="prev" title="面试-数据结构和算法">
+                面试-数据结构和算法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+		
+		  
+			<ul class="sidebar-nav motion-element">
+			  <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+				文章目录
+			  </li>
+			  <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+				站点概览
+			  </li>
+			</ul>
+		  
+		
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/han.jpg" alt="Rulei.Zhou">
+            
+              <p class="site-author-name" itemprop="name">Rulei.Zhou</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">39</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/ruleizhou" title="GitHub &rarr; https://github.com/ruleizhou" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:rulei.zhou@foxmail.com" title="E-Mail &rarr; mailto:rulei.zhou@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section></div>
+
+		
+		  
+		  <!--noindex-->
+			<section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+			  <div class="post-toc">
+
+				
+				  
+				
+
+				
+				  <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#static（静态）变量的有什么作用？"><span class="nav-text">1 static（静态）变量的有什么作用？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#引申1：为什么static变量只初始化一次？"><span class="nav-text">1.1 引申1：为什么static变量只初始化一次？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#引申2：在头文件中定义静态变量，是否可行？"><span class="nav-text">1.2 引申2：在头文件中定义静态变量，是否可行？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#const有哪些作用？"><span class="nav-text">2 const有哪些作用？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#volatile在程序设计中有什么作用？"><span class="nav-text">3 volatile在程序设计中有什么作用？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#断言ASSERT-是什么？"><span class="nav-text">4 断言ASSERT()是什么？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-里面是不是所有的动作都是main-函数引起的"><span class="nav-text">5 C++里面是不是所有的动作都是main()函数引起的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C语言中操作符优先级问题"><span class="nav-text">6 C语言中操作符优先级问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#引申１：-p-与-p-是否等价？"><span class="nav-text">6.1 引申１：*p++与(*p)++是否等价？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#前置运算和后置运算有什么区别"><span class="nav-text">7 前置运算和后置运算有什么区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#a是变量，执行-a-a语句是否合法"><span class="nav-text">8 a是变量，执行 (a++) +=a语句是否合法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如何进行float、bool、int指针变量与“零值”的比较"><span class="nav-text">9 如何进行float、bool、int指针变量与“零值”的比较</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#new-delete与malloc-free的区别是什么？"><span class="nav-text">10 new/delete与malloc/free的区别是什么？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#什么时候需要将引用作为返回值？"><span class="nav-text">11 什么时候需要将引用作为返回值？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#回调函数"><span class="nav-text">12 回调函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内存分配"><span class="nav-text">13 内存分配</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#指针"><span class="nav-text">14 指针</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#预处理"><span class="nav-text">15 预处理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结构体和类"><span class="nav-text">16 结构体和类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#位操作"><span class="nav-text">17 位操作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数"><span class="nav-text">18 函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#变量"><span class="nav-text">19 变量</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字符串"><span class="nav-text">20 字符串</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编译"><span class="nav-text">21 编译</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#面向对象相关"><span class="nav-text">22 面向对象相关</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#虚函数"><span class="nav-text">23 虚函数</span></a></li></ol></div>
+				
+
+			  </div>
+			</section>
+		  <!--/noindex-->
+		  
+		
+
+      
+
+    </aside></div>
+  
+  
+
+
+        
+      </main></div>
+    
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rulei.Zhou</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.2"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '0a400e1f09cb117f3ea4',
+    clientSecret: 'f7d98253e2a12b03803742f2a506c174d06019a0',
+    repo: 'ruleizhou.github.io',
+    owner: 'ruleizhou',
+    admin: ['ruleizhou'],
+    id: md5(location.pathname),
+    
+      language: window.navigator.language || window.navigator.userLanguage,
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  
+  <script>
+    $('.highlight').each(function (i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap')
+      $(e).after($wrap)
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function (e) {
+        var code = $(this).parent().find('.code').find('.line').map(function (i, e) {
+          return $(e).text()
+        }).toArray().join('\n')
+        var ta = document.createElement('textarea')
+        document.body.appendChild(ta)
+        ta.style.position = 'absolute'
+        ta.style.top = '0px'
+        ta.style.left = '0px'
+        ta.value = code
+        ta.select()
+        ta.focus()
+        var result = document.execCommand('copy')
+        document.body.removeChild(ta)
+        
+          if(result)$(this).text('复制成功')
+          else $(this).text('复制失败')
+        
+        $(this).blur()
+      })).on('mouseleave', function (e) {
+        var $b = $(this).find('.copy-btn')
+        setTimeout(function () {
+          $b.text('复制')
+        }, 300)
+      }).append(e)
+    })
+  </script>
+
+
+  
+
+  
+
+</body>
+</html>

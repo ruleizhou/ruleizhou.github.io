@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="google-site-verification" content="Ezui-oQp8Pno7S0Zg3T794uNOShGTYHv9PGKQ5Y1Au0">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+<script src="https://cdn.bootcss.com/echarts/4.1.0-release/echarts.min.js"></script>
+
+
+  
+
+
+
+
+  <meta name="description" content="1 Go 语言的核心特性Go语言，作为编程语言的后生，站在巨人的肩膀上，吸收了其他一些编程语言的特点。 Go 编程语言是一个开源项目，它使程序员更具生产力。Go 语言具有很强的表达能力，它简洁、清晰而高效。得益于其并发机制， 用它编写的程序能够非常有效地利用多核与联网的计算机，其新颖的类型系统则使程序结构变得灵活而模块化。 Go 代码编译成机器码不仅非常迅速，还具有方便的垃圾收集机制和强大的运行时">
+<meta name="keywords" content="Go">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go 入门简介">
+<meta property="og:url" content="https://ruleizhou.github.io/2019/12/11/Go-入门简介/index.html">
+<meta property="og:site_name" content="ZRL">
+<meta property="og:description" content="1 Go 语言的核心特性Go语言，作为编程语言的后生，站在巨人的肩膀上，吸收了其他一些编程语言的特点。 Go 编程语言是一个开源项目，它使程序员更具生产力。Go 语言具有很强的表达能力，它简洁、清晰而高效。得益于其并发机制， 用它编写的程序能够非常有效地利用多核与联网的计算机，其新颖的类型系统则使程序结构变得灵活而模块化。 Go 代码编译成机器码不仅非常迅速，还具有方便的垃圾收集机制和强大的运行时">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/12/11/Go-入门简介/bingfa1.jpg">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/12/11/Go-入门简介/Golang.jpg">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/12/11/Go-入门简介/Goland_cn.jpg">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/12/11/Go-入门简介/go_download.jpg">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/12/11/Go-入门简介/yuanmawenjian1.png">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/12/11/Go-入门简介/go_build_1.jpg">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/12/11/Go-入门简介/go_build_2.png">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/12/11/Go-入门简介/go_install.jpg">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/12/11/Go-入门简介/go_get.jpg">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/12/11/Go-入门简介/goland_1.bmp">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/12/11/Go-入门简介/goland_2.png">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/12/11/Go-入门简介/goland_3.png">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/12/11/Go-入门简介/goland_4.png">
+<meta property="og:updated_time" content="2020-06-25T00:25:05.186Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Go 入门简介">
+<meta name="twitter:description" content="1 Go 语言的核心特性Go语言，作为编程语言的后生，站在巨人的肩膀上，吸收了其他一些编程语言的特点。 Go 编程语言是一个开源项目，它使程序员更具生产力。Go 语言具有很强的表达能力，它简洁、清晰而高效。得益于其并发机制， 用它编写的程序能够非常有效地利用多核与联网的计算机，其新颖的类型系统则使程序结构变得灵活而模块化。 Go 代码编译成机器码不仅非常迅速，还具有方便的垃圾收集机制和强大的运行时">
+<meta name="twitter:image" content="https://ruleizhou.github.io/2019/12/11/Go-入门简介/bingfa1.jpg">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://ruleizhou.github.io/2019/12/11/Go-入门简介/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Go 入门简介 | ZRL</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ZRL</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ruleizhou.github.io/2019/12/11/Go-入门简介/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rulei.Zhou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/han.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZRL">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Go 入门简介
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-12-11 15:48:14" itemprop="dateCreated datePublished" datetime="2019-12-11T15:48:14+08:00">2019-12-11</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-06-25 08:25:05" itemprop="dateModified" datetime="2020-06-25T08:25:05+08:00">2020-06-25</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Go-语言的核心特性">1 Go 语言的核心特性</h1><p>Go语言，作为编程语言的后生，站在巨人的肩膀上，吸收了其他一些编程语言的特点。</p>
+<p>Go 编程语言是一个开源项目，它使程序员更具生产力。Go 语言具有很强的表达能力，它简洁、清晰而高效。得益于其并发机制， 用它编写的程序能够非常有效地利用多核与联网的计算机，其新颖的类型系统则使程序结构变得灵活而模块化。 Go 代码编译成机器码不仅非常迅速，还具有方便的垃圾收集机制和强大的运行时反射机制。 它是一个快速的、静态类型的编译型语言，感觉却像动态类型的解释型语言。(摘取自官网)。</p>
+<h2 id="思想">1.1 思想</h2><ul>
+<li>Less can be more</li>
+<li>大道至简,小而蕴真</li>
+<li>让事情变得复杂很容易，让事情变得简单才难</li>
+<li>深刻的工程文化</li>
+</ul>
+<h2 id="核心特定">1.2 核心特定</h2><p>Go语言之所以厉害，是因为它在服务端的开发中，总能抓住程序员的痛点，以最直接、简单、高效、稳定的方式来解决问题。这里我们并不会深入讨论GO语言的具体语法，只会将语言中关键的、对简化编程具有重要意义的方面介绍给大家，体验Go的核心特性。</p>
+<h3 id="并发编程">1.2.1 并发编程</h3><p>Go语言在并发编程方面比绝大多数语言要简洁不少，这一点是其最大亮点之一，也是其在未来进入高并发高性能场景的重要筹码。<img src="/2019/12/11/Go-入门简介/bingfa1.jpg" alt></p>
+<p>不同于传统的多进程或多线程，golang的并发执行单元是一种称为goroutine的协程。</p>
+<p>由于在共享数据场景中会用到锁，再加上GC，其并发性能有时不如异步复用IO模型，因此相对于大多数语言来说，golang的并发编程简单比并发性能更具卖点。</p>
+<p>在当今这个多核时代，并发编程的意义不言而喻。当然，很多语言都支持多线程、多进程编程，但遗憾的是，实现和控制起来并不是那么令人感觉轻松和愉悦。Golang不同的是，语言级别支持协程(goroutine)并发（协程又称微线程，比线程更轻量、开销更小，性能更高），操作起来非常简单，语言级别提供关键字（go）用于启动协程，并且在同一台机器上可以启动成千上万个协程。协程经常被理解为轻量级线程，一个线程可以包含多个协程，共享堆不共享栈。协程间一般由应用程序显式实现调度，上下文切换无需下到内核层，高效不少。协程间一般不做同步通讯，而golang中实现协程间通讯有两种：1）共享内存型，即使用全局变量+mutex锁来实现数据共享；2）消息传递型，即使用一种独有的channel机制进行异步通讯。</p>
+<p>对比JAVA的多线程和GO的协程实现，明显更直接、简单。这就是GO的魅力所在，以简单、高效的方式解决问题，关键字go，或许就是GO语言最重要的标志。</p>
+<p><strong>高并发是Golang语言最大的亮点</strong></p>
+<h3 id="内存回收-GC">1.2.2 内存回收(GC)</h3><p>从C到C++，从程序性能的角度来考虑，这两种语言允许程序员自己管理内存，包括内存的申请和释放等。因为没有垃圾回收机制所以C/C++运行起来速度很快，但是随着而来的是程序员对内存使用上的很谨小慎微的考虑。因为哪怕一点不小心就可能会导致“内存泄露”使得资源浪费或者“野指针”使得程序崩溃等，尽管C++11后来使用了智能指针的概念，但是程序员仍然需要很小心的使用。后来为了提高程序开发的速度以及程序的健壮性，java和C#等高级语言引入了GC机制，即程序员不需要再考虑内存的回收等，而是由语言特性提供垃圾回收器来回收内存。但是随之而来的可能是程序运行效率的降低。</p>
+<p>GC过程是：先stop the world，扫描所有对象判活，把可回收对象在一段bitmap区中标记下来，接着立即start the world，恢复服务，同时起一个专门gorountine回收内存到空闲list中以备复用，不物理释放。物理释放由专门线程定期来执行。</p>
+<p>GC瓶颈在于每次都要扫描所有对象来判活，待收集的对象数目越多，速度越慢。一个经验值是扫描10w个对象需要花费1ms，所以尽量使用对象少的方案，比如我们同时考虑链表、map、slice、数组来进行存储，链表和map每个元素都是一个对象，而slice或数组是一个对象，因此slice或数组有利于GC。</p>
+<p>GC性能可能随着版本不断更新会不断优化，这块没仔细调研，团队中有HotSpot开发者，应该会借鉴jvm gc的设计思想，比如分代回收、safepoint等。</p>
+<ul>
+<li>内存自动回收，再也不需要开发人员管理内存</li>
+<li>开发人员专注业务实现，降低了心智负担</li>
+<li>只需要new分配内存，不需要释放</li>
+</ul>
+<h3 id="内存分配">1.2.3 内存分配</h3><p>初始化阶段直接分配一块大内存区域，大内存被切分成各个大小等级的块，放入不同的空闲list中，对象分配空间时从空闲list中取出大小合适的内存块。内存回收时，会把不用的内存重放回空闲list。空闲内存会按照一定策略合并，以减少碎片。</p>
+<h3 id="编译">1.2.4 编译</h3><p>编译涉及到两个问题：编译速度和依赖管理</p>
+<p>目前Golang具有两种编译器，一种是建立在GCC基础上的Gccgo，另外一种是分别针对64位x64和32位x86计算机的一套编译器(6g和8g)。</p>
+<p>依赖管理方面，由于golang绝大多数第三方开源库都在github上，在代码的import中加上对应的github路径就可以使用了，库会默认下载到工程的pkg目录下。</p>
+<p>另外，编译时会默认检查代码中所有实体的使用情况，凡是没使用到的package或变量，都会编译不通过。这是golang挺严谨的一面。</p>
+<h3 id="网络编程">1.2.5 网络编程</h3><p>由于golang诞生在互联网时代，因此它天生具备了去中心化、分布式等特性，具体表现之一就是提供了丰富便捷的网络编程接口，比如socket用net.Dial(基于tcp/udp，封装了传统的connect、listen、accept等接口)、http用http.Get/Post()、rpc用client.Call(‘class_name.method_name’, args, &amp;reply)，等等。</p>
+<blockquote>
+<p>高性能HTTP Server</p>
+</blockquote>
+<h3 id="函数多返回值">1.2.6 函数多返回值</h3><p>在C，C++中，包括其他的一些高级语言是不支持多个函数返回值的。但是这项功能又确实是需要的，所以在C语言中一般通过将返回值定义成一个结构体，或者通过函数的参数引用的形式进行返回。而在Go语言中，作为一种新型的语言，目标定位为强大的语言当然不能放弃对这一需求的满足，所以支持函数多返回值是必须的。</p>
+<p>函数定义时可以在入参后面再加(a,b,c)，表示将有3个返回值a、b、c。这个特性在很多语言都有，比如python。</p>
+<p>这个语法糖特性是有现实意义的，比如我们经常会要求接口返回一个三元组（errno,errmsg,data），在大多数只允许一个返回值的语言中，我们只能将三元组放入一个map或数组中返回，接收方还要写代码来检查返回值中包含了三元组，如果允许多返回值，则直接在函数定义层面上就做了强制，使代码更简洁安全。</p>
+<h3 id="语言交互性">1.2.7 语言交互性</h3><p>语言交互性指的是本语言是否能和其他语言交互，比如可以调用其他语言编译的库。</p>
+<p>在Go语言中直接重用了大部份的C模块，这里称为Cgo.Cgo允许开发者混合编写C语言代码，然后Cgo工具可以将这些混合的C代码提取并生成对于C功能的调用包装代码。开发者基本上可以完全忽略这个Go语言和C语言的边界是如何跨越的。</p>
+<p>golang可以和C程序交互，但不能和C++交互。可以有两种替代方案：1）先将c++编译成动态库，再由go调用一段c代码，c代码通过dlfcn库动态调用动态库（记得export LD_LIBRARY_PATH）；2）使用swig</p>
+<h3 id="异常处理">1.2.8 异常处理</h3><p>golang不支持try…catch这样的结构化的异常解决方式，因为觉得会增加代码量，且会被滥用，不管多小的异常都抛出。golang提倡的异常处理方式是：</p>
+<ul>
+<li>普通异常：被调用方返回error对象，调用方判断error对象</li>
+<li>严重异常：指的是中断性panic（比如除0），使用defer…recover…panic机制来捕获处理。严重异常一般由golang内部自动抛出，不需要用户主动抛出，避免传统try…catch写得到处都是的情况。当然，用户也可以使用panic(‘xxxx’)主动抛出，只是这样就使这一套机制退化成结构化异常机制了。</li>
+</ul>
+<h3 id="其他一些有趣的特性">1.2.9 其他一些有趣的特性</h3><ul>
+<li><p>类型推导：类型定义：支持<code>var abc = 10</code>这样的语法，让golang看上去有点像动态类型语言，但golang实际上时强类型的，前面的定义会被自动推导出是int类型。</p>
+<blockquote>
+<p>作为强类型语言，隐式的类型转换是不被允许的，记住一条原则：让所有的东西都是显式的。</p>
+<p>简单来说，Go是一门写起来像动态语言，有着动态语言开发效率的静态语言。</p>
+</blockquote>
+</li>
+<li><p>一个类型只要实现了某个interface的所有方法，即可实现该interface，无需显式去继承。</p>
+<blockquote>
+<p>Go编程规范推荐每个Interface只提供一到两个的方法。这样使得每个接口的目的非常清晰。另外Go的隐式推导也使得我们组织程序架构的时候更加灵活。在写JAVA／C++程序的时候，我们一开始就需要把父类／子类／接口设计好，因为一旦后面有变更，修改起来会非常痛苦。而Go不一样，当你在实现的过程中发现某些方法可以抽象成接口的时候，你直接定义好这个接口就OK了，其他代码不需要做任何修改，编译器的自动推导会帮你做好一切。</p>
+</blockquote>
+</li>
+<li><p>不能循环引用：即如果a.go中import了b，则b.go要是import a会报import cycle not allowed。好处是可以避免一些潜在的编程危险，比如a中的func1()调用了b中的func2()，如果func2()也能调用func1()，将会导致无限循环调用下去。</p>
+</li>
+<li><p>defer机制：在Go语言中，提供关键字defer，可以通过该关键字指定需要延迟执行的逻辑体，即在函数体return前或出现panic时执行。这种机制非常适合善后逻辑处理，比如可以尽早避免可能出现的资源泄漏问题。</p>
+<p>可以说，defer是继goroutine和channel之后的另一个非常重要、实用的语言特性，对defer的引入，在很大程度上可以简化编程，并且在语言描述上显得更为自然，极大的增强了代码的可读性。</p>
+</li>
+<li><p>“包”的概念：和python一样，把相同功能的代码放到一个目录，称之为包。包可以被其他包引用。main包是用来生成可执行文件，每个程序只有一个main包。包的主要用途是提高代码的可复用性。通过package可以引入其他包。</p>
+</li>
+<li><p>编程规范：GO语言的编程规范强制集成在语言中，比如明确规定花括号摆放位置，强制要求一行一句，不允许导入没有使用的包，不允许定义没有使用的变量，提供gofmt工具强制格式化代码等等。奇怪的是，这些也引起了很多程序员的不满，有人发表GO语言的XX条罪状，里面就不乏对编程规范的指责。要知道，从工程管理的角度，任何一个开发团队都会对特定语言制定特定的编程规范，特别像Google这样的公司，更是如此。GO的设计者们认为，与其将规范写在文档里，还不如强制集成在语言里，这样更直接，更有利用团队协作和工程管理。</p>
+</li>
+<li><p>交叉编译：比如说你可以在运行 Linux 系统的计算机上开发运行 Windows 下运行的应用程序。这是第一门完全支持 UTF-8 的编程语言，这不仅体现在它可以处理使用 UTF-8 编码的字符串，就连它的源码文件格式都是使用的 UTF-8 编码。Go 语言做到了真正的国际化！</p>
+</li>
+</ul>
+<h2 id="功能">1.3 功能</h2><p>此处我们说个小段子：</p>
+<p>很久以前，有一个IT公司，这公司有个传统，允许员工拥有20%自由时间来开发实验性项目。在2007的某一天，公司的几个大牛，正在用c++开发一些比较繁琐但是核心的工作，主要包括庞大的分布式集群，大牛觉得很闹心，后来c++委员会来他们公司演讲，说c++将要添加大概35种新特性。这几个大牛的其中一个人，名为：Rob Pike，听后心中一万个xxx飘过，“c++特性还不够多吗？简化c++应该更有成就感吧”。于是乎，Rob Pike和其他几个大牛讨论了一下，怎么解决这个问题，过了一会，Rob Pike说要不我们自己搞个语言吧，名字叫“go”，非常简短，容易拼写。其他几位大牛就说好啊，然后他们找了块白板，在上面写下希望能有哪些功能。接下来的时间里，大牛们开心的讨论设计这门语言的特性，经过漫长的岁月，他们决定，以c语言为原型，以及借鉴其他语言的一些特性，来解放程序员，解放自己，然后在2009年，go语言诞生。</p>
+<p>以下就是这些大牛所罗列出的Go要有的功能：</p>
+<ul>
+<li>规范的语法（不需要符号表来解析）</li>
+<li>垃圾回收（独有）</li>
+<li>无头文件</li>
+<li>明确的依赖</li>
+<li>无循环依赖</li>
+<li>常量只能是数字</li>
+<li>int和int32是两种类型</li>
+<li>字母大小写设置可见性（letter case sets visibility）</li>
+<li>任何类型（type）都有方法（不是类型）</li>
+<li>没有子类型继承（不是子类）</li>
+<li>包级别初始化以及明确的初始化顺序</li>
+<li>文件被编译到一个包里</li>
+<li>包package-level globals presented in any order</li>
+<li>没有数值类型转换（常量起辅助作用）</li>
+<li>接口隐式实现（没有“implement”声明）</li>
+<li>嵌入（不会提升到超类）</li>
+<li>方法按照函数声明（没有特别的位置要求）</li>
+<li>方法即函数</li>
+<li>接口只有方法（没有数据）</li>
+<li>方法通过名字匹配（而非类型）</li>
+<li>没有构造函数和析构函数</li>
+<li>postincrement（如++i）是状态，不是表达式</li>
+<li>没有preincrement(i++)和predecrement</li>
+<li>赋值不是表达式</li>
+<li>明确赋值和函数调用中的计算顺序（没有“sequence point”）</li>
+<li>没有指针运算</li>
+<li>内存一直以零值初始化</li>
+<li>局部变量取值合法</li>
+<li>方法中没有“this”</li>
+<li>分段的堆栈</li>
+<li>没有静态和其它类型的注释</li>
+<li>没有模板</li>
+<li>内建string、slice和map</li>
+<li>数组边界检查</li>
+</ul>
+<blockquote>
+<h2 id="大牛真身">1.4 大牛真身</h2><p>最大牌的当属B和C语言设计者、Unix和Plan 9创始人、1983年图灵奖获得者Ken Thompson，这份名单中还包括了Unix核心成员Rob Pike（go语言之父）、java HotSpot虚拟机和js v8引擎的开发者Robert Griesemer、Memcached作者Brad Fitzpatrick，等等。</p>
+</blockquote>
+<h1 id="Go语言环境搭建">2 Go语言环境搭建</h1><h2 id="Golang官方网站">2.1 Golang官方网站</h2><p>Golang官方网站：<a href="https://golang.org/" target="_blank" rel="noopener">https://golang.org/</a> </p>
+<p><img src="/2019/12/11/Go-入门简介/Golang.jpg" alt></p>
+<blockquote>
+<p>因为Google和中国的关系，直接登录Golang的官网，需要翻墙</p>
+</blockquote>
+<p>当然你也可以登录Golang的国内网站：<a href="https://golang.google.cn/" target="_blank" rel="noopener">https://golang.google.cn/</a></p>
+<p><img src="/2019/12/11/Go-入门简介/Goland_cn.jpg" alt></p>
+<h2 id="下载">2.2 下载</h2><p>在Mac、Windows和Linux三个平台上都支持Golang。您可以从<a href="https://golang.org/dl/下载相应平台的安装包。" target="_blank" rel="noopener">https://golang.org/dl/下载相应平台的安装包。</a></p>
+<p><img src="/2019/12/11/Go-入门简介/go_download.jpg" alt></p>
+<ul>
+<li><p>Mac OS</p>
+<blockquote>
+<p>从<a href="https://golang.org/dl/下载osx安装程序。双击启动安装。按照提示，这应该在/usr/local/go中安装了Golang，并且还会将文件夹/usr/local/go/bin添加到您的PATH环境变量中。" target="_blank" rel="noopener">https://golang.org/dl/下载osx安装程序。双击启动安装。按照提示，这应该在/usr/local/go中安装了Golang，并且还会将文件夹/usr/local/go/bin添加到您的PATH环境变量中。</a></p>
+</blockquote>
+</li>
+<li><p>Windows</p>
+<blockquote>
+<p>从<a href="https://golang.org/dl/下载MSI安装程序。双击启动安装并遵循提示。这将在位置c中安装Golang:\Go，并且还将添加目录c:\Go\bin到您的path环境变量。" target="_blank" rel="noopener">https://golang.org/dl/下载MSI安装程序。双击启动安装并遵循提示。这将在位置c中安装Golang:\Go，并且还将添加目录c:\Go\bin到您的path环境变量。</a></p>
+</blockquote>
+</li>
+<li><p>Linux</p>
+<blockquote>
+<p>从<a href="https://golang.org/dl/下载tar文件，并将其解压到/usr/local。将/usr/local/go/bin添加到PATH环境变量中。" target="_blank" rel="noopener">https://golang.org/dl/下载tar文件，并将其解压到/usr/local。将/usr/local/go/bin添加到PATH环境变量中。</a></p>
+</blockquote>
+</li>
+</ul>
+<h2 id="安装和配置环境">2.3 安装和配置环境</h2><h3 id="Linux系统安装和配置">2.3.1 Linux系统安装和配置</h3><ul>
+<li><p>解压到指定目录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo tar -xzf go1.xxx.tar.gz -C /usr/local</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置GOROOT</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> Go的安装目录</span><br><span class="line">export GOROOT="/usr/local/go"</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<ul>
+<li><p>配置GOPATH</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> Go项目代码存放的路径</span><br><span class="line"><span class="meta">#</span> 对于Ubuntu系统，默认使用Home/go目录作为GOPATH</span><br><span class="line">export GOPATH=$HOME/go</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>GO代码必须在工作空间内，工作空间是一个目录，其中包含三个子目录</p>
+<p>src      –&gt; 里面每一个子目录就是一个包。包内是Go源码文件</p>
+<p>pkg    –&gt; 编译生成的，包的目标文件</p>
+<p>bin     –&gt; 生成的可执行文件</p>
+</blockquote>
+</li>
+<li><p>配置GOBIN</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> GOBIN需要添加到PATH中</span><br><span class="line">export GOBIN=$GOROOT/bin</span><br><span class="line">export PATH=$PATH:$GOBIN</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>测试安装</p>
+<ul>
+<li><p>版本检测</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go version</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置信息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go env</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="Go源码文件">3 Go源码文件</h1><p><img src="/2019/12/11/Go-入门简介/yuanmawenjian1.png" alt></p>
+<h2 id="命令源码文件">3.1 命令源码文件</h2><p>声明自己属于 main 代码包、包含无参数声明和结果声明的 main 函数。</p>
+<p>命令源码文件被安装以后，GOPATH 如果只有一个工作区，那么相应的可执行文件会被存放当前工作区的 bin 文件夹下；如果有多个工作区，就会安装到 GOBIN 指向的目录下。</p>
+<p>命令源码文件是 Go 程序的入口。</p>
+<p>同一个代码包中最好也不要放多个命令源码文件。多个命令源码文件虽然可以分开单独 go run 运行起来，但是无法通过 go build 和 go install。</p>
+<h2 id="库源码文件">3.2 库源码文件</h2><p>库源码文件就是不具备命令源码文件上述两个特征的源码文件。存在于某个代码包中的普通的源码文件。</p>
+<p>库源码文件被安装后，相应的归档文件（.a 文件）会被存放到当前工作区的 pkg 的平台相关目录下。</p>
+<h2 id="测试源码文件">3.3 测试源码文件</h2><p>名称以 _test.go 为后缀的代码文件，并且必须包含 Test 或者 Benchmark 名称前缀的函数：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">TestXXX</span><span class="params">( t *testing.T)</span></span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>名称以 Test 为名称前缀的函数，只能接受 *testing.T 的参数，这种测试函数是功能测试函数。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">BenchmarkXXX</span><span class="params">( b *testing.B)</span></span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>名称以 Benchmark 为名称前缀的函数，只能接受 *testing.B 的参数，这种测试函数是性能测试函数。</p>
+<h1 id="GO-命令">4 GO 命令</h1><p>目前go的基本命令有如下17个</p>
+<table>
+<thead>
+<tr>
+<th>bug</th>
+<th>start a bug report</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>build</td>
+<td>compile packages and dependencies</td>
+</tr>
+<tr>
+<td>clean</td>
+<td>remove object files and cached files</td>
+</tr>
+<tr>
+<td>doc</td>
+<td>show documentation for package or symbol</td>
+</tr>
+<tr>
+<td>env</td>
+<td>print Go environment information</td>
+</tr>
+<tr>
+<td>fix</td>
+<td>update packages to use new APIs</td>
+</tr>
+<tr>
+<td>fmt</td>
+<td>gofmt (reformat) package sources</td>
+</tr>
+<tr>
+<td>generate</td>
+<td>generate Go files by processing source</td>
+</tr>
+<tr>
+<td>get</td>
+<td>download and install packages and dependencies</td>
+</tr>
+<tr>
+<td>install</td>
+<td>compile and install packages and dependencies</td>
+</tr>
+<tr>
+<td>list</td>
+<td>list packages or modules</td>
+</tr>
+<tr>
+<td>mod</td>
+<td>module maintenance</td>
+</tr>
+<tr>
+<td>run</td>
+<td>compile and run Go program</td>
+</tr>
+<tr>
+<td>test</td>
+<td>test packages</td>
+</tr>
+<tr>
+<td>tool</td>
+<td>run specified go tool</td>
+</tr>
+<tr>
+<td>version</td>
+<td>print Go version</td>
+</tr>
+<tr>
+<td>vet</td>
+<td>report likely mistakes in packages</td>
+</tr>
+</tbody></table>
+<p>其中和编译相关的有build、get、install、run这4个。接下来就依次看看这四个的作用。</p>
+<p>在详细分析这4个命令之前，先罗列一下通用的命令标记，以下这些命令都可适用的：</p>
+<table>
+<thead>
+<tr>
+<th>-a</th>
+<th align="left">用于强制重新编译所有涉及的 Go 语言代码包（包括 Go 语言标准库中的代码包），即使它们已经是最新的了。该标记可以让我们有机会通过改动底层的代码包做一些实验。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-n</td>
+<td align="left">使命令仅打印其执行过程中用到的所有命令，而不去真正执行它们。如果不只想查看或者验证命令的执行过程，而不想改变任何东西，使用它正好合适。</td>
+</tr>
+<tr>
+<td>-race</td>
+<td align="left">用于检测并报告指定 Go 语言程序中存在的数据竞争问题。当用 Go 语言编写并发程序的时候，这是很重要的检测手段之一。</td>
+</tr>
+<tr>
+<td>-v</td>
+<td align="left">用于打印命令执行过程中涉及的代码包。这一定包括我们指定的目标代码包，并且有时还会包括该代码包直接或间接依赖的那些代码包。这会让你知道哪些代码包被执行过了。</td>
+</tr>
+<tr>
+<td>-work</td>
+<td align="left">用于打印命令执行时生成和使用的临时工作目录的名字，且命令执行完成后不删除它。这个目录下的文件可能会对你有用，也可以从侧面了解命令的执行过程。如果不添加此标记，那么临时工作目录会在命令执行完毕前删除。</td>
+</tr>
+<tr>
+<td>-x</td>
+<td align="left">使命令打印其执行过程中用到的所有命令，并同时执行它们。</td>
+</tr>
+</tbody></table>
+<h2 id="go-run">4.1 go run</h2><p>专门用来运行命令源码文件的命令，<strong>注意，这个命令不是用来运行所有 Go 的源码文件的！</strong></p>
+<p>go run 命令只能接受一个命令源码文件以及若干个库源码文件（必须同属于 main 包）作为文件参数，且<strong>不能接受测试源码文件</strong>。它在执行时会检查源码文件的类型。如果参数中有多个或者没有命令源码文件，那么 go run 命令就只会打印错误提示信息并退出，而不会继续执行。</p>
+<h2 id="go-build">4.2 go build</h2><p>go build 命令主要是用于测试编译。在包的编译过程中，若有必要，会同时编译与之相关联的包。</p>
+<ol>
+<li>如果是普通包，当你执行go build命令后，不会产生任何文件。</li>
+<li>如果是main包，当只执行go build命令后，会在当前目录下生成一个可执行文件。如果需要在$GOPATH/bin目录下生成相应的exe文件，需要执行go install 或者使用 go build -o 路径/可执行文件。</li>
+<li>如果某个文件夹下有多个文件，而你只想编译其中某一个文件，可以在 go build 之后加上文件名，例如 go build a.go；go build 命令默认会编译当前目录下的所有go文件。</li>
+<li>你也可以指定编译输出的文件名。比如，我们可以指定go build -o 可执行文件名，默认情况是你的package名(非main包)，或者是第一个源文件的文件名(main包)。</li>
+<li>go build 会忽略目录下以”_”或者”.”开头的go文件。</li>
+<li>如果你的源代码针对不同的操作系统需要不同的处理，那么你可以根据不同的操作系统后缀来命名文件。</li>
+</ol>
+<p>当代码包中有且仅有一个命令源码文件的时候，在文件夹所在目录中执行 go build 命令，会在该目录下生成一个与目录同名的可执行文件。</p>
+<p><img src="/2019/12/11/Go-入门简介/go_build_1.jpg" alt></p>
+<p><img src="/2019/12/11/Go-入门简介/go_build_2.png" alt></p>
+<h2 id="go-install">4.3 go install</h2><p>go install 命令是用来编译并安装代码包或者源码文件的。</p>
+<p>go install 命令在内部实际上分成了两步操作：第一步是生成结果文件(可执行文件或者.a包)，第二步会把编译好的结果移到<code>$GOPATH/pkg</code>或者<code>$GOPATH/bin</code>。</p>
+<p>可执行文件： 一般是 go install 带main函数的go文件产生的，有函数入口，所有可以直接运行。</p>
+<p>.a应用包： 一般是 go install 不包含main函数的go文件产生的，没有函数入口，只能被调用。</p>
+<p>go install 用于编译并安装指定的代码包及它们的依赖包。当指定的代码包的依赖包还没有被编译和安装时，该命令会先去处理依赖包。与 go build 命令一样，传给 go install 命令的代码包参数应该以导入路径的形式提供。并且，go build 命令的绝大多数标记也都可以用于.实际上，go install 命令只比 go build 命令多做了一件事，即：安装编译后的结果文件到指定目录。</p>
+<p>安装代码包会在当前工作区的 pkg 的平台相关目录下生成归档文件（即 .a 文件）。</p>
+<p>安装命令源码文件会在当前工作区的 bin 目录（如果 GOPATH 下有多个工作区，就会放在 GOBIN 目录下）生成可执行文件。</p>
+<p><img src="/2019/12/11/Go-入门简介/go_install.jpg" alt></p>
+<h2 id="go-get">4.4 go get</h2><p>go get 命令用于从远程代码仓库（比如 Github ）上下载并安装代码包。<strong>注意，go get 命令会把当前的代码包下载到 $GOPATH 中的第一个工作区的 src 目录中，并安装。</strong></p>
+<blockquote>
+<p>使用 go get 下载第三方包的时候，依旧会下载到 $GOPATH 的第一个工作空间，而非 vendor 目录。当前工作链中并没有真正意义上的包依赖管理，不过好在有不少第三方工具可选。</p>
+</blockquote>
+<p>go get 常用的一些标记如下：</p>
+<table>
+<thead>
+<tr>
+<th>-d</th>
+<th>让命令程序只执行下载动作，而不执行安装动作。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-f</td>
+<td>仅在使用<code>-u</code>标记时才有效。该标记会让命令程序忽略掉对已下载代码包的导入路径的检查。如果下载并安装的代码包所属的项目是你从别人那里 Fork 过来的，那么这样做就尤为重要了。</td>
+</tr>
+<tr>
+<td>-fix</td>
+<td>让命令程序在下载代码包后先执行修正动作，而后再进行编译和安装。</td>
+</tr>
+<tr>
+<td>-insecure</td>
+<td>允许命令程序使用非安全的 scheme（如 HTTP ）去下载指定的代码包。如果你用的代码仓库（如公司内部的 Gitlab ）没有HTTPS 支持，可以添加此标记。请在确定安全的情况下使用它。</td>
+</tr>
+<tr>
+<td>-t</td>
+<td>让命令程序同时下载并安装指定的代码包中的测试源码文件中依赖的代码包。</td>
+</tr>
+<tr>
+<td>-u</td>
+<td>让命令利用网络来更新已有代码包及其依赖包。默认情况下，该命令只会从网络上下载本地不存在的代码包，而不会更新已有的代码包。</td>
+</tr>
+</tbody></table>
+<p><img src="/2019/12/11/Go-入门简介/go_get.jpg" alt></p>
+<h2 id="go-clean">4.5 go clean</h2><p>go clean 命令是用来移除当前源码包里面编译生成的文件，这些文件包括</p>
+<ul>
+<li>_obj/ 旧的object目录，由Makefiles遗留</li>
+<li>_test/ 旧的test目录，由Makefiles遗留</li>
+<li>_testmain.go 旧的gotest文件，由Makefiles遗留</li>
+<li>test.out 旧的test记录，由Makefiles遗留</li>
+<li>build.out 旧的test记录，由Makefiles遗留</li>
+<li>*.[568ao] object文件，由Makefiles遗留</li>
+<li>DIR(.exe) 由 go build 产生</li>
+<li>DIR.test(.exe) 由 go test -c 产生</li>
+<li>MAINFILE(.exe) 由 go build MAINFILE.go产生 </li>
+</ul>
+<h2 id="go-fmt">4.6 go fmt</h2><p>go fmt 命令主要是用来帮你格式化所写好的代码文件。</p>
+<h2 id="go-test">4.7 go test</h2><p>go test 命令，会自动读取源码目录下面名为*_test.go的文件，生成并运行测试用的可执行文件。默认的情况下，不需要任何的参数，它会自动把你源码包下面所有test文件测试完毕，当然你也可以带上参数，详情请参考go help testflag</p>
+<h2 id="go-doc">4.8 go doc</h2><p>go doc 命令其实就是一个很强大的文档工具。</p>
+<p>如何查看相应package的文档呢？ 例如builtin包，那么执行go doc builtin；如果是http包，那么执行go doc net/http；查看某一个包里面的函数，那么执行go doc fmt Printf；也可以查看相应的代码，执行go doc -src fmt Printf；</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 在浏览器中打开127.0.0.1:8080</span><br><span class="line">godoc -http=:8080</span><br></pre></td></tr></table></figure>
+
+<h2 id="go-fix">4.9 go fix</h2><p> 用来修复以前老版本的代码到新版本，例如go1之前老版本的代码转化到go1</p>
+<h2 id="go-version">4.10 go version</h2><p>查看go当前的版本</p>
+<h2 id="go-env">4.11 go env</h2><p>查看当前go的环境变量</p>
+<h2 id="go-list">4.12 go list</h2><p>列出当前全部安装的package</p>
+<h1 id="GO-开发工具">5 GO 开发工具</h1><h2 id="Goland">5.1 Goland</h2><h3 id="安装">5.1.1 安装</h3><ul>
+<li><p>下载</p>
+<blockquote>
+<p><a href="https://www.jetbrains.com/go/download/#section=linux" target="_blank" rel="noopener">官网下载</a></p>
+</blockquote>
+</li>
+<li><p>解压</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 解压到相应目录</span><br><span class="line">tar -zxzf goland-2018.1.1.tar.gz  -C /opt</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch  $HOME/.local/share/applications/goland.desktop</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> [Desktop Entry]</span><br><span class="line"><span class="meta">&gt;</span> Type=Application</span><br><span class="line"><span class="meta">&gt;</span> Name=GoLand</span><br><span class="line"><span class="meta">&gt;</span> Icon=[GoLand的目录下的bin目录]/goland.png</span><br><span class="line"><span class="meta">&gt;</span> Exec=[GoLand的目录下的bin目录]/goland.sh</span><br><span class="line"><span class="meta">&gt;</span> Terminal=false</span><br><span class="line"><span class="meta">&gt;</span> Categories=Application;</span><br><span class="line"><span class="meta">&gt;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>永久注册及汉化</p>
+<p><a href="https://github.com/ruleizhou/tools/tree/master/golang" target="_blank" rel="noopener">教程</a></p>
+</li>
+</ul>
+<h3 id="使用">5.1.2 使用</h3><ul>
+<li><p>创建项目</p>
+<ul>
+<li>新建GO项目<img src="/2019/12/11/Go-入门简介/goland_1.bmp" alt></li>
+<li>项目配置<img src="/2019/12/11/Go-入门简介/goland_2.png" alt></li>
+<li>配置GOROOT<img src="/2019/12/11/Go-入门简介/goland_3.png" alt></li>
+<li>配置GOPATH<img src="/2019/12/11/Go-入门简介/goland_4.png" alt></li>
+</ul>
+</li>
+<li><p>快捷键</p>
+<ul>
+<li><p>文件相关</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CTRL+E，					打开最近浏览过的文件。</span><br><span class="line">CTRL+SHIFT+E，	打开最近更改的文件。</span><br><span class="line">CTRL+N，					可以快速打开struct结构体。</span><br><span class="line">CTRL+SHIFT+N，	可以快速打开文件。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>代码格式化</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CTRL+ALT+T，		可以把代码包在一个块内，例如if&#123;…&#125;else&#123;…&#125;。</span><br><span class="line">CTRL+ALT+L，		格式化代码。</span><br><span class="line">CTRL+空格，		代码提示。</span><br><span class="line">CTRL+/,					单行注释。CTRL+SHIFT+/，进行多行注释。</span><br><span class="line">CTRL+B，				快速打开光标处的结构体或方法（跳转到定义处）。</span><br><span class="line">CTRL+“+/-”，	可以将当前方法进行展开或折叠。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查找和定位</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CTRL+R，					替换文本。</span><br><span class="line">CTRL+F，					查找文本。</span><br><span class="line">CTRL+SHIFT+F，	进行全局查找。</span><br><span class="line">CTRL+G，					快速定位到某行。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>代码编辑</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ALT+Q，									  可以看到当前方法的声明。</span><br><span class="line">CTRL+Backspace，				 按单词进行删除。</span><br><span class="line">SHIFT+ENTER，					 可以向下插入新行，即使光标在当前行的中间。</span><br><span class="line">CTRL+X，									 删除当前光标所在行。</span><br><span class="line">CTRL+D,										复制当前光标所在行。</span><br><span class="line">ALT+SHIFT+UP/DOWN,		  可以将光标所在行的代码上下移动。</span><br><span class="line">CTRL+SHIFT+U，					可以将选中内容进行大小写转化。</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Liteide">5.2 Liteide</h2><h3 id="安装-1">5.2.1 安装</h3><p>使用如下shell 来执行安装过程</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">if [ -d $linux_env/linux/tool/liteide ]; then</span><br><span class="line">    echo "liteide already install"</span><br><span class="line">else</span><br><span class="line">    echo "install liteide"</span><br><span class="line">    ## Git clone and build liteide ##</span><br><span class="line">    sudo apt-get install qt5-default --fix-missing -y</span><br><span class="line">    git clone https://github.com/visualfc/liteide.git</span><br><span class="line">    cd liteide/build</span><br><span class="line">    ./update_pkg.sh</span><br><span class="line">    ./build_linux_qt5.sh</span><br><span class="line"></span><br><span class="line">    ## Deploy it: ##</span><br><span class="line">    ./deploy_linux_x64_qt5.sh</span><br><span class="line">    </span><br><span class="line">    ## copy to linux/tool/liteide ##</span><br><span class="line">    mv liteide $linux_env/linux/tool/liteide</span><br><span class="line">    cd -</span><br><span class="line">    rm liteide -rf    </span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">if [ -f ~/.local/share/applications/liteide.desktop ]; then</span><br><span class="line">    echo "liteide.desktop already exists"</span><br><span class="line">else</span><br><span class="line">    ## create desktop ##</span><br><span class="line">    touch ~/.local/share/applications/liteide.desktop</span><br><span class="line">    echo "[Desktop Entry]" &gt;&gt; ~/.local/share/applications/liteide.desktop</span><br><span class="line">    echo "Type=Application" &gt;&gt; ~/.local/share/applications/liteide.desktop</span><br><span class="line">    echo "Name=liteide" &gt;&gt; ~/.local/share/applications/liteide.desktop</span><br><span class="line">    echo "Icon=$linux_env/linux/tool/liteide/share/liteide/welcome/images/liteide400.png" &gt;&gt; ~/.local/share/applications/liteide.desktop</span><br><span class="line">    echo "Exec=$linux_env/linux/tool/liteide/bin/liteide" &gt;&gt; ~/.local/share/applications/liteide.desktop</span><br><span class="line">    echo "Comment=LiteIDE is a simple, open source, cross-platform Go IDE." &gt;&gt; ~/.local/share/applications/liteide.desktop</span><br><span class="line">    echo "Terminal=false" &gt;&gt; ~/.local/share/applications/liteide.desktop</span><br><span class="line">    echo "Categories=Development;IDE;" &gt;&gt; ~/.local/share/applications/liteide.desktop</span><br><span class="line">    echo "Name[zh_CN]=liteide" &gt;&gt; ~/.local/share/applications/liteide.desktop</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+
+<h1 id="编码规范">6 编码规范</h1><h2 id="命名规范">6.1 命名规范</h2><p>Go在命名时以字母a到Z或a到Z或下划线开头，后面跟着零或更多的字母、下划线和数字(0到9)。Go不允许在命名时中使用@、$和%等标点符号。Go是一种区分大小写的编程语言。</p>
+<blockquote>
+<ol>
+<li>当命名（包括常量、变量、类型、函数名、结构字段等等）以一个大写字母开头，如：Group1，那么使用这种形式的标识符的对象就<strong>可以被外部包的代码所使用</strong>（客户端程序需要先导入这个包），这被称为导出（像面向对象语言中的 public）；</li>
+<li><strong>命名如果以小写字母开头，则对包外是不可见的，但是他们在整个包的内部是可见并且可用的</strong>（像面向对象语言中的 private ）</li>
+</ol>
+</blockquote>
+<h3 id="包命名">6.1.1 包命名</h3><p>保持package的名字和目录保持一致，尽量采取有意义的包名，简短，有意义，尽量和标准库不要冲突。包名应该为<strong>小写</strong>单词，不要使用下划线或者混合大小写。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> demo</span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> main</span><br></pre></td></tr></table></figure>
+
+<h3 id="文件命名">6.1.2 文件命名</h3><p>尽量采取有意义的文件名，简短，有意义，应该为<strong>小写</strong>单词，使用<strong>下划线</strong>分隔各个单词。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">my_test.<span class="keyword">go</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="结构体命名">6.1.3 结构体命名</h3><ul>
+<li>采用驼峰命名法，首字母根据访问控制大写或者小写</li>
+<li>struct 申明和初始化格式采用多行，例如下面：</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 多行申明</span></span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span>&#123;</span><br><span class="line">    Username  <span class="keyword">string</span></span><br><span class="line">    Email     <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 多行初始化</span></span><br><span class="line">u := User&#123;</span><br><span class="line">    Username: <span class="string">"astaxie"</span>,</span><br><span class="line">    Email:    <span class="string">"astaxie@gmail.com"</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="接口命名">6.1.4 接口命名</h3><ul>
+<li>命名规则基本和上面的结构体类型</li>
+<li>单个函数的结构名以 “er” 作为后缀，例如 Reader , Writer 。</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Reader <span class="keyword">interface</span> &#123;</span><br><span class="line">        Read(p []<span class="keyword">byte</span>) (n <span class="keyword">int</span>, err error)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="变量命名">6.1.5 变量命名</h3><ul>
+<li><p>和结构体类似，变量名称一般遵循驼峰法，首字母根据访问控制原则大写或者小写，但遇到特有名词时，需要遵循以下规则：</p>
+<ul>
+<li>如果变量为私有，且特有名词为首个单词，则使用小写，如 apiClient</li>
+<li>其它情况都应当使用该名词原有的写法，如 APIClient、repoID、UserID</li>
+<li>错误示例：UrlArray，应该写成 urlArray 或者 URLArray</li>
+</ul>
+</li>
+<li><p>若变量类型为 bool 类型，则名称应以 Has, Is, Can 或 Allow 开头</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> isExist <span class="keyword">bool</span></span><br><span class="line"><span class="keyword">var</span> hasConflict <span class="keyword">bool</span></span><br><span class="line"><span class="keyword">var</span> canManage <span class="keyword">bool</span></span><br><span class="line"><span class="keyword">var</span> allowGitHook <span class="keyword">bool</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="常量命名">6.1.6 常量命名</h3><ul>
+<li><p>常量均需使用全部大写字母组成，并使用下划线分词</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> APP_VER = <span class="string">"1.0"</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果是枚举类型的常量，需要先创建相应类型：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Scheme <span class="keyword">string</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">    HTTP  Scheme = <span class="string">"http"</span></span><br><span class="line">    HTTPS Scheme = <span class="string">"https"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="关键字">6.1.7 关键字</h3><p>下面的列表显示了Go中的保留字。这些保留字不能用作常量或变量或任何其他标识符名称。</p>
+<table>
+<thead>
+<tr>
+<th>break</th>
+<th>default</th>
+<th>func</th>
+<th>interface</th>
+<th>select</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>case</td>
+<td>defer</td>
+<td>go</td>
+<td>map</td>
+<td>struct</td>
+</tr>
+<tr>
+<td>chan</td>
+<td>else</td>
+<td>goto</td>
+<td>package</td>
+<td>switch</td>
+</tr>
+<tr>
+<td>const</td>
+<td>fallthrough</td>
+<td>if</td>
+<td>range</td>
+<td>type</td>
+</tr>
+<tr>
+<td>continue</td>
+<td>for</td>
+<td>import</td>
+<td>return</td>
+<td>var</td>
+</tr>
+</tbody></table>
+<h2 id="注释规范">6.2 注释规范</h2><p>Go提供C风格的<code>/* */</code>块注释和C ++风格的<code>//</code>行注释。行注释是常态；块注释主要显示为包注释</p>
+<ul>
+<li>单行注释是最常见的注释形式，你可以在任何地方使用以 // 开头的单行注释</li>
+<li>多行注释也叫块注释，均已以 / <em>开头，并以</em> / 结尾，且不可以嵌套使用，多行注释一般用于包的文档描述或注释成块的代码片段</li>
+</ul>
+<p>go 语言自带的 godoc 工具可以根据注释生成文档，生成可以自动生成对应的网站，注释的质量决定了生成的文档的质量。每个包都应该有一个包注释，在package子句之前有一个块注释。对于多文件包，包注释只需要存在于一个文件中，任何一个都可以。</p>
+<h3 id="包注释">6.2.1 包注释</h3><p>每个包都应该有一个包注释，一个位于package子句之前的块注释或行注释。包如果有多个go文件，只需要出现在一个go文件中（一般是和包同名的文件）即可。 包注释应该包含下面基本信息(请严格按照这个顺序，简介，创建人，创建时间）：</p>
+<ul>
+<li>包的基本简介（包名，简介）</li>
+<li>创建者，格式： 创建人： rtx 名</li>
+<li>创建时间，格式：创建时间： yyyyMMdd</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// util 包， 该包包含了项目共用的一些常量，封装了项目中一些共用函数。</span><br><span class="line">// 创建人： han</span><br><span class="line">// 创建时间： 20191212</span><br></pre></td></tr></table></figure>
+
+<h3 id="结构-接口-注释">6.2.2 结构(接口)注释</h3><p>每个自定义的结构体或者接口都应该有注释说明，该注释对结构进行简要介绍，放在结构体定义的前一行，格式为： 结构体名， 结构体说明。同时结构体内的每个成员变量都要有说明，该说明放在成员变量的后面（注意对齐），实例如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// User ， 用户对象，定义了用户的基础信息</span></span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span>&#123;</span><br><span class="line">    Username  <span class="keyword">string</span> 		  <span class="comment">// 用户名</span></span><br><span class="line">    Email     		<span class="keyword">string</span> 			<span class="comment">// 邮箱</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="函数-方法-注释">6.2.3 函数(方法)注释</h3><p>每个函数，或者方法（结构体或者接口下的函数称为方法）都应该有注释说明，函数的注释应该包括三个方面（严格按照此顺序撰写）：</p>
+<ul>
+<li>简要说明，格式说明：以函数名开头，“，”分隔说明部分</li>
+<li>参数列表：每行一个参数，参数名开头，“，”分隔说明部分</li>
+<li>返回值： 每行一个返回值</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// NewtAttrModel ， 属性数据层操作类的工厂方法</span></span><br><span class="line"><span class="comment">// 参数：</span></span><br><span class="line"><span class="comment">//      ctx ： 上下文信息</span></span><br><span class="line"><span class="comment">// 返回值：</span></span><br><span class="line"><span class="comment">//      属性操作类指针</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewAttrModel</span><span class="params">(ctx *common.Context)</span> *<span class="title">AttrModel</span></span> &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="代码逻辑注释">6.2.4 代码逻辑注释</h3><p>对于一些关键位置的代码逻辑，或者局部较为复杂的逻辑，需要有相应的逻辑说明，方便其他开发者阅读该段代码。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 从 Redis 中批量读取属性，对于没有读取到的 id ， 记录到一个数组里面，准备从 DB 中读取</span></span><br><span class="line">xxxxx</span><br><span class="line">xxxxxxx</span><br><span class="line">xxxxxxx</span><br></pre></td></tr></table></figure>
+
+<h3 id="注释风格">6.2.5 注释风格</h3><p>统一使用中文注释，对于中英文字符之间严格使用空格分隔， 这个不仅仅是中文和英文之间，英文和中文标点之间也都要使用空格分隔。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 从 Redis 中批量读取属性，对于没有读取到的 id ， 记录到一个数组里面，准备从 DB 中读取</span></span><br></pre></td></tr></table></figure>
+
+<p>上面 Redis 、 id 、 DB 和其他中文字符之间都是用了空格分隔。</p>
+<ul>
+<li>建议全部使用单行注释</li>
+<li>和代码的规范一样，单行注释不要过长，禁止超过 120 字符。</li>
+</ul>
+<h2 id="代码风格">6.3 代码风格</h2><h3 id="缩进和折行">6.3.1 缩进和折行</h3><ul>
+<li>缩进直接使用 gofmt 工具格式化即可（gofmt 是使用 tab 缩进的）；</li>
+<li>折行方面，一行最长不超过120个字符，超过的请使用换行展示，尽量保持格式优雅。</li>
+</ul>
+<h3 id="语句的结尾">6.3.2 语句的结尾</h3><p>Go语言中是不需要类似于Java需要冒号结尾，默认一行就是一条数据</p>
+<p>如果你打算将多个语句写在同一行，它们则必须使用 <strong>;</strong></p>
+<h3 id="括号和空格">6.3.3 括号和空格</h3><p>括号和空格方面，也可以直接使用 gofmt 工具格式化（go 会强制左大括号不换行，换行会报语法错误），所有的运算符和操作数之间要留空格。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 正确的方式</span></span><br><span class="line"><span class="keyword">if</span> a &gt; <span class="number">0</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="comment">// 错误的方式</span></span><br><span class="line"><span class="keyword">if</span> a&gt;<span class="number">0</span>  <span class="comment">// a ，0 和 &gt; 之间应该空格</span></span><br><span class="line">&#123;       <span class="comment">// 左大括号不可以换行，会报语法错误</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="import规范">6.3.4 import规范</h3><p>import在多行的情况下，goimports会自动帮你格式化，但是我们这里还是规范一下import的一些规范，如果你在一个文件里面引入了一个package，还是建议采用如下格式：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>如果你的包引入了三种类型的包，标准库包，程序内部包，第三方包，建议采用如下方式进行组织你的包：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import (</span><br><span class="line">    "encoding/json"</span><br><span class="line">    "strings"</span><br><span class="line"></span><br><span class="line">    "myproject/models"</span><br><span class="line">    "myproject/controller"</span><br><span class="line">    "myproject/utils"</span><br><span class="line"></span><br><span class="line">    "github.com/astaxie/beego"</span><br><span class="line">    "github.com/go-sql-driver/mysql"</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>有顺序的引入包，不同的类型采用空格分离，第一种实标准库，第二是项目包，第三是第三方包。</p>
+<p>在项目中不要使用相对路径引入包：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这是不好的导入</span></span><br><span class="line"><span class="keyword">import</span> “../net”</span><br><span class="line"></span><br><span class="line"><span class="comment">// 这是正确的做法</span></span><br><span class="line"><span class="keyword">import</span> “github.com/repo/proj/src/net”</span><br></pre></td></tr></table></figure>
+
+<p>但是如果是引入本项目中的其他包，最好使用相对路径。</p>
+<h3 id="错误处理">6.3.5 错误处理</h3><ul>
+<li>错误处理的原则就是不能丢弃任何有返回err的调用，不要使用 _ 丢弃，必须全部处理。接收到错误，要么返回err，或者使用log记录下来</li>
+<li>尽早return：一旦有错误发生，马上返回</li>
+<li>尽量不要使用panic，除非你知道你在做什么</li>
+<li>错误描述如果是英文必须为小写，不需要标点结尾</li>
+<li>采用独立的错误流进行处理</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    <span class="comment">// error handling</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// normal code</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 正确写法</span></span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    <span class="comment">// error handling</span></span><br><span class="line">    <span class="keyword">return</span> <span class="comment">// or continue, etc.</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// normal code</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="测试">6.3.6 测试</h3><p>单元测试文件名命名规范为 example_test.go<br>测试用例的函数名称必须以 Test 开头，例如：TestExample<br>每个重要的函数都要首先编写测试用例，测试用例和正规代码一起提交方便进行回归测试</p>
+<h2 id="常用工具">6.4 常用工具</h2><h3 id="gofmt">6.4.1 gofmt</h3><p>大部分的格式问题可以通过gofmt解决， gofmt 自动格式化代码，保证所有的 go 代码与官方推荐的格式保持一致，于是所有格式有关问题，都以 gofmt 的结果为准。</p>
+<h3 id="goimport">6.4.2 goimport</h3><p>我们强烈建议使用 goimport ，该工具在 gofmt 的基础上增加了自动删除和引入包.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get golang.org/x/tools/cmd/goimports</span><br></pre></td></tr></table></figure>
+
+<h3 id="go-vet">6.4.3 go vet</h3><p>vet工具可以帮我们静态分析我们的源码存在的各种问题，例如多余的代码，提前return的逻辑，struct的tag是否符合标准等。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get golang.org/x/tools/cmd/vet</span><br></pre></td></tr></table></figure>
+
+<h1 id="参考">7 参考</h1><blockquote>
+<ol>
+<li>Golang中国，<a href="https://www.qfgolang.com/" target="_blank" rel="noopener">https://www.qfgolang.com/</a></li>
+</ol>
+</blockquote>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text/javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.2.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.2.0/dist/mindmap.min.css">
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/Go/" rel="tag"># Go</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/06/linux-install-so/" rel="next" title="Linux下查找和安装依赖的.so文件">
+                <i class="fa fa-chevron-left"></i> Linux下查找和安装依赖的.so文件
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/12/12/Go-基础语法/" rel="prev" title="Go 基础语法">
+                Go 基础语法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+		
+		  
+			<ul class="sidebar-nav motion-element">
+			  <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+				文章目录
+			  </li>
+			  <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+				站点概览
+			  </li>
+			</ul>
+		  
+		
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/han.jpg" alt="Rulei.Zhou">
+            
+              <p class="site-author-name" itemprop="name">Rulei.Zhou</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">39</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/ruleizhou" title="GitHub &rarr; https://github.com/ruleizhou" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:rulei.zhou@foxmail.com" title="E-Mail &rarr; mailto:rulei.zhou@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section></div>
+
+		
+		  
+		  <!--noindex-->
+			<section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+			  <div class="post-toc">
+
+				
+				  
+				
+
+				
+				  <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Go-语言的核心特性"><span class="nav-text">1 Go 语言的核心特性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#思想"><span class="nav-text">1.1 思想</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#核心特定"><span class="nav-text">1.2 核心特定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#并发编程"><span class="nav-text">1.2.1 并发编程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存回收-GC"><span class="nav-text">1.2.2 内存回收(GC)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存分配"><span class="nav-text">1.2.3 内存分配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编译"><span class="nav-text">1.2.4 编译</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络编程"><span class="nav-text">1.2.5 网络编程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数多返回值"><span class="nav-text">1.2.6 函数多返回值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#语言交互性"><span class="nav-text">1.2.7 语言交互性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异常处理"><span class="nav-text">1.2.8 异常处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他一些有趣的特性"><span class="nav-text">1.2.9 其他一些有趣的特性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#功能"><span class="nav-text">1.3 功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#大牛真身"><span class="nav-text">1.4 大牛真身</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Go语言环境搭建"><span class="nav-text">2 Go语言环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Golang官方网站"><span class="nav-text">2.1 Golang官方网站</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载"><span class="nav-text">2.2 下载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装和配置环境"><span class="nav-text">2.3 安装和配置环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux系统安装和配置"><span class="nav-text">2.3.1 Linux系统安装和配置</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Go源码文件"><span class="nav-text">3 Go源码文件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#命令源码文件"><span class="nav-text">3.1 命令源码文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#库源码文件"><span class="nav-text">3.2 库源码文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试源码文件"><span class="nav-text">3.3 测试源码文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GO-命令"><span class="nav-text">4 GO 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#go-run"><span class="nav-text">4.1 go run</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#go-build"><span class="nav-text">4.2 go build</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#go-install"><span class="nav-text">4.3 go install</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#go-get"><span class="nav-text">4.4 go get</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#go-clean"><span class="nav-text">4.5 go clean</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#go-fmt"><span class="nav-text">4.6 go fmt</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#go-test"><span class="nav-text">4.7 go test</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#go-doc"><span class="nav-text">4.8 go doc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#go-fix"><span class="nav-text">4.9 go fix</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#go-version"><span class="nav-text">4.10 go version</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#go-env"><span class="nav-text">4.11 go env</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#go-list"><span class="nav-text">4.12 go list</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GO-开发工具"><span class="nav-text">5 GO 开发工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Goland"><span class="nav-text">5.1 Goland</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-text">5.1.1 安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用"><span class="nav-text">5.1.2 使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Liteide"><span class="nav-text">5.2 Liteide</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-1"><span class="nav-text">5.2.1 安装</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编码规范"><span class="nav-text">6 编码规范</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#命名规范"><span class="nav-text">6.1 命名规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#包命名"><span class="nav-text">6.1.1 包命名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件命名"><span class="nav-text">6.1.2 文件命名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结构体命名"><span class="nav-text">6.1.3 结构体命名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接口命名"><span class="nav-text">6.1.4 接口命名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#变量命名"><span class="nav-text">6.1.5 变量命名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常量命名"><span class="nav-text">6.1.6 常量命名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关键字"><span class="nav-text">6.1.7 关键字</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注释规范"><span class="nav-text">6.2 注释规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#包注释"><span class="nav-text">6.2.1 包注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结构-接口-注释"><span class="nav-text">6.2.2 结构(接口)注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数-方法-注释"><span class="nav-text">6.2.3 函数(方法)注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码逻辑注释"><span class="nav-text">6.2.4 代码逻辑注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注释风格"><span class="nav-text">6.2.5 注释风格</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码风格"><span class="nav-text">6.3 代码风格</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#缩进和折行"><span class="nav-text">6.3.1 缩进和折行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#语句的结尾"><span class="nav-text">6.3.2 语句的结尾</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#括号和空格"><span class="nav-text">6.3.3 括号和空格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#import规范"><span class="nav-text">6.3.4 import规范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#错误处理"><span class="nav-text">6.3.5 错误处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试"><span class="nav-text">6.3.6 测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用工具"><span class="nav-text">6.4 常用工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#gofmt"><span class="nav-text">6.4.1 gofmt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#goimport"><span class="nav-text">6.4.2 goimport</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#go-vet"><span class="nav-text">6.4.3 go vet</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">7 参考</span></a></li></ol></div>
+				
+
+			  </div>
+			</section>
+		  <!--/noindex-->
+		  
+		
+
+      
+
+    </aside></div>
+  
+  
+
+
+        
+      </main></div>
+    
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rulei.Zhou</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.2"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '0a400e1f09cb117f3ea4',
+    clientSecret: 'f7d98253e2a12b03803742f2a506c174d06019a0',
+    repo: 'ruleizhou.github.io',
+    owner: 'ruleizhou',
+    admin: ['ruleizhou'],
+    id: md5(location.pathname),
+    
+      language: window.navigator.language || window.navigator.userLanguage,
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  
+  <script>
+    $('.highlight').each(function (i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap')
+      $(e).after($wrap)
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function (e) {
+        var code = $(this).parent().find('.code').find('.line').map(function (i, e) {
+          return $(e).text()
+        }).toArray().join('\n')
+        var ta = document.createElement('textarea')
+        document.body.appendChild(ta)
+        ta.style.position = 'absolute'
+        ta.style.top = '0px'
+        ta.style.left = '0px'
+        ta.value = code
+        ta.select()
+        ta.focus()
+        var result = document.execCommand('copy')
+        document.body.removeChild(ta)
+        
+          if(result)$(this).text('复制成功')
+          else $(this).text('复制失败')
+        
+        $(this).blur()
+      })).on('mouseleave', function (e) {
+        var $b = $(this).find('.copy-btn')
+        setTimeout(function () {
+          $b.text('复制')
+        }, 300)
+      }).append(e)
+    })
+  </script>
+
+
+  
+
+  
+
+</body>
+</html>

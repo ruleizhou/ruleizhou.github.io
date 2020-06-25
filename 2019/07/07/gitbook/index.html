@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="google-site-verification" content="Ezui-oQp8Pno7S0Zg3T794uNOShGTYHv9PGKQ5Y1Au0">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+<script src="https://cdn.bootcss.com/echarts/4.1.0-release/echarts.min.js"></script>
+
+
+  
+
+
+
+
+  <meta name="description" content="​    GitBook时一个基于Node.js的命令行工具，支持Markdown和AsciiDoc两种语法格式，可以输出HTML、PDF、eBook等格式的电子书。故可以将GitBook定义为文档格式转换工具。 1 安装 install node.js 下载安装node.js。默认包含npm    install gitbook-cli 1npm install -g gitbook-cli">
+<meta name="keywords" content="tools">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gitbook">
+<meta property="og:url" content="https://ruleizhou.github.io/2019/07/07/gitbook/index.html">
+<meta property="og:site_name" content="ZRL">
+<meta property="og:description" content="​    GitBook时一个基于Node.js的命令行工具，支持Markdown和AsciiDoc两种语法格式，可以输出HTML、PDF、eBook等格式的电子书。故可以将GitBook定义为文档格式转换工具。 1 安装 install node.js 下载安装node.js。默认包含npm    install gitbook-cli 1npm install -g gitbook-cli">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-06-25T00:25:05.210Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="gitbook">
+<meta name="twitter:description" content="​    GitBook时一个基于Node.js的命令行工具，支持Markdown和AsciiDoc两种语法格式，可以输出HTML、PDF、eBook等格式的电子书。故可以将GitBook定义为文档格式转换工具。 1 安装 install node.js 下载安装node.js。默认包含npm    install gitbook-cli 1npm install -g gitbook-cli">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://ruleizhou.github.io/2019/07/07/gitbook/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>gitbook | ZRL</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ZRL</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ruleizhou.github.io/2019/07/07/gitbook/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rulei.Zhou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/han.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZRL">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">gitbook
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-07 16:02:19" itemprop="dateCreated datePublished" datetime="2019-07-07T16:02:19+08:00">2019-07-07</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-06-25 08:25:05" itemprop="dateModified" datetime="2020-06-25T08:25:05+08:00">2020-06-25</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/tools/" itemprop="url" rel="index"><span itemprop="name">tools</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>​    GitBook时一个基于Node.js的命令行工具，支持Markdown和AsciiDoc两种语法格式，可以输出HTML、PDF、eBook等格式的电子书。故可以将GitBook定义为文档格式转换工具。</p>
+<h1 id="安装">1 安装</h1><ul>
+<li><p><code>install node.js</code></p>
+<p>下载安装<a href="https://nodejs.org/en/download/" target="_blank" rel="noopener">node.js</a>。默认包含npm</p>
+</li>
+</ul>
+<ul>
+<li><p><code>install gitbook-cli</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g gitbook-cli</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<ul>
+<li><p><code>install typora</code></p>
+<p><a href="https://typora.io/" target="_blank" rel="noopener">下载地址</a></p>
+</li>
+</ul>
+<h1 id="配置">2 配置</h1><h2 id="title">2.1 title</h2><hr>
+<p>设置书本的标题</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">"title" : "Gitbook Use"</span><br></pre></td></tr></table></figure>
+
+<h2 id="author">2.2 author</h2><hr>
+<p>作者的相关信息</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">"author" : "rulei"</span><br></pre></td></tr></table></figure>
+
+<h2 id="description">2.3 description</h2><hr>
+<p>本书的简单描述</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">"description" : "书籍描述"</span><br></pre></td></tr></table></figure>
+
+<h2 id="language">2.4 language</h2><hr>
+<p>Gitbook使用的语言</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">en, ar, bn, cs, de, en, es, fa, fi, fr, he, it, ja, ko, no, pl, pt, ro, ru, sv, uk, vi, zh-hans, zh-tw</span><br></pre></td></tr></table></figure>
+
+<p>配置使用简体中文</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">"language" : "zh-hans"</span><br></pre></td></tr></table></figure>
+
+<h2 id="gitbook">2.5 gitbook</h2><hr>
+<p>指定使用的gitbook版本</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">"gitbook" : "3.2.2"</span><br><span class="line">"gitbook" : "&gt;=3.0.0"</span><br></pre></td></tr></table></figure>
+
+<h2 id="root">2.6 root</h2><hr>
+<p>指定存放GitBook文件(除了book.json)的根目录</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">"root" : "."</span><br></pre></td></tr></table></figure>
+
+<h2 id="links">2.7 links</h2><hr>
+<p>在左侧导航栏添加链接信息</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">"links" : &#123;</span><br><span class="line"><span class="code">    "sidebar" : &#123;</span></span><br><span class="line"><span class="code">        "Home" : "http://zhangjikai.com"</span></span><br><span class="line"><span class="code">    &#125;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="styles">2.8 styles</h2><hr>
+<p>自定义网页样式，默认情况下各generator对应的css文件</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">"styles" : &#123;</span><br><span class="line"><span class="code">    "website": "styles/website.css",</span></span><br><span class="line"><span class="code">    "ebook": "styles/ebook.css",</span></span><br><span class="line"><span class="code">    "pdf": "styles/pdf.css",</span></span><br><span class="line"><span class="code">    "mobi": "styles/mobi.css",</span></span><br><span class="line"><span class="code">    "epub": "styles/epub.css"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="plugins">2.9 plugins</h2><hr>
+<p>配置使用的插件</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">"plugins": [</span><br><span class="line"><span class="code">    "disqus"</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>添加新插件后需要运行如下命令来安装新的插件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitbook install</span><br></pre></td></tr></table></figure>
+
+<p>Gitbook默认带有5个插件</p>
+<ul>
+<li>highlight</li>
+<li>search</li>
+<li>sharing</li>
+<li>font-settings</li>
+<li>livereload</li>
+</ul>
+<p>如果去除这些自带插件，可以在插件名称前加 -</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">"plugins": [</span><br><span class="line"><span class="code">    "-search"</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h2 id="pluginsConfig">2.10 pluginsConfig</h2><hr>
+<p>配置插件的属性</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">"pluginsConfig": &#123;</span><br><span class="line"><span class="code">    "fontsettings": &#123;</span></span><br><span class="line"><span class="code">        "theme": "sepia",</span></span><br><span class="line"><span class="code">        "family": "serif",</span></span><br><span class="line"><span class="code">        "size": 1</span></span><br><span class="line"><span class="code">    &#125;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="structure">2.11 structure</h2><hr>
+<p>指定Readme、Summary、Glossary和Languages对应的文件名，下面时这几个文件对应变量以及默认值：</p>
+<table>
+<thead>
+<tr>
+<th>变量</th>
+<th>含义和默认值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>structure.readme</td>
+<td>Readme file name (default to README.md)</td>
+</tr>
+<tr>
+<td>structure.summary</td>
+<td>Summary file name (default to SUMMARY.md)</td>
+</tr>
+<tr>
+<td>structure.glossary</td>
+<td>Glossary file name (defalt to GLOSSARY.md)</td>
+</tr>
+<tr>
+<td>structure.languages</td>
+<td>Languages file name (default to LANGS.md)</td>
+</tr>
+</tbody></table>
+<h1 id="插件">3 插件</h1><p>​    记录一些实用的插件，如要指定插件版本可以实用<a href="mailto:plugin@0.3.1" target="_blank" rel="noopener">plugin@0.3.1</a>。因为有些插件可能不会随着GitBook版本的升级而升级，即有些插件不适合高版本的GitBook，所以需要指定了GitBook的版本。这里值列举了一部分插件</p>
+<p>目前主要使用的插件有:</p>
+<ul>
+<li>Navigator</li>
+<li>Splitter</li>
+<li>Tbfed-pagefooter</li>
+<li>Expandable-chapters</li>
+</ul>
+<h2 id="Anchor-navigation-ex">3.1 Anchor-navigation-ex</h2><hr>
+<p>添加Toc到侧边悬浮导航以及回到顶部按钮, 需要注意一下两点:</p>
+<ul>
+<li><p>本插件只会提取h[1-3]标签作为悬浮导航</p>
+</li>
+<li><p>只有按照一下顺序嵌套才会提取</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># h1</span><br><span class="line">## h2</span><br><span class="line">### h3</span><br><span class="line">必须要以 h1 开始，直接写 h2 不会被提取</span><br><span class="line">## h2</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><a href="https://plugins.gitbook.com/plugin/anchor-navigation-ex" target="_blank" rel="noopener">插件地址</a></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"plugins"</span>: [</span><br><span class="line">        <span class="string">"anchor-navigation-ex"</span></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Splitter">3.2 Splitter</h2><hr>
+<p>使侧边栏的宽度可以自由调节</p>
+<p><a href="https://plugins.gitbook.com/plugin/splitter" target="_blank" rel="noopener">插件地址</a></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">"plugins": [</span><br><span class="line">    <span class="string">"splitter"</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h2 id="Tbfed-pagefooter">3.3 Tbfed-pagefooter</h2><hr>
+<p>为页面添加页脚</p>
+<p><a href="https://plugins.gitbook.com/plugin/tbfed-pagefooter" target="_blank" rel="noopener">插件地址</a></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">"plugins": [</span><br><span class="line">   <span class="string">"tbfed-pagefooter"</span></span><br><span class="line">],</span><br><span class="line">"pluginsConfig": &#123;</span><br><span class="line">    "tbfed-pagefooter": &#123;</span><br><span class="line">        "copyright":"Copyright &amp;copy zhangjikai.com 2017",</span><br><span class="line">        "modify_label": "该文件修订时间：",</span><br><span class="line">        "modify_format": "YYYY-MM-DD HH:mm:ss"</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Expandable-chapters">3.4 Expandable-chapters</h2><hr>
+<p>使左侧的章节目录可以折叠</p>
+<p><a href="https://github.com/DomainDrivenArchitecture/gitbook-plugin-expandable-chapters" target="_blank" rel="noopener">插件地址</a></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plugins: ["expandable-chapters"]</span><br></pre></td></tr></table></figure>
+
+<h2 id="Search-Plus">3.5 Search Plus</h2><hr>
+<p>支持中文搜索，需要将默认的search和lunr插件去掉</p>
+<p><a href="https://plugins.gitbook.com/plugin/search-plus" target="_blank" rel="noopener">插件地址</a></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"plugins"</span>: [<span class="string">"-lunr"</span>,<span class="string">"-search"</span>,<span class="string">"search-plus"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Prism">3.6 Prism</h2><hr>
+<p>使用Prism.js为语法添加高亮显示，需要将<strong>highlight</strong>插件去掉。该插件自带的主题样式较少，可以在安装prism-themes插件，里面多提供了几种演示，具体样式可以参考<a href="https://github.com/PrismJS/prism-themes" target="_blank" rel="noopener">这里</a>，在设置样式时需要注意设置css文件名，而不是样式名。</p>
+<p><a href="https://plugins.gitbook.com/plugin/prism" target="_blank" rel="noopener">Prism插件地址</a>    <a href="https://plugins.gitbook.com/plugin/prism-themes" target="_blank" rel="noopener">Prism-themes插件地址</a></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"plugins"</span>: [</span><br><span class="line">        <span class="string">"prism"</span>,</span><br><span class="line">        <span class="string">"-highlight"</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">"pluginsConfig"</span>: &#123;</span><br><span class="line">        <span class="attr">"prism"</span>: &#123;</span><br><span class="line">            <span class="attr">"css"</span>: [</span><br><span class="line">                <span class="string">"prism-themes/themes/prism-base16-ateliersulphurpool.light.css"</span></span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果需要修改背景、字体大小等，需要在<strong>website.css</strong>定义<strong>pre[class*=”language-“]</strong>类来修改,示例如下:</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">pre</span><span class="selector-attr">[class*=<span class="string">"language-"</span>]</span> &#123;</span><br><span class="line">    <span class="attribute">border</span>: none;</span><br><span class="line">    <span class="attribute">background-color</span>: <span class="number">#f7f7f7</span>;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">1em</span>;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">1.2em</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Github">3.7 Github</h2><hr>
+<p>添加github图标</p>
+<p><a href="https://plugins.gitbook.com/plugin/github" target="_blank" rel="noopener">插件地址</a></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">"plugins": [</span><br><span class="line">    <span class="string">"github"</span></span><br><span class="line">],</span><br><span class="line">"pluginsConfig": &#123;</span><br><span class="line">    "github": &#123;</span><br><span class="line">        "url": "https://github.com/zhangjikai"</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Github-Buttons">3.8 Github Buttons</h2><hr>
+<p>添加项目在github上的star,watch,fork情况</p>
+<p><a href="https://plugins.gitbook.com/plugin/github-buttons" target="_blank" rel="noopener">插件地址</a></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"plugins"</span>: [</span><br><span class="line">        <span class="string">"github-buttons"</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">"pluginsConfig"</span>: &#123;</span><br><span class="line">        <span class="attr">"github-buttons"</span>: &#123;</span><br><span class="line">            <span class="attr">"repo"</span>: <span class="string">"zhangjikai/gitbook-use"</span>,</span><br><span class="line">            <span class="attr">"types"</span>: [</span><br><span class="line">                <span class="string">"star"</span>,</span><br><span class="line">                <span class="string">"watch"</span>,</span><br><span class="line">                <span class="string">"fork"</span></span><br><span class="line">            ],</span><br><span class="line">            <span class="attr">"size"</span>: <span class="string">"small"</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Ace-Plugin">3.9 Ace Plugin</h2><hr>
+<p><a href="https://plugins.gitbook.com/plugin/ace" target="_blank" rel="noopener">插件地址</a></p>
+<p>使GitBook支持ace. 默认情况下,line-height为1,会使代码显得比较挤,而作者好像没有提供修改行高的选项,如果需要修改行高,可以到node_module –&gt; github-plugin-ace –&gt; assets –&gt;ace.js中加入下面代码(30行左右的位置)</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">editor.container.style.lineHeight = 1.25;</span><br><span class="line">editor.renderer.updateFontSize();</span><br></pre></td></tr></table></figure>
+
+<p>不过上面的做法有个问题就是, 每次使用gitbook install安装新的插件之后,代码又会重置为原来的样子, 另外可以在website.css中加入下面的css代码来指定字体大小</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.aceCode</span> &#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">14px</span> <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用插件</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">"plugins": [</span><br><span class="line">    <span class="string">"ace"</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h2 id="Emphasize">3.10 Emphasize</h2><hr>
+<p>为文字添加底色</p>
+<p><a href="https://plugins.gitbook.com/plugin/emphasize" target="_blank" rel="noopener">插件地址</a></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">"plugins": [</span><br><span class="line">    <span class="string">"emphasize"</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h2 id="Include-Codeblock">3.11 Include Codeblock</h2><hr>
+<p>使用代码块的格式显示所包含文件的内容,该文件必须存在. 插件提供一些设置. 如果同时使用ace和本插件, 本插件要在ace插件前面加载.</p>
+<p><a href="https://plugins.gitbook.com/plugin/include-codeblock" target="_blank" rel="noopener">插件地址</a></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"plugins"</span>: [</span><br><span class="line">        <span class="string">"include-codeblock"</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">"pluginsConfig"</span>: &#123;</span><br><span class="line">        <span class="attr">"include-codeblock"</span>: &#123;</span><br><span class="line">            <span class="attr">"template"</span>: <span class="string">"ace"</span>,</span><br><span class="line">            <span class="attr">"unindent"</span>: <span class="string">"true"</span>,</span><br><span class="line">            <span class="attr">"theme"</span>: <span class="string">"monokai"</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Mermaid-gd3">3.12 Mermaid-gd3</h2><hr>
+<p>支持渲染<a href="https://github.com/knsv/mermaid" target="_blank" rel="noopener">Mermaid</a>图表</p>
+<p><a href="https://plugins.gitbook.com/plugin/mermaid-gb3" target="_blank" rel="noopener">插件地址</a></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">"plugins": [</span><br><span class="line">    <span class="string">"mermaid-gb3"</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h2 id="Puml">3.13 Puml</h2><hr>
+<p>使用PlantUML展示 uml 图</p>
+<p><a href="https://plugins.gitbook.com/plugin/puml" target="_blank" rel="noopener">插件地址</a></p>
+<p><a href="http://plantuml.com/" target="_blank" rel="noopener">PlanUML地址</a></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"plugins"</span>: [<span class="string">"puml"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用示例</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">Class Stage</span><br><span class="line">    Class Timeout &#123;</span><br><span class="line">        +constructor:function(cfg)</span><br><span class="line">        +timeout:function(ctx)</span><br><span class="line">        +overdue:function(ctx)</span><br><span class="line">        +stage: Stage</span><br><span class="line">    &#125;</span><br><span class="line">    Stage &lt;|-- Timeout</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Chart">3.14 Chart</h2><hr>
+<p>使用C3.js或者Highcharts绘制图形</p>
+<p><a href="https://plugins.gitbook.com/plugin/chart" target="_blank" rel="noopener">插件地址</a></p>
+<p><a href="https://github.com/c3js/c3" target="_blank" rel="noopener">C3.js</a></p>
+<p><a href="https://github.com/highcharts/highcharts" target="_blank" rel="noopener">highcharts</a></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"plugins"</span>: [ <span class="string">"chart"</span> ],</span><br><span class="line">    <span class="attr">"pluginsConfig"</span>: &#123;</span><br><span class="line">        <span class="attr">"chart"</span>: &#123;</span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"c3"</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>type可以是C3 或者 highcharts 默认时C3</p>
+<h2 id="Sharing-plus">3.15 Sharing-plus</h2><hr>
+<p>分享当前网页, 比默认的sharing插件多了一些分享方式</p>
+<p><a href="https://plugins.gitbook.com/plugin/sharing-plus" target="_blank" rel="noopener">插件地址</a></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plugins: ["-sharing", "sharing-plus"]</span><br></pre></td></tr></table></figure>
+
+<p>配置:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">"pluginsConfig": &#123;</span><br><span class="line">    "sharing": &#123;</span><br><span class="line">       "douban": false,</span><br><span class="line">       "facebook": false,</span><br><span class="line">       "google": true,</span><br><span class="line">       "hatenaBookmark": false,</span><br><span class="line">       "instapaper": false,</span><br><span class="line">       "line": true,</span><br><span class="line">       "linkedin": true,</span><br><span class="line">       "messenger": false,</span><br><span class="line">       "pocket": false,</span><br><span class="line">       "qq": false,</span><br><span class="line">       "qzone": true,</span><br><span class="line">       "stumbleupon": false,</span><br><span class="line">       "twitter": false,</span><br><span class="line">       "viber": false,</span><br><span class="line">       "vk": false,</span><br><span class="line">       "weibo": true,</span><br><span class="line">       "whatsapp": false,</span><br><span class="line">       "all": [</span><br><span class="line">           "facebook", "google", "twitter",</span><br><span class="line">           "weibo", "instapaper", "linkedin",</span><br><span class="line">           "pocket", "stumbleupon"</span><br><span class="line">       ]</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Sectionx">3.16 Sectionx</h2><hr>
+<p>将网页分块显示, 标签的tag 最好是使用b 标签, 如果使用h1-h6可能会和其他冲突</p>
+<p><a href="https://plugins.gitbook.com/plugin/sectionx" target="_blank" rel="noopener">插件地址</a></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"plugins"</span>: [</span><br><span class="line">       <span class="string">"sectionx"</span></span><br><span class="line">   ],</span><br><span class="line">    <span class="attr">"pluginsConfig"</span>: &#123;</span><br><span class="line">        <span class="attr">"sectionx"</span>: &#123;</span><br><span class="line">          <span class="attr">"tag"</span>: <span class="string">"b"</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Local-Video">3.17 Local Video</h2><hr>
+<p>使用Video.js播放本地视频</p>
+<p><a href="https://plugins.gitbook.com/plugin/local-video" target="_blank" rel="noopener">插件地址</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;plugins&quot;: [ &quot;local-video&quot; ]</span><br></pre></td></tr></table></figure>
+
+<h2 id="Simple-page-toc">3.18 Simple-page-toc</h2><hr>
+<p>自动生成本页的目录结构. 另外GitBook在处理重复的标题时有些问题,所以尽量不使用重复的标题</p>
+<p><a href="https://plugins.gitbook.com/plugin/simple-page-toc" target="_blank" rel="noopener">插件地址</a></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"plugins"</span> : [</span><br><span class="line">        <span class="string">"simple-page-toc"</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">"pluginsConfig"</span>: &#123;</span><br><span class="line">        <span class="attr">"simple-page-toc"</span>: &#123;</span><br><span class="line">            <span class="attr">"maxDepth"</span>: <span class="number">3</span>,</span><br><span class="line">            <span class="attr">"skipFirstH1"</span>: <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用方法: 在需要生成目录的地方加上<!--toc--></p>
+<h2 id="Anchors">3.19 Anchors</h2><hr>
+<p>添加Github风格的锚点样式</p>
+<p><a href="https://plugins.gitbook.com/plugin/anchors" target="_blank" rel="noopener">插件地址</a></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">"plugins" : [ "anchors" ]</span><br></pre></td></tr></table></figure>
+
+<h2 id="Edit-Link">3.20 Edit Link</h2><hr>
+<p>如果讲GitBook的源文件保存到github或者其他仓库上,使用该插件可以链接当当前页的源文件上.</p>
+<p><a href="https://plugins.gitbook.com/plugin/edit-link" target="_blank" rel="noopener">插件地址</a></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">"plugins": ["edit-link"],</span><br><span class="line">"pluginsConfig": &#123;</span><br><span class="line">    "edit-link": &#123;</span><br><span class="line">        "base": "https://github.com/USER/REPO/edit/BRANCH",</span><br><span class="line">        "label": "Edit This Page"</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="命令">4 命令</h1><h2 id="列出所有命令">4.1 列出所有命令</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitbook help</span><br></pre></td></tr></table></figure>
+
+<h2 id="输出帮助信息">4.2 输出帮助信息</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitbook --help</span><br></pre></td></tr></table></figure>
+
+<h2 id="生成静态网页">4.3 生成静态网页</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitbook build</span><br></pre></td></tr></table></figure>
+
+<h2 id="生成静态网页并运行服务器">4.4 生成静态网页并运行服务器</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitbook serve</span><br></pre></td></tr></table></figure>
+
+<h2 id="生成指定gitbook的版本">4.5 生成指定gitbook的版本</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitbook build --gitbook=2.0.1</span><br></pre></td></tr></table></figure>
+
+<h2 id="列出本地所有的gitbook版本">4.6 列出本地所有的gitbook版本</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitbook ls</span><br></pre></td></tr></table></figure>
+
+<h2 id="列出远程可用的gitbook版本">4.7 列出远程可用的gitbook版本</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitbook ls-remote</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装对应的gitbook版本">4.8 安装对应的gitbook版本</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitbook fetch 标签/版本号</span><br></pre></td></tr></table></figure>
+
+<h2 id="更新到gitbook的最新版本">4.9 更新到gitbook的最新版本</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitbook update</span><br></pre></td></tr></table></figure>
+
+<h2 id="卸载对应的gitbook版本">4.10 卸载对应的gitbook版本</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git book uninstall 2.0.1</span><br></pre></td></tr></table></figure>
+
+<h2 id="指定log级别">4.11 指定log级别</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitbook build --log=debug</span><br></pre></td></tr></table></figure>
+
+<h2 id="输出错误信息">4.12 输出错误信息</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitbook build --debug</span><br></pre></td></tr></table></figure>
+
+<h1 id="使用">5 使用</h1><h2 id="初始化">5.1 初始化</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitbook init</span><br></pre></td></tr></table></figure>
+
+<h2 id="环境配置">5.2 环境配置</h2><p>将需要用到的插件在book.json中进行配置:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"plugins"</span>: [</span><br><span class="line">		<span class="string">"navigator"</span>,</span><br><span class="line">		<span class="string">"splitter"</span>,</span><br><span class="line">		<span class="string">"tbfed-pagefooter"</span>,</span><br><span class="line">		<span class="string">"expandable-chapters"</span></span><br><span class="line">	]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>配置完book.json后,使用命令进行相关插件安装:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitbook intall</span><br></pre></td></tr></table></figure>
+
+<h2 id="构建">5.3 构建</h2><p>会在项目的目录下生成一个_book目录，存放静态站点的资源文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitbook build</span><br></pre></td></tr></table></figure>
+
+<h2 id="Debugging">5.4 Debugging</h2><p>可以获取更好的错误信息(使用堆栈跟踪)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitbook build ./ --log=debug --debug</span><br></pre></td></tr></table></figure>
+
+<h2 id="启动服务">5.5 启动服务</h2><p>运行一个web服务，通过<a href="http://localhost:4000" target="_blank" rel="noopener">http://localhost:4000</a> 可以预览该书籍</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitbook serve</span><br></pre></td></tr></table></figure>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text/javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.2.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.2.0/dist/mindmap.min.css">
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/tools/" rel="tag"># tools</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/06/github-wiki/" rel="next" title="GitHub Wiki 页面的添加和设置">
+                <i class="fa fa-chevron-left"></i> GitHub Wiki 页面的添加和设置
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/25/Android Treble架构分析/" rel="prev" title="Android Treble架构分析">
+                Android Treble架构分析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+		
+		  
+			<ul class="sidebar-nav motion-element">
+			  <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+				文章目录
+			  </li>
+			  <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+				站点概览
+			  </li>
+			</ul>
+		  
+		
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/han.jpg" alt="Rulei.Zhou">
+            
+              <p class="site-author-name" itemprop="name">Rulei.Zhou</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">39</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/ruleizhou" title="GitHub &rarr; https://github.com/ruleizhou" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:rulei.zhou@foxmail.com" title="E-Mail &rarr; mailto:rulei.zhou@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section></div>
+
+		
+		  
+		  <!--noindex-->
+			<section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+			  <div class="post-toc">
+
+				
+				  
+				
+
+				
+				  <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装"><span class="nav-text">1 安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置"><span class="nav-text">2 配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#title"><span class="nav-text">2.1 title</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#author"><span class="nav-text">2.2 author</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#description"><span class="nav-text">2.3 description</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#language"><span class="nav-text">2.4 language</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gitbook"><span class="nav-text">2.5 gitbook</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#root"><span class="nav-text">2.6 root</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#links"><span class="nav-text">2.7 links</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#styles"><span class="nav-text">2.8 styles</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#plugins"><span class="nav-text">2.9 plugins</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pluginsConfig"><span class="nav-text">2.10 pluginsConfig</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#structure"><span class="nav-text">2.11 structure</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#插件"><span class="nav-text">3 插件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Anchor-navigation-ex"><span class="nav-text">3.1 Anchor-navigation-ex</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Splitter"><span class="nav-text">3.2 Splitter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tbfed-pagefooter"><span class="nav-text">3.3 Tbfed-pagefooter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Expandable-chapters"><span class="nav-text">3.4 Expandable-chapters</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Search-Plus"><span class="nav-text">3.5 Search Plus</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Prism"><span class="nav-text">3.6 Prism</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Github"><span class="nav-text">3.7 Github</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Github-Buttons"><span class="nav-text">3.8 Github Buttons</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ace-Plugin"><span class="nav-text">3.9 Ace Plugin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Emphasize"><span class="nav-text">3.10 Emphasize</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Include-Codeblock"><span class="nav-text">3.11 Include Codeblock</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mermaid-gd3"><span class="nav-text">3.12 Mermaid-gd3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Puml"><span class="nav-text">3.13 Puml</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Chart"><span class="nav-text">3.14 Chart</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sharing-plus"><span class="nav-text">3.15 Sharing-plus</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sectionx"><span class="nav-text">3.16 Sectionx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Local-Video"><span class="nav-text">3.17 Local Video</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Simple-page-toc"><span class="nav-text">3.18 Simple-page-toc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Anchors"><span class="nav-text">3.19 Anchors</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Edit-Link"><span class="nav-text">3.20 Edit Link</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#命令"><span class="nav-text">4 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#列出所有命令"><span class="nav-text">4.1 列出所有命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#输出帮助信息"><span class="nav-text">4.2 输出帮助信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成静态网页"><span class="nav-text">4.3 生成静态网页</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成静态网页并运行服务器"><span class="nav-text">4.4 生成静态网页并运行服务器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成指定gitbook的版本"><span class="nav-text">4.5 生成指定gitbook的版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#列出本地所有的gitbook版本"><span class="nav-text">4.6 列出本地所有的gitbook版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#列出远程可用的gitbook版本"><span class="nav-text">4.7 列出远程可用的gitbook版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装对应的gitbook版本"><span class="nav-text">4.8 安装对应的gitbook版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新到gitbook的最新版本"><span class="nav-text">4.9 更新到gitbook的最新版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#卸载对应的gitbook版本"><span class="nav-text">4.10 卸载对应的gitbook版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#指定log级别"><span class="nav-text">4.11 指定log级别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#输出错误信息"><span class="nav-text">4.12 输出错误信息</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用"><span class="nav-text">5 使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化"><span class="nav-text">5.1 初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境配置"><span class="nav-text">5.2 环境配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建"><span class="nav-text">5.3 构建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Debugging"><span class="nav-text">5.4 Debugging</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动服务"><span class="nav-text">5.5 启动服务</span></a></li></ol></li></ol></div>
+				
+
+			  </div>
+			</section>
+		  <!--/noindex-->
+		  
+		
+
+      
+
+    </aside></div>
+  
+  
+
+
+        
+      </main></div>
+    
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rulei.Zhou</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.2"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '0a400e1f09cb117f3ea4',
+    clientSecret: 'f7d98253e2a12b03803742f2a506c174d06019a0',
+    repo: 'ruleizhou.github.io',
+    owner: 'ruleizhou',
+    admin: ['ruleizhou'],
+    id: md5(location.pathname),
+    
+      language: window.navigator.language || window.navigator.userLanguage,
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  
+  <script>
+    $('.highlight').each(function (i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap')
+      $(e).after($wrap)
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function (e) {
+        var code = $(this).parent().find('.code').find('.line').map(function (i, e) {
+          return $(e).text()
+        }).toArray().join('\n')
+        var ta = document.createElement('textarea')
+        document.body.appendChild(ta)
+        ta.style.position = 'absolute'
+        ta.style.top = '0px'
+        ta.style.left = '0px'
+        ta.value = code
+        ta.select()
+        ta.focus()
+        var result = document.execCommand('copy')
+        document.body.removeChild(ta)
+        
+          if(result)$(this).text('复制成功')
+          else $(this).text('复制失败')
+        
+        $(this).blur()
+      })).on('mouseleave', function (e) {
+        var $b = $(this).find('.copy-btn')
+        setTimeout(function () {
+          $b.text('复制')
+        }, 300)
+      }).append(e)
+    })
+  </script>
+
+
+  
+
+  
+
+</body>
+</html>

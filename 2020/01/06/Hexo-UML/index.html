@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="google-site-verification" content="Ezui-oQp8Pno7S0Zg3T794uNOShGTYHv9PGKQ5Y1Au0">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+<script src="https://cdn.bootcss.com/echarts/4.1.0-release/echarts.min.js"></script>
+
+
+  
+
+
+
+
+  <meta name="description" content="1 PlantUML 简介PlantUML是一个画图脚本语言，官方介绍如下：  Generate UML diagram from textual description  用它可以快速地画出：  顺序图 用例图 类图 活动图 组件图 状态图 对象图 部署图 时序图  对于工程师们来说，用代码的方式来画图，简直是为其量身定做的。PlantUML语法也非常简单，参见PlantUML Language">
+<meta name="keywords" content="tools">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo UML">
+<meta property="og:url" content="https://ruleizhou.github.io/2020/01/06/Hexo-UML/index.html">
+<meta property="og:site_name" content="ZRL">
+<meta property="og:description" content="1 PlantUML 简介PlantUML是一个画图脚本语言，官方介绍如下：  Generate UML diagram from textual description  用它可以快速地画出：  顺序图 用例图 类图 活动图 组件图 状态图 对象图 部署图 时序图  对于工程师们来说，用代码的方式来画图，简直是为其量身定做的。PlantUML语法也非常简单，参见PlantUML Language">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/JOux3W8n34Jhv1IMjgQ0_HGKb9o02-HZePKYM_9w2suFth1Ht7cUFJCXAGiycQ_EPX3CFl9EESZ7v9jpCBm5aNnYKk5YwWZEz5Xsz4Ywwd4xWSz1GmmRsZh3xwKKJBeoRQOiu2q9Be_36kxmOcXfFHihEoDxD5NqZ-t9N4dhqBFbD6o5lW00">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/SyfFKj2rgr1mpCbCJkLo0lDGE2Yy62HEJ8mk4azVNnV6XMhCHvBD1of6aRP1iSK6hXe0">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/SyfFKj2DLYvAJOcrKt3CoKnELR1Io4ZDoSddWl20aWP0uEOMgsld15HifP2V3G00">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/IomjoSyhpKrABU9ooazIqBLJSCp9J4vLi59mB2t9ICqhoKnEBCdCprC8IYqiJIqk0QkoqSMjghWWFwyubOih4MwmWg4fXjbv-K1jHGg9nDc1IpKMkqmC50mDqAsBJ2rHI2J9Ihmw8DO20000">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/Syp9J4vLqBLJSCfFKh1Io4qjBavCJrKmv7B4Bc74nPMNMbu0P7BXKcACIy84hbV1KQ4aioGdLI4jlqYX92Cr9YydiRX40Q-nfhWap000">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/XL0nJWGn3AoJLym7a9Ps2wGWH0K8YHVuijuZEbyS9OxG_PxSha3GW0iNzinunYI6rcFarjOkYDJOktizuEOEGLBa6Q7REsTBaInfHXZWOhnubiPeUcQSKbwWArPAqkj_0ezVg6FLNl1yWNva21rOl7CRvqf-qYFchPCPnHEQKJNlC4fK2swdQOAbCxTzUArlzd0mu-7b3M4ZxmZEovyNjlreRiyMiWxZ5NOf_3FUKFeTy5Lu_0sL2vFv8V09">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/JOqn3iCW40HhxXNx0N_0XIMdopFEvZ38bqC2bFS7XyAMjjgTqQwQTfcMLzum8ufg9ijDe1BQZ1PJHGyZf58RhecemzEoNc9tyZc4aexuD7ePfJoDyV46VoxApcJ7_KME1-jsDh3MZ4tW9IGJJouRgdobi49xKqdC__aV">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/TP0n3eCm34Nd-1IMM147w4O7Jj2nYqiCH4gJDAIetBv9GL2Kriha__wNVnpve5hbo0IijMePtDVcR6zWR63Kt0MqtO9WGOydWRWCQiJuf1gTffabWZY05G8RYIa1bXol-c7NJvX778bgzTc9_N_FhkPycKfWqJHrd1_cgrdWH54yDe-9Ihd-pLPvvX1f6mRs8FX5TwSZtO4WrDRqdyhLLluD">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/LOjB2e0m34JNvXIXUozGn8qty0QbZQrG4aoBU7ph1yJTp9jvtkLCYls8XNHloQ8Ndcc3n589vMB-ELbSGoPusz3_b4bu0VsSPuFEg45NKCbNnx7fdKatINIuA0p4uTPE">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/TSqn2e0m30NGFQV81Ne1CO9khjwWbe01ITN6nTCRx5h7pt_99y9PnIJkyaIJh4W4CEwI6CE0Krux76_RM4rI1GkVDnS3xp2u-N13bIDhOG0Y3mUR_BtNx9SNnlPCnNq8LSS_NUTU">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/JSl12SCm34RXkwRu1qWNwA6Gp905P5SX0Y4PstJ-scqEkNwFLxXspLhOErRJBCIvHyKMYQZAWVX8_PTb8fvGrqxq8pnU5vvY5hTZ_i1-QaDcHnA43sWo8XjCNHg9lp6EBm00">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/Syp9J4vLqBLJSCfFib9mB2t9ICqhoKnEBCdCprC8IYqiJIqkuTBJq-C2oYle0jKvWZHWKLbSa9zNd0fIQggGcvbNMf9Qh92JM5AIMeH5jrDbge8Y0000">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/Syp9J4vLqBLJSCfFibB8JIqkJanFLJ3a0d8LT872ZY1vAuNyRAwQcXekHwogZR2gDZ75gS4OKmC0">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/LOx12i8m38RlUOg0vxt068NMCV2gYEVGvL1Msvb5dz_L5Tno28J_oyS_asZmOQQaU5zO0Ch6ng1jiS-FB1EGr_0XPRHu6WQt3e2jo2KfIwA8dc8ya3t9TAFupAdIhiMkGo-y0bT-lNbHDER_ireTDfksvkSVFCB8EsftsCrSAfUsYG_X5m00">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/HOux3eD030NxFSNB0RW01LAu04KgocLbiQjODZ96kNwSa4yvUZFI6tL1D-3AhH1wL6BMb8fHTiBabIoTMqXl34deyLEAYfioRcvDrh_xOT5mhAtLevlrGCc2pBjYEnolTR-aRnNP67TwwFq9">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/NOiv3e0m40DxNc545uIKXeQ2luJ57D8gaJRmVuu249tj6GTTXMXw36b0NQF3GjLKNFMxPke42QeFMM-2olkszVv_d9bi9fmxWHZ3niAuxHOnflXaavzVbgS_KldwUHTXpWS0">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/YzQrKt2qKd393yylokRYIamkoInBB4bLSEJYSbI0o7dcbQGMvINcA2GdvkHWg8XLi5AmiL58Bae52WQb5fQc5fSesDa19MrqTK6IK35di88KhfHK91EYRNGXjkUbeaW00000">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/IyglK53op2j9BSfBp548JYqgoqnELL9GzibCpoXnoYbDvU8iI2mgoKpEB4ZCAr5moaz25N3C0QhdIirBKKZAh-12bl4loKWjuk82wb3GjOEeKx1Io4ZDoSddWl20mc15C640">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/RSgn3O0W44RXdYbk0HUmCC720Tn0u3TSWfp2OHnVOctvyhx80RIBg9F7A6i2BRrGgE2G6y4OczY3XebcSIFPfX5PsM_Aacd5rL3Lz4T3Dn_-KVMKNF42">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/PO-xJWCn44Nx-OfH-aWe1KMAI6j7L1G8WgX7tX5OcxMN6OVNr-DP0l6ArkVSUySwn3IHq8ZAhoTEWJkH_7vuYM58h8eRq3z5yYdr8KjYmSrL0qRw6AjCpwpnY_6wPR-zToGbXZXHAbXhM8unCG25aWKVbGMcnbZTHD62_aYgAoJ5ReaVEEJKDzmj-IqjqXx09d2zmswB-_oKPR3f-4Q5QpTqXjmMlR2ztDlHMYwA0t2c-Fzf3nxNFsa3-ro_rTUmv4_RTJEig-VEyqHVdRQzcpKxqXRcYijztm00">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/TP8zJyCm48RdtA-mojo12T41oNPQ2Qb2Y0enNvEZM6djzEnG2kA_4wSH-OBrdlShLdnXR8cC1x75hDYngsoktTwnk5ekbohLu7yLRsZp4viGo8h05K6FUJfMP3CINv18PdUwXAH4vQOugtsjJcGM72l7EV4VT6rUQMqizGNR8HalbBUfJbUG02IFoC5afaGR_cteQqPHgSjtn1FPojdmW0SIzuSIip1X6_D9ulfcSX_lQpzzL8h72blKcQOlDYZwlJIp99Rq0Ty06C_YsHD3sKqHivLX7uJUe_SpWLx88TvGvcpUush8rpXmQu1O8UPtGYxgDtjnNCHgyuwX7WCW8r8BePdYvId-53vq4WMWeaHFtHgqc5_S4QJE4kIrcTqvzge6rgrjPbkHrvf-kcnaSMHiQ2AwVJy0">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/qt3BB2ekKIWjJarEB4xLvD9mpCiloKWjWeie91OhQ8Gw6sagA711nHH2dOtXR0sVnEAIc3navQ7E9W00">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/itBBB2ekKN1CBialikAoSipBByb8BOh9ImGBA2GMA_YcvXafA7211K0SOoZJoYSHg155dGa0">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/HOv12W8n34NtEKLmFmMtmYnaZg0kNCOsQY4qGz8gtjuM5NVX__yUQSwHdF6qR94SDsTj6AbWSmRd1ni9IYxiM1KJN_k9Bsqs1WCC03-4n7N4wBoIKLNp0DC4Xw_c7oCPuwhk-IBTCC-mBsbeFvwKiEOgx3i8OT4IfNdM4W8Sxxd38lfq5B8RzvSyMbxhw3Tl">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/VOon3O0m30JxJF4b52oG0ea1g82Ena0aB3aEIjomFO41wFvVTx-KaD7rQ2QZRArRlluEDS7E0BekuPsCaxRm650YYK1e2-AS7uaLmn5PVVL-nFda0Ywhti50cYgIL_rk7W00">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/i_9DpCnJS4p9pSopKaWiXh2uD4ABKnLACb8L4WiASZAJ4qioy_CqGT8W2KqkBY1Pf61JewiBKnzSabXKeWaH0gi10000">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/NOyn3i8m34NtdEAhKplGeMC7f1w0Bi36uhQ61gLEbKI8uvEa5KX8KVBz_6t7xOcqe9iMBIt8RqgLLyy8CuFMrUYHWhPIfNHAL4h5s-5mH7aEv4Arnmbi-TmbWXyH6nXEF-O0Uz-ceCLbrXxna83VjAo6wt_hLWzqo7oCLZBUHZ8mhC3pYnqP62ti5SkKVNkN8W_8ChwZ5U4ny7IJOB-5TdX6wEiYxTStQjy9TPsYlaaYV-83">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/2orEBLAmiL7mACrDp5Emi-EoyatCp5DmIIn9J4eiJhLII2nMyAqCBim1AN8iACZ9J4uioSm7AzK8BaaiAj44oVZdfIe4P-INW8L3YrCLIZ9I5H8HoZL1ve0amAh1LW1LSeM2RDUrKu2Q1EM3141AkRWWDiC50000">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/ioejJYsoKj3LjLFG22rELKXE11A6cbnMK75aOIDD0000">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/qmWjJbL8JWGIXfeADdfw2bQbnQb5LbmQS74ZeBWkL1W0">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/ioejJYsoKj3DIKqhqRLJq4WfpSsjz05oD1MuhA1oHPdf6GZ9810FIRQq02uLMg095qx9By-3IxW0EPe0">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/iqfCBialChHIqDMrKz08BKvDJYnEDTJaoaijBqXCJ-Mo0iiReSeRQG80">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/Kqz9JKiipIbHACal06A5fFoIalnSXPJCejJaaipyFAxIujGYGmLTNJi5ZT3YrEJ4ubG5Gqsmg16gg94c0000">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/oqbDAr4eoLSeoapFA558oInAJIx9pC_ZAYrEBJ9KqDMrKz08BKvDJYnELJ3K18iQeOeQQG80">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/TP2nRiCm34Jdw2iuDaD_80WCf0dgBca68qD7nYPgmRBeKdICeEY_rrACr83HKNV7UwH2Ots7WYtKwAj1h2fvKEd9cF3m-a0b1e9lith1ilaKxdsrPyS21vIc8Co5o8ykIqKoSnmgvO8tivZSRk68raEMmGSvnyEouh-8MUr4UBXZJivUQLHAPPdZBsxaJVehUtt7bc3FlLYIL9465ZkzzIqcOiwkCZ_6d0C9p0opIJiTKF4o_ia6CC3nLdov6DfrdRCbgkKKVIeKHTVHENc2ecPDyjW9MXFWNtmTUwAHqjFP4_qvWwbfUaSXHesvan_2Bm00">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/Aov9B2hXil98pSd9LoZFByf9iUQo2id8B5O0elmyXPJKjCoyr1GWawiujIorA357GKih1oXKhALbpLLSaby00000">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/Aov9B2hXoanJq4ZEpql9BCdCprDmr5GeoKZDKz2eJ2tMv59Gi0f9hIXHCBJcIiqfJaLLweHLgP4ra5bSab-0HOSpLXt6s0ntmQhK1A9KGIClloGZCoyT8GCI1ae2jQTnWMm70000">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/BSf12e0m30J0UrwHetx17dpBGfPQiBOa0RylYiU1YOIdY7CIAQgR4wQ6H7bLUT6HL6keZXxbhteVxQGkVJY_lgyYaMC-">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/7Sj12e0m34JHVKwHfLx1BZpBI8PQQAkaGQylTVbv_17m47dFKgcB8Q1uK2gEodqLrSq9qmbfLcQd8wXMa1rj966tVnSPSTqV">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/NSmn4a8X34NHsgmY9PHQVWituGOO3Lz6I9Wa5kvU66smVM_kCK_g02LZQA_gfQlSo4pq4j4Vn1ZUP14Gi-WJ3jjLANaZTZoUVokcFHLUljFyYE_VYghHu8LbwXFxPzPqX2K3c4l_0000">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/9Own3i8m34JtV8NL2LWY6DlIXOK1jlw0sxfDf61NYSNtumRBqadFf_CLnQokNKMkdLkJe4RUW4K94gtQmXXY0Lkii3fldQk67BUW3lwMIao5eT2NCYQxU9yYK_4Ua1UOaOtDmegHeP-6v_X-zNuQZDvjJ2xmm9IE2Xe8FgH15cWQUtewDysHlsS9SOfAYoFBhAMAolu3">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/9Oqn3iGW30HxNk4el-2gT2clo0TGC61TP2FR-Vy5iiskDDAiUL8FqKOHL-WgLT7i4zPT_4lyYuef3tGA5wgt9YTXA7IXXQEXuRl1cjnN1ipac24vU2E3BiI-FBfj9Y9FcPG7uxWxvvkvz3y0">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/DOv93i8m34NtEOKbDX2rbPWsHEefs2348ctSGKGsIboWjoSTMFg_h_TzQPZtHkKbt7Y0sXAy1W71hm0Js13u4utg6zWAHjc1T4WA8BzlAZ_W8o_JSKcEWrdIDY1Ivcpiq2KArmuNMrAdXlMHeSB97V6DmNhmFM6S43dGEcMZrk2Psg8ep6e_6eK-ud_Ori_CiSWyiLPEgKAkRzJyX1spYlsC9tWsFm00">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/Aov9B2hXiWhEpqrLI4mkoIpBBAcqvj9mrEHAIIr9JCu0CwtyIp9IYv3aYqlo2m00">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/JOn13eCm30JFpIlyZl82hlt15X9aANKYnxGIYB_ZmAKNMvvTJpEeXUg3ZOlGABwHUSDrxk7nr8YPfYA95qgSu-2ClKOi5bMGwGjbl7jo_AbUgmZBSZb-y7ugIckBUZzYwgqkg-h0eUSVtF08eLcf9m00">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/gmakpypDISnBDQpXAYv9B2hXiahBppUqvgfHTimhoImiJGtFo2n9hO4fCwe1Ap2o1bF6G7L81e24J924e8fDhO56vnS00000">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/ioekIImgiUPAoo_Avb9Gi4hBppUqXZAC8C8AYUc9cNbGCMEGP4fgIM9o1bTgNWfOMsQQWWPGoaHJeIGZ5QRG55LXPXeNIDJCcWig1kAPMtCLb-GN0000">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/TOwn2i9044Jx_Oej4op4mcPFyn7fBPPa4vSSU-7k20hntmrSR4IxOTxm66g5-wS3CddaAjGhK2kTwA8sEaYprmn8nbEbzMLBt4tRgYa4UMIrlIryrm06moIBHFRerMJTc29TKV60fzjVayJuCV4lFeHm_AeK6po_8EKmWrYFvJGDQfhkxWq0">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/NL4xSiCW5Ap5ALufDJu0Ab9u9fbq6li435fPZ0aey6IFRny4mabS0My_B4ja5LZ8epNwUaQuMV1XLcwqEE5xHUIswuLqkDEYBkY5cQWTqkxWtHbw3OOVnndwsX7FSDHoMD498hcJFft95aIRqiHt7-ugZ6-Lxtmd6Za4hn4ZQUyuU1jxqMpqxMZS2beARjpblv0eibz40pUQIJH5PUBW8p-93yJCh8asS4lKm4OyVIhwWHqiZdLyIcU4yf025VMaqjA9CihbZ9u2HXEWNoAaEofGtzDdbxsR99nUoYdHvTvPyiq_aZFyPfSbM_uVOdmjLZ7-v2pHSay_">
+<meta property="og:updated_time" content="2020-06-25T00:25:05.206Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hexo UML">
+<meta name="twitter:description" content="1 PlantUML 简介PlantUML是一个画图脚本语言，官方介绍如下：  Generate UML diagram from textual description  用它可以快速地画出：  顺序图 用例图 类图 活动图 组件图 状态图 对象图 部署图 时序图  对于工程师们来说，用代码的方式来画图，简直是为其量身定做的。PlantUML语法也非常简单，参见PlantUML Language">
+<meta name="twitter:image" content="http://www.plantuml.com/plantuml/svg/JOux3W8n34Jhv1IMjgQ0_HGKb9o02-HZePKYM_9w2suFth1Ht7cUFJCXAGiycQ_EPX3CFl9EESZ7v9jpCBm5aNnYKk5YwWZEz5Xsz4Ywwd4xWSz1GmmRsZh3xwKKJBeoRQOiu2q9Be_36kxmOcXfFHihEoDxD5NqZ-t9N4dhqBFbD6o5lW00">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://ruleizhou.github.io/2020/01/06/Hexo-UML/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Hexo UML | ZRL</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ZRL</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ruleizhou.github.io/2020/01/06/Hexo-UML/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rulei.Zhou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/han.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZRL">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Hexo UML
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-01-06 16:29:56" itemprop="dateCreated datePublished" datetime="2020-01-06T16:29:56+08:00">2020-01-06</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-06-25 08:25:05" itemprop="dateModified" datetime="2020-06-25T08:25:05+08:00">2020-06-25</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/tools/" itemprop="url" rel="index"><span itemprop="name">tools</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="PlantUML-简介">1 PlantUML 简介</h1><p><a href="http://plantuml.com/" target="_blank" rel="noopener">PlantUML</a>是一个画图脚本语言，官方介绍如下：</p>
+<blockquote>
+<p>Generate UML diagram from textual description</p>
+</blockquote>
+<p>用它可以快速地画出：</p>
+<ol>
+<li><a href="http://plantuml.com/sequence-diagram" target="_blank" rel="noopener">顺序图</a></li>
+<li><a href="http://plantuml.com/use-case-diagram" target="_blank" rel="noopener">用例图</a></li>
+<li><a href="http://plantuml.com/class-diagram" target="_blank" rel="noopener">类图</a></li>
+<li><a href="http://plantuml.com/activity-diagram-beta" target="_blank" rel="noopener">活动图</a></li>
+<li><a href="http://plantuml.com/component-diagram" target="_blank" rel="noopener">组件图</a></li>
+<li><a href="http://plantuml.com/state-diagram" target="_blank" rel="noopener">状态图</a></li>
+<li><a href="http://plantuml.com/object-diagram" target="_blank" rel="noopener">对象图</a></li>
+<li><a href="http://plantuml.com/deployment-diagram" target="_blank" rel="noopener">部署图</a></li>
+<li><a href="http://plantuml.com/timing-diagram" target="_blank" rel="noopener">时序图</a></li>
+</ol>
+<p>对于工程师们来说，用代码的方式来画图，简直是为其量身定做的。PlantUML语法也非常简单，参见<a href="http://plantuml.com/PlantUML_Language_Reference_Guide.pdf" target="_blank" rel="noopener">PlantUML Language Reference Guide</a>，它支持很多<a href="http://plantuml.com/running.html" target="_blank" rel="noopener">工具</a>，可以生成PNG、SVG、LaTeX和二进制图片。</p>
+<h1 id="插件安装">2 插件安装</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-tag-plantuml --save</span><br></pre></td></tr></table></figure>
+
+<h1 id="语法">3 语法</h1><h2 id="顺序图">3.1 顺序图</h2><h3 id="声明参与者">3.1.1 声明参与者</h3><ul>
+<li><p>关键字 <code>participant</code> 用于改变参与者的先后顺序。 </p>
+<p>你也可以使用其它关键字来声明参与者： </p>
+<ul>
+<li><code>actor</code></li>
+<li><code>boundary</code></li>
+<li><code>control</code></li>
+<li><code>entity</code></li>
+<li><code>database</code></li>
+</ul>
+</li>
+<li><p>关键字 <code>as</code> 用于重命名参与者 </p>
+</li>
+<li><p>您可以使用关键字 <code>order</code>自定义顺序来打印参与者。 </p>
+</li>
+<li><p>如果需要使用非字母符号，则需要使用引号</p>
+</li>
+<li><p>你可以使用<a href="https://plantuml.com/zh/color" target="_blank" rel="noopener">RGB</a>值或者颜色名修改 actor 或参与者的背景颜色。</p>
+</li>
+<li><p><code>--&gt;</code> 绘制一个虚线箭头 <code>-&gt;</code>绘制实线箭头</p>
+</li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">actor Foo1					#red</span><br><span class="line">boundary Foo2		 #green</span><br><span class="line">control Foo3 			 #blue</span><br><span class="line">entity Foo4 </span><br><span class="line">database Foo5 </span><br><span class="line">collections Foo6 </span><br><span class="line">Foo1 -&gt; Foo2 : To boundary </span><br><span class="line">Foo1 -&gt; Foo3 : To control </span><br><span class="line">Foo1 -&gt; Foo4 : To entity </span><br><span class="line">Foo1 -&gt; Foo5 : To database </span><br><span class="line">Foo1 -&gt; Foo6 : To collections</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/JOux3W8n34Jhv1IMjgQ0_HGKb9o02-HZePKYM_9w2suFth1Ht7cUFJCXAGiycQ_EPX3CFl9EESZ7v9jpCBm5aNnYKk5YwWZEz5Xsz4Ywwd4xWSz1GmmRsZh3xwKKJBeoRQOiu2q9Be_36kxmOcXfFHihEoDxD5NqZ-t9N4dhqBFbD6o5lW00">
+
+<h3 id="修改箭头样式">3.1.2 修改箭头样式</h3><p> 修改箭头样式的方式有以下几种: </p>
+<ul>
+<li>表示一条丢失的消息：末尾加 <code>x</code></li>
+<li>让箭头只有上半部分或者下半部分：将<code>&lt;</code>和<code>&gt;</code>替换成<code>\</code>或者 <code>/</code></li>
+<li>细箭头：将箭头标记写两次 (如 <code>&gt;&gt;</code> 或 <code>//</code>) </li>
+<li>虚线箭头：用 <code>--</code> 替代 <code>-</code></li>
+<li>箭头末尾加圈：<code>-&gt;o</code></li>
+<li>双向箭头：<code>&lt;-&gt;</code></li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">Bob -&gt;x Alice</span><br><span class="line">Bob -&gt; Alice</span><br><span class="line">Bob -&gt;&gt; Alice</span><br><span class="line">Bob -\ Alice</span><br><span class="line">Bob \\- Alice</span><br><span class="line">Bob //-- Alice</span><br><span class="line"></span><br><span class="line">Bob -&gt;o Alice</span><br><span class="line">Bob o\\-- Alice</span><br><span class="line"></span><br><span class="line">Bob <span class="xml"><span class="tag">&lt;<span class="name">-</span>&gt;</span></span> Alice</span><br><span class="line">Bob <span class="xml"><span class="tag">&lt;<span class="name">-</span>&gt;</span></span>o Alice</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/SyfFKj2rgr1mpCbCJkLo0lDGE2Yy62HEJ8mk4azVNnV6XMhCHvBD1of6aRP1iSK6hXe0">
+
+<h3 id="修改箭头颜色">3.1.3 修改箭头颜色</h3><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">Bob -[#red]&gt; Alice : hello</span><br><span class="line">Alice -[#0000FF]-&gt;Bob : ok</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/SyfFKj2DLYvAJOcrKt3CoKnELR1Io4ZDoSddWl20aWP0uEOMgsld15HifP2V3G00">
+
+<h3 id="对消息序列编号">3.1.4 对消息序列编号</h3><ul>
+<li><p>关键字 <code>autonumber</code> 用于自动对消息编号。 </p>
+</li>
+<li><p>语句 <code>autonumber *start*</code> 用于指定编号的初始值，而 <code>autonumber *start**increment*</code> 可以同时指定编号的初始值和每次增加的值。 </p>
+</li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">autonumber</span><br><span class="line">Bob -&gt; Alice : Authentication Request</span><br><span class="line">Bob <span class="xml"><span class="tag">&lt;<span class="name">-</span> <span class="attr">Alice</span> <span class="attr">:</span> <span class="attr">Authentication</span> <span class="attr">Response</span></span></span></span><br><span class="line"></span><br><span class="line"><span class="xml">autonumber 15</span></span><br><span class="line"><span class="xml">Bob -&gt;</span> Alice : Another authentication Request</span><br><span class="line">Bob <span class="xml"><span class="tag">&lt;<span class="name">-</span> <span class="attr">Alice</span> <span class="attr">:</span> <span class="attr">Another</span> <span class="attr">authentication</span> <span class="attr">Response</span></span></span></span><br><span class="line"></span><br><span class="line"><span class="xml">autonumber 40 10</span></span><br><span class="line"><span class="xml">Bob -&gt;</span> Alice : Yet another authentication Request</span><br><span class="line">Bob <span class="xml"><span class="tag">&lt;<span class="name">-</span> <span class="attr">Alice</span> <span class="attr">:</span> <span class="attr">Yet</span> <span class="attr">another</span> <span class="attr">authentication</span> <span class="attr">Response</span></span></span></span><br><span class="line"><span class="xml">&#123;% endplantuml %&#125;</span></span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/IomjoSyhpKrABU9ooazIqBLJSCp9J4vLi59mB2t9ICqhoKnEBCdCprC8IYqiJIqk0QkoqSMjghWWFwyubOih4MwmWg4fXjbv-K1jHGg9nDc1IpKMkqmC50mDqAsBJ2rHI2J9Ihmw8DO20000">
+
+<h3 id="分割示意图">3.1.5 分割示意图</h3><p> 关键字 <code>newpage</code> 用于把一张图分割成多张。 </p>
+<p> 在 <code>newpage</code> 之后添加文字，作为新的示意图的标题。 </p>
+<p> 这样就能很方便地在 <em>Word</em> 中将长图分几页打印。 </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">Alice -&gt; Bob : message 1</span><br><span class="line">Alice -&gt; Bob : message 2</span><br><span class="line"></span><br><span class="line">newpage</span><br><span class="line"></span><br><span class="line">Alice -&gt; Bob : message 3</span><br><span class="line">Alice -&gt; Bob : message 4</span><br><span class="line"></span><br><span class="line">newpage A title for the\nlast page</span><br><span class="line"></span><br><span class="line">Alice -&gt; Bob : message 5</span><br><span class="line">Alice -&gt; Bob : message 6</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/Syp9J4vLqBLJSCfFKh1Io4qjBavCJrKmv7B4Bc74nPMNMbu0P7BXKcACIy84hbV1KQ4aioGdLI4jlqYX92Cr9YydiRX40Q-nfhWap000">
+
+<h3 id="组合消息">3.1.6 组合消息</h3><p> 我们可以通过以下关键词将组合消息： </p>
+<ul>
+<li><p><code>alt/else</code></p>
+</li>
+<li><p><code>opt</code></p>
+</li>
+<li><p><code>loop</code></p>
+</li>
+<li><p><code>par</code></p>
+</li>
+<li><p><code>break</code></p>
+</li>
+<li><p><code>critical</code></p>
+</li>
+<li><p><code>group</code>, 后面紧跟着消息内容</p>
+<p>可以在标头(header)添加需要显示的文字(<code>group</code>除外)。 </p>
+<p>关键词 <code>end</code> 用来结束分组。 </p>
+<p>注意，分组可以嵌套使用。</p>
+</li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">alt successful case</span><br><span class="line"><span class="code">	Bob -&gt; Alice: Authentication Accepted</span></span><br><span class="line">else some kind of failure</span><br><span class="line"><span class="code">	Bob -&gt; Alice: Authentication Failure</span></span><br><span class="line"><span class="code">	group My own label</span></span><br><span class="line"><span class="code">		Alice -&gt; Log : Log attack start</span></span><br><span class="line"><span class="code">	    loop 1000 times</span></span><br><span class="line"><span class="code">	        Alice -&gt; Bob: DNS Attack</span></span><br><span class="line"><span class="code">	    end</span></span><br><span class="line"><span class="code">		Alice -&gt; Log : Log attack end</span></span><br><span class="line"><span class="code">	end	</span></span><br><span class="line">else Another type of failure</span><br><span class="line">   Bob -&gt; Alice: Please repeat</span><br><span class="line">end</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+ <img src="http://www.plantuml.com/plantuml/svg/XL0nJWGn3AoJLym7a9Ps2wGWH0K8YHVuijuZEbyS9OxG_PxSha3GW0iNzinunYI6rcFarjOkYDJOktizuEOEGLBa6Q7REsTBaInfHXZWOhnubiPeUcQSKbwWArPAqkj_0ezVg6FLNl1yWNva21rOl7CRvqf-qYFchPCPnHEQKJNlC4fK2swdQOAbCxTzUArlzd0mu-7b3M4ZxmZEovyNjlreRiyMiWxZ5NOf_3FUKFeTy5Lu_0sL2vFv8V09">
+
+<h3 id="添加注释">3.1.7 添加注释</h3><ul>
+<li><p>给消息添加注释</p>
+<p> 我们可以通过在消息后面添加 <code>note left</code> 或者 <code>note right</code> 关键词来给消息添加注释。 </p>
+<p> 你也可以通过使用 <code>end note</code> 来添加多行注释。 </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">Alice-&gt;Bob : hello</span><br><span class="line">note left: this is a first note</span><br><span class="line"></span><br><span class="line">Bob-&gt;Alice : ok</span><br><span class="line">note right: this is another note</span><br><span class="line"></span><br><span class="line">Bob-&gt;Bob : I am thinking</span><br><span class="line">note left</span><br><span class="line"><span class="code">	a note</span></span><br><span class="line"><span class="code">	can also be defined</span></span><br><span class="line"><span class="code">	on several lines</span></span><br><span class="line">end note</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/JOqn3iCW40HhxXNx0N_0XIMdopFEvZ38bqC2bFS7XyAMjjgTqQwQTfcMLzum8ufg9ijDe1BQZ1PJHGyZf58RhecemzEoNc9tyZc4aexuD7ePfJoDyV46VoxApcJ7_KME1-jsDh3MZ4tW9IGJJouRgdobi49xKqdC__aV">
+</li>
+<li><p>其他注释</p>
+<p> 可以使用<code>note left of</code>，<code>note right of</code>或<code>note over</code>在节点(participant)的相对位置放置注释。 </p>
+<p> 还可以通过修改<a href="https://plantuml.com/zh/color" target="_blank" rel="noopener">背景色</a>来高亮显示注释。 </p>
+<p> 以及使用关键字<code>end note</code>来添加多行注释。 </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">participant Alice</span><br><span class="line">participant Bob</span><br><span class="line">note left of Alice #aqua</span><br><span class="line"><span class="code">	This is displayed </span></span><br><span class="line"><span class="code">	left of Alice. </span></span><br><span class="line">end note</span><br><span class="line"> </span><br><span class="line">note right of Alice: This is displayed right of Alice.</span><br><span class="line"></span><br><span class="line">note over Alice: This is displayed over Alice.</span><br><span class="line"></span><br><span class="line">note over Alice, Bob #FFAAAA: This is displayed\n over Bob and Alice.</span><br><span class="line"></span><br><span class="line">note over Bob, Alice</span><br><span class="line"><span class="code">	This is yet another</span></span><br><span class="line"><span class="code">	example of</span></span><br><span class="line"><span class="code">	a long note.</span></span><br><span class="line">end note</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/TP0n3eCm34Nd-1IMM147w4O7Jj2nYqiCH4gJDAIetBv9GL2Kriha__wNVnpve5hbo0IijMePtDVcR6zWR63Kt0MqtO9WGOydWRWCQiJuf1gTffabWZY05G8RYIa1bXol-c7NJvX778bgzTc9_N_FhkPycKfWqJHrd1_cgrdWH54yDe-9Ihd-pLPvvX1f6mRs8FX5TwSZtO4WrDRqdyhLLluD">
+</li>
+<li><p>改变备注框的形状</p>
+<p> 你可以使用 <code>hnote</code> 和 <code>rnote</code> 这两个关键字来修改备注框的形状。 </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">caller -&gt; server : conReq</span><br><span class="line">hnote over caller : idle</span><br><span class="line">caller <span class="xml"><span class="tag">&lt;<span class="name">-</span> <span class="attr">server</span> <span class="attr">:</span> <span class="attr">conConf</span></span></span></span><br><span class="line"><span class="xml">rnote over server</span></span><br><span class="line"><span class="xml">	"r" as rectangle</span></span><br><span class="line"><span class="xml">	"h" as hexagon</span></span><br><span class="line"><span class="xml">endrnote</span></span><br><span class="line"><span class="xml">&#123;% endplantuml %&#125;</span></span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/LOjB2e0m34JNvXIXUozGn8qty0QbZQrG4aoBU7ph1yJTp9jvtkLCYls8XNHloQ8Ndcc3n589vMB-ELbSGoPusz3_b4bu0VsSPuFEg45NKCbNnx7fdKatINIuA0p4uTPE">
+
+</li>
+</ul>
+<h3 id="分隔符">3.1.8 分隔符</h3><p> 你可以通过使用 <code>==</code> 关键词来将你的图表分割多个步骤。 </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">== Initialization ==</span><br><span class="line"></span><br><span class="line">Alice -&gt; Bob: Authentication Request</span><br><span class="line">Bob --&gt; Alice: Authentication Response</span><br><span class="line"></span><br><span class="line">== Repetition ==</span><br><span class="line"></span><br><span class="line">Alice -&gt; Bob: Another authentication Request</span><br><span class="line">Alice <span class="xml"><span class="tag">&lt;<span class="name">--</span> <span class="attr">Bob:</span> <span class="attr">another</span> <span class="attr">authentication</span> <span class="attr">Response</span></span></span></span><br><span class="line"><span class="xml">&#123;% endplantuml %&#125;</span></span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/TSqn2e0m30NGFQV81Ne1CO9khjwWbe01ITN6nTCRx5h7pt_99y9PnIJkyaIJh4W4CEwI6CE0Krux76_RM4rI1GkVDnS3xp2u-N13bIDhOG0Y3mUR_BtNx9SNnlPCnNq8LSS_NUTU">
+
+<h3 id="引用">3.1.9 引用</h3><p> 你可以在图中通过使用<code>ref over</code>关键词来实现引用 </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">participant Alice</span><br><span class="line">actor Bob</span><br><span class="line"></span><br><span class="line">ref over Alice, Bob : init</span><br><span class="line"></span><br><span class="line">Alice -&gt; Bob : hello</span><br><span class="line"></span><br><span class="line">ref over Bob</span><br><span class="line">  This can be on</span><br><span class="line">  several lines</span><br><span class="line">end ref</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/JSl12SCm34RXkwRu1qWNwA6Gp905P5SX0Y4PstJ-scqEkNwFLxXspLhOErRJBCIvHyKMYQZAWVX8_PTb8fvGrqxq8pnU5vvY5hTZ_i1-QaDcHnA43sWo8XjCNHg9lp6EBm00">
+
+<h3 id="延迟">3.1.10 延迟</h3><p> 你可以使用<code>...</code>来表示延迟，并且还可以给延迟添加注释。 </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">Alice -&gt; Bob: Authentication Request</span><br><span class="line">...</span><br><span class="line">Bob --&gt; Alice: Authentication Response</span><br><span class="line">...5 minutes latter...</span><br><span class="line">Bob --&gt; Alice: Bye !</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/Syp9J4vLqBLJSCfFib9mB2t9ICqhoKnEBCdCprC8IYqiJIqkuTBJq-C2oYle0jKvWZHWKLbSa9zNd0fIQggGcvbNMf9Qh92JM5AIMeH5jrDbge8Y0000">
+
+<h3 id="增加空间">3.1.11 增加空间</h3><p> 你可以使用<code>|||</code>来增加空间。 </p>
+<p> 还可以使用数字指定增加的像素的数量。 </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">Alice -&gt; Bob: message 1</span><br><span class="line">Bob --&gt; Alice: ok</span><br><span class="line">|||</span><br><span class="line">Alice -&gt; Bob: message 2</span><br><span class="line">Bob --&gt; Alice: ok</span><br><span class="line">||45||</span><br><span class="line">Alice -&gt; Bob: message 3</span><br><span class="line">Bob --&gt; Alice: ok</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/Syp9J4vLqBLJSCfFibB8JIqkJanFLJ3a0d8LT872ZY1vAuNyRAwQcXekHwogZR2gDZ75gS4OKmC0">
+
+<h3 id="生命线的激活与撤销">3.1.12 生命线的激活与撤销</h3><p> 关键字<code>activate</code>和<code>deactivate</code>用来表示参与者的生命活动。 </p>
+<p> 一旦参与者被激活，它的生命线就会显示出来。 </p>
+<p><code>activate</code>和<code>deactivate</code>适用于以上情形。 </p>
+<p><code>destroy</code>表示一个参与者的生命线的终结。 </p>
+<p> 还可以使用嵌套的生命线，并且运行给生命线添加颜色。 </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">participant User</span><br><span class="line"></span><br><span class="line">User -&gt; A: DoWork</span><br><span class="line">activate A #FFBBBB</span><br><span class="line"></span><br><span class="line">A -&gt; A: Internal call</span><br><span class="line">activate A #DarkSalmon</span><br><span class="line"></span><br><span class="line">A -&gt; B: <span class="xml"><span class="tag">&lt;&lt; <span class="attr">createRequest</span> &gt;</span></span>&gt;</span><br><span class="line">activate B</span><br><span class="line"></span><br><span class="line">B --&gt; A: RequestCreated</span><br><span class="line">deactivate B</span><br><span class="line">deactivate A</span><br><span class="line">A -&gt; User: Done</span><br><span class="line">deactivate A</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/LOx12i8m38RlUOg0vxt068NMCV2gYEVGvL1Msvb5dz_L5Tno28J_oyS_asZmOQQaU5zO0Ch6ng1jiS-FB1EGr_0XPRHu6WQt3e2jo2KfIwA8dc8ya3t9TAFupAdIhiMkGo-y0bT-lNbHDER_ireTDfksvkSVFCB8EsftsCrSAfUsYG_X5m00">
+
+<h3 id="创建参与者">3.1.13 创建参与者</h3><p> 你可以把关键字<code>create</code>放在第一次接收到消息之前，以强调本次消息实际上是在<em>创建</em>新的对象。 </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">Bob -&gt; Alice : hello</span><br><span class="line"></span><br><span class="line">create Other</span><br><span class="line">Alice -&gt; Other : new</span><br><span class="line"></span><br><span class="line">create control String</span><br><span class="line">Alice -&gt; String</span><br><span class="line">note right : You can also put notes!</span><br><span class="line"></span><br><span class="line">Alice --&gt; Bob : ok</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/HOux3eD030NxFSNB0RW01LAu04KgocLbiQjODZ96kNwSa4yvUZFI6tL1D-3AhH1wL6BMb8fHTiBabIoTMqXl34deyLEAYfioRcvDrh_xOT5mhAtLevlrGCc2pBjYEnolTR-aRnNP67TwwFq9">
+
+<h3 id="激活，停用，创建的快捷语法">3.1.14 激活，停用，创建的快捷语法</h3><p>在指定目标参与者之后，可以立即使用以下语法：</p>
+<ul>
+<li><code>++</code>  Activate the target (optionally a #color may follow this)</li>
+<li><code>--</code> Deactivate the source</li>
+<li><code>**</code> Create an instance of the target</li>
+<li><code>!!</code> Destroy an instance of the target</li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">alice -&gt; bob ++ : hello</span><br><span class="line">bob -&gt; bob ++ : self call</span><br><span class="line">bob -&gt; bib ++  #005500 : hello</span><br><span class="line">bob -&gt; george ** : create</span><br><span class="line">return done</span><br><span class="line">return rc</span><br><span class="line">bob -&gt; george !! : delete</span><br><span class="line">return success</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/NOiv3e0m40DxNc545uIKXeQ2luJ57D8gaJRmVuu249tj6GTTXMXw36b0NQF3GjLKNFMxPke42QeFMM-2olkszVv_d9bi9fmxWHZ3niAuxHOnflXaavzVbgS_KldwUHTXpWS0">
+
+<p>进入和发出消息</p>
+<p> 如果只想关注部分图示，你可以使用进入和发出箭头。 </p>
+<p> 使用方括号<code>[</code>和<code>]</code>表示图示的左、右两侧。 </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">[-&gt; A: DoWork</span><br><span class="line"></span><br><span class="line">activate A</span><br><span class="line"></span><br><span class="line">A -&gt; A: Internal call</span><br><span class="line">activate A</span><br><span class="line"></span><br><span class="line">A -&gt;] : <span class="xml"><span class="tag">&lt;&lt; <span class="attr">createRequest</span> &gt;</span></span>&gt;</span><br><span class="line"></span><br><span class="line">A<span class="xml"><span class="tag">&lt;<span class="name">--]</span> <span class="attr">:</span> <span class="attr">RequestCreated</span></span></span></span><br><span class="line"><span class="xml">deactivate A</span></span><br><span class="line"><span class="xml">[<span class="tag">&lt;<span class="name">-</span> <span class="attr">A:</span> <span class="attr">Done</span></span></span></span><br><span class="line"><span class="xml">deactivate A</span></span><br><span class="line"><span class="xml">&#123;% endplantuml %&#125;</span></span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/YzQrKt2qKd393yylokRYIamkoInBB4bLSEJYSbI0o7dcbQGMvINcA2GdvkHWg8XLi5AmiL58Bae52WQb5fQc5fSesDa19MrqTK6IK35di88KhfHK91EYRNGXjkUbeaW00000">
+
+<h3 id="包裹参与者">3.1.15 包裹参与者</h3><p> 可以使用<code>box</code>和<code>end box</code>画一个盒子将参与者包裹起来。 </p>
+<p> 还可以在<code>box</code>关键字之后添加标题或者背景颜色。 </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">box "Internal Service" #LightBlue</span><br><span class="line"><span class="code">	participant Bob</span></span><br><span class="line"><span class="code">	participant Alice</span></span><br><span class="line">end box</span><br><span class="line">participant Other</span><br><span class="line"></span><br><span class="line">Bob -&gt; Alice : hello</span><br><span class="line">Alice -&gt; Other : hello</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/IyglK53op2j9BSfBp548JYqgoqnELL9GzibCpoXnoYbDvU8iI2mgoKpEB4ZCAr5moaz25N3C0QhdIirBKKZAh-12bl4loKWjuk82wb3GjOEeKx1Io4ZDoSddWl20mc15C640">
+
+<h3 id="移除脚注">3.1.16 移除脚注</h3><p> 使用<code>hide footbox</code>关键字移除脚注。 </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">hide footbox</span><br><span class="line">title Footer removed</span><br><span class="line"></span><br><span class="line">Alice -&gt; Bob: Authentication Request</span><br><span class="line">Bob --&gt; Alice: Authentication Response</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/RSgn3O0W44RXdYbk0HUmCC720Tn0u3TSWfp2OHnVOctvyhx80RIBg9F7A6i2BRrGgE2G6y4OczY3XebcSIFPfX5PsM_Aacd5rL3Lz4T3Dn_-KVMKNF42">
+
+<h3 id="外观参数-skinparam">3.1.17 外观参数(skinparam)</h3><p> 可以在如下场景中使用： </p>
+<ul>
+<li><p>在图示的定义中，</p>
+</li>
+<li><p><a href="https://plantuml.com/zh/preprocessing" target="_blank" rel="noopener">在引入的文件中</a>，</p>
+</li>
+<li><p>在<a href="https://plantuml.com/zh/command-line" target="_blank" rel="noopener">命令行</a>或者<a href="https://plantuml.com/zh/ant-task" target="_blank" rel="noopener">ANT任务</a>提供的配置文件中。</p>
+<p>你也可以修改其他渲染元素，如以下示例： </p>
+</li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">skinparam sequenceArrowThickness 2</span><br><span class="line">skinparam roundcorner 20</span><br><span class="line">skinparam maxmessagesize 60</span><br><span class="line">skinparam sequenceParticipant underline</span><br><span class="line"></span><br><span class="line">actor User</span><br><span class="line">participant "First Class" as A</span><br><span class="line">participant "Second Class" as B</span><br><span class="line">participant "Last Class" as C</span><br><span class="line"></span><br><span class="line">User -&gt; A: DoWork</span><br><span class="line">activate A</span><br><span class="line"></span><br><span class="line">A -&gt; B: Create Request</span><br><span class="line">activate B</span><br><span class="line"></span><br><span class="line">B -&gt; C: DoWork</span><br><span class="line">activate C</span><br><span class="line">C --&gt; B: WorkDone</span><br><span class="line">destroy C</span><br><span class="line"></span><br><span class="line">B --&gt; A: Request Created</span><br><span class="line">deactivate B</span><br><span class="line"></span><br><span class="line">A --&gt; User: Done</span><br><span class="line">deactivate A</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/PO-xJWCn44Nx-OfH-aWe1KMAI6j7L1G8WgX7tX5OcxMN6OVNr-DP0l6ArkVSUySwn3IHq8ZAhoTEWJkH_7vuYM58h8eRq3z5yYdr8KjYmSrL0qRw6AjCpwpnY_6wPR-zToGbXZXHAbXhM8unCG25aWKVbGMcnbZTHD62_aYgAoJ5ReaVEEJKDzmj-IqjqXx09d2zmswB-_oKPR3f-4Q5QpTqXjmMlR2ztDlHMYwA0t2c-Fzf3nxNFsa3-ro_rTUmv4_RTJEig-VEyqHVdRQzcpKxqXRcYijztm00">
+
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">skinparam backgroundColor #EEEBDC</span><br><span class="line">skinparam handwritten true</span><br><span class="line"></span><br><span class="line">skinparam sequence &#123;</span><br><span class="line"><span class="code">	ArrowColor DeepSkyBlue</span></span><br><span class="line"><span class="code">	ActorBorderColor DeepSkyBlue</span></span><br><span class="line"><span class="code">	LifeLineBorderColor blue</span></span><br><span class="line"><span class="code">	LifeLineBackgroundColor #A9DCDF</span></span><br><span class="line"><span class="code">	</span></span><br><span class="line"><span class="code">	ParticipantBorderColor DeepSkyBlue</span></span><br><span class="line"><span class="code">	ParticipantBackgroundColor DodgerBlue</span></span><br><span class="line"><span class="code">	ParticipantFontName Impact</span></span><br><span class="line"><span class="code">	ParticipantFontSize 17</span></span><br><span class="line"><span class="code">	ParticipantFontColor #A9DCDF</span></span><br><span class="line"><span class="code">	</span></span><br><span class="line"><span class="code">	ActorBackgroundColor aqua</span></span><br><span class="line"><span class="code">	ActorFontColor DeepSkyBlue</span></span><br><span class="line"><span class="code">	ActorFontSize 17</span></span><br><span class="line"><span class="code">	ActorFontName Aapex</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">actor User</span><br><span class="line">participant "First Class" as A</span><br><span class="line">participant "Second Class" as B</span><br><span class="line">participant "Last Class" as C</span><br><span class="line"></span><br><span class="line">User -&gt; A: DoWork</span><br><span class="line">activate A</span><br><span class="line"></span><br><span class="line">A -&gt; B: Create Request</span><br><span class="line">activate B</span><br><span class="line"></span><br><span class="line">B -&gt; C: DoWork</span><br><span class="line">activate C</span><br><span class="line">C --&gt; B: WorkDone</span><br><span class="line">destroy C</span><br><span class="line"></span><br><span class="line">B --&gt; A: Request Created</span><br><span class="line">deactivate B</span><br><span class="line"></span><br><span class="line">A --&gt; User: Done</span><br><span class="line">deactivate A</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/TP8zJyCm48RdtA-mojo12T41oNPQ2Qb2Y0enNvEZM6djzEnG2kA_4wSH-OBrdlShLdnXR8cC1x75hDYngsoktTwnk5ekbohLu7yLRsZp4viGo8h05K6FUJfMP3CINv18PdUwXAH4vQOugtsjJcGM72l7EV4VT6rUQMqizGNR8HalbBUfJbUG02IFoC5afaGR_cteQqPHgSjtn1FPojdmW0SIzuSIip1X6_D9ulfcSX_lQpzzL8h72blKcQOlDYZwlJIp99Rq0Ty06C_YsHD3sKqHivLX7uJUe_SpWLx88TvGvcpUush8rpXmQu1O8UPtGYxgDtjnNCHgyuwX7WCW8r8BePdYvId-53vq4WMWeaHFtHgqc5_S4QJE4kIrcTqvzge6rgrjPbkHrvf-kcnaSMHiQ2AwVJy0">
+
+<h2 id="用例图">3.2 用例图</h2><h3 id="用例">3.2.1 用例</h3><p>用例用圆括号括起来。 </p>
+<p>也可以用关键字<code>usecase</code>来定义用例。 还可以用关键字<code>as</code>定义一个别名，这个别名可以在以后定义关系的时候使用。 </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">(First usecase)</span><br><span class="line">(Another usecase) as (UC2)  </span><br><span class="line">usecase UC3</span><br><span class="line">usecase (Last\nusecase) as UC4</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/qt3BB2ekKIWjJarEB4xLvD9mpCiloKWjWeie91OhQ8Gw6sagA711nHH2dOtXR0sVnEAIc3navQ7E9W00">
+
+<h3 id="角色">3.2.2 角色</h3><p> 角色用两个冒号包裹起来。 </p>
+<p> 也可以用<code>actor</code>关键字来定义角色。 还可以用关键字<code>as</code>来定义一个别名，这个别名可以在以后定义关系的时候使用。 </p>
+<p> 后面我们会看到角色的定义是可选的。 </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">:First Actor:</span><br><span class="line">:Another\nactor: as Men2  </span><br><span class="line">actor Men3</span><br><span class="line">actor :Last actor: as Men4</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/itBBB2ekKN1CBialikAoSipBByb8BOh9ImGBA2GMA_YcvXafA7211K0SOoZJoYSHg155dGa0">
+
+<h3 id="用例描述">3.2.3 用例描述</h3><p> 如果想定义跨越多行的用例描述，可以用双引号将其裹起来。 </p>
+<p> 还可以使用这些分隔符：<code>--``..``==``__</code>。 并且还可以在分隔符中间放置标题。 </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">usecase UC1 as "You can use</span><br><span class="line">several lines to define your usecase.</span><br><span class="line">You can also use separators.</span><br><span class="line">--</span><br><span class="line">Several separators are possible.</span><br><span class="line">==</span><br><span class="line">And you can add titles:</span><br><span class="line">..Conclusion..</span><br><span class="line">This allows large description."</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/HOv12W8n34NtEKLmFmMtmYnaZg0kNCOsQY4qGz8gtjuM5NVX__yUQSwHdF6qR94SDsTj6AbWSmRd1ni9IYxiM1KJN_k9Bsqs1WCC03-4n7N4wBoIKLNp0DC4Xw_c7oCPuwhk-IBTCC-mBsbeFvwKiEOgx3i8OT4IfNdM4W8Sxxd38lfq5B8RzvSyMbxhw3Tl">
+
+<h3 id="基础示例">3.2.4 基础示例</h3><p> 用箭头<code>--&gt;</code>连接角色和用例。 </p>
+<p> 横杠<code>-</code>越多，箭头越长。 通过在箭头定义的后面加一个冒号及文字的方式来添加标签。 </p>
+<p> 在这个例子中，<em>User</em>并没有定义，而是直接拿来当做一个角色使用。 </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">User -&gt; (Start)</span><br><span class="line">User --&gt; (Use the application) : A small label</span><br><span class="line"></span><br><span class="line">:Main Admin: ---&gt; (Use the application) : This is\nyet another\nlabel</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/VOon3O0m30JxJF4b52oG0ea1g82Ena0aB3aEIjomFO41wFvVTx-KaD7rQ2QZRArRlluEDS7E0BekuPsCaxRm650YYK1e2-AS7uaLmn5PVVL-nFda0Ywhti50cYgIL_rk7W00">
+
+<h3 id="继承">3.2.5 继承</h3><p>如果一个角色或者用例继承于另一个，那么可以用<code>&lt;|--</code>符号表示。</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">:Main Admin: as Admin</span><br><span class="line">(Use the application) as (Use)</span><br><span class="line"></span><br><span class="line">User <span class="xml"><span class="tag">&lt;<span class="name">|--</span> <span class="attr">Admin</span></span></span></span><br><span class="line"><span class="xml">(Start) <span class="tag">&lt;<span class="name">|--</span> (<span class="attr">Use</span>)</span></span></span><br><span class="line"><span class="xml">&#123;% endplantuml %&#125;</span></span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/i_9DpCnJS4p9pSopKaWiXh2uD4ABKnLACb8L4WiASZAJ4qioy_CqGT8W2KqkBY1Pf61JewiBKnzSabXKeWaH0gi10000">
+
+<h3 id="注释">3.2.6 注释</h3><p> 可以用<code>note left of</code> , <code>note right of</code> , <code>note top of</code> , <code>note bottom of</code>等关键字给一个对象添加注释。 </p>
+<p> 注释还可以通过<code>note</code>关键字来定义，然后用<code>..</code>连接其他对象。 </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">:Main Admin: as Admin</span><br><span class="line">(Use the application) as (Use)</span><br><span class="line"></span><br><span class="line">User -&gt; (Start)</span><br><span class="line">User --&gt; (Use)</span><br><span class="line"></span><br><span class="line">Admin ---&gt; (Use)</span><br><span class="line"></span><br><span class="line">note right of Admin : This is an example.</span><br><span class="line"></span><br><span class="line">note right of (Use)</span><br><span class="line">  A note can also</span><br><span class="line">  be on several lines</span><br><span class="line">end note</span><br><span class="line"></span><br><span class="line">note "This note is connected\nto several objects." as N2</span><br><span class="line">(Start) .. N2</span><br><span class="line">N2 .. (Use)</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/NOyn3i8m34NtdEAhKplGeMC7f1w0Bi36uhQ61gLEbKI8uvEa5KX8KVBz_6t7xOcqe9iMBIt8RqgLLyy8CuFMrUYHWhPIfNHAL4h5s-5mH7aEv4Arnmbi-TmbWXyH6nXEF-O0Uz-ceCLbrXxna83VjAo6wt_hLWzqo7oCLZBUHZ8mhC3pYnqP62ti5SkKVNkN8W_8ChwZ5U4ny7IJOB-5TdX6wEiYxTStQjy9TPsYlaaYV-83">
+
+<h3 id="构造类型">3.2.7 构造类型</h3><p> 用 <code>&lt;&lt;</code> 和 <code>&gt;&gt;</code> 来定义角色或者用例的构造类型。 </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">User <span class="xml"><span class="tag">&lt;&lt; <span class="attr">Human</span> &gt;</span></span>&gt;</span><br><span class="line">:Main Database: as MySql <span class="xml"><span class="tag">&lt;&lt; <span class="attr">Application</span> &gt;</span></span>&gt;</span><br><span class="line">(Start) <span class="xml"><span class="tag">&lt;&lt; <span class="attr">One</span> <span class="attr">Shot</span> &gt;</span></span>&gt;</span><br><span class="line">(Use the application) as (Use) <span class="xml"><span class="tag">&lt;&lt; <span class="attr">Main</span> &gt;</span></span>&gt;</span><br><span class="line"></span><br><span class="line">User -&gt; (Start)</span><br><span class="line">User --&gt; (Use)</span><br><span class="line"></span><br><span class="line">MySql --&gt; (Use)</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/2orEBLAmiL7mACrDp5Emi-EoyatCp5DmIIn9J4eiJhLII2nMyAqCBim1AN8iACZ9J4uioSm7AzK8BaaiAj44oVZdfIe4P-INW8L3YrCLIZ9I5H8HoZL1ve0amAh1LW1LSeM2RDUrKu2Q1EM3141AkRWWDiC50000">
+
+<h3 id="箭头方向">3.2.8 箭头方向</h3><ul>
+<li>默认连接是竖直方向的，用<code>--</code>表示，可以用一个横杠或点来表示水平连接。 </li>
+<li>也可以通过翻转箭头来改变方向。 </li>
+<li>还可以通过给箭头添加<code>left</code>, <code>right</code>, <code>up</code>或<code>down</code>等关键字来改变方向。 </li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">:user: --&gt; (Use case 1)</span><br><span class="line">:user: -&gt; (Use case 2)</span><br><span class="line">&#123;% endplantuml %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">(Use case 1) <span class="xml"><span class="tag">&lt;<span class="name">..</span> <span class="attr">:user:</span></span></span></span><br><span class="line"><span class="xml">(Use case 2) <span class="tag">&lt;<span class="name">-</span> <span class="attr">:user:</span></span></span></span><br><span class="line"><span class="xml">&#123;% endplantuml %&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="xml">&#123;% plantuml %&#125;</span></span><br><span class="line"><span class="xml">:user: -left-&gt;</span> (dummyLeft) </span><br><span class="line">:user: -right-&gt; (dummyRight) </span><br><span class="line">:user: -up-&gt; (dummyUp)</span><br><span class="line">:user: -down-&gt; (dummyDown)</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/ioejJYsoKj3LjLFG22rELKXE11A6cbnMK75aOIDD0000">
+
+<img src="http://www.plantuml.com/plantuml/svg/qmWjJbL8JWGIXfeADdfw2bQbnQb5LbmQS74ZeBWkL1W0">
+
+<img src="http://www.plantuml.com/plantuml/svg/ioejJYsoKj3DIKqhqRLJq4WfpSsjz05oD1MuhA1oHPdf6GZ9810FIRQq02uLMg095qx9By-3IxW0EPe0">
+
+<h3 id="分割图示">3.2.9 分割图示</h3><p> 用<code>newpage</code>关键字将图示分解为多个页面。 </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">:actor1: --&gt; (Usecase1)</span><br><span class="line">newpage</span><br><span class="line">:actor2: --&gt; (Usecase2)</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/iqfCBialChHIqDMrKz08BKvDJYnEDTJaoaijBqXCJ-Mo0iiReSeRQG80">
+
+<h3 id="构图方向">3.2.10 构图方向</h3><ul>
+<li>默认从上往下构建图示。 </li>
+<li>你可以用<code>left to right direction</code>命令改变图示方向。 </li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">'default</span><br><span class="line">top to bottom direction</span><br><span class="line">user1 --&gt; (Usecase 1)</span><br><span class="line">user2 --&gt; (Usecase 2)</span><br><span class="line">&#123;% endplantuml %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">left to right direction</span><br><span class="line">user1 --&gt; (Usecase 1)</span><br><span class="line">user2 --&gt; (Usecase 2)</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/Kqz9JKiipIbHACal06A5fFoIalnSXPJCejJaaipyFAxIujGYGmLTNJi5ZT3YrEJ4ubG5Gqsmg16gg94c0000">
+
+<img src="http://www.plantuml.com/plantuml/svg/oqbDAr4eoLSeoapFA558oInAJIx9pC_ZAYrEBJ9KqDMrKz08BKvDJYnELJ3K18iQeOeQQG80">
+
+<h3 id="显示参数">3.2.11 显示参数</h3><p> 用<code>skinparam</code>改变字体和颜色。 </p>
+<p> 可以在如下场景中使用： </p>
+<ul>
+<li><p>在图示的定义中，</p>
+</li>
+<li><p><a href="https://plantuml.com/zh/preprocessing" target="_blank" rel="noopener">在引入的文件中</a>，</p>
+</li>
+<li><p>在<a href="https://plantuml.com/zh/command-line" target="_blank" rel="noopener">命令行</a>或者<a href="https://plantuml.com/zh/ant-task" target="_blank" rel="noopener">ANT任务</a>提供的配置文件中。</p>
+<p>你也可以给构造的角色和用例指定特殊颜色和字体。 </p>
+</li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">skinparam handwritten true</span><br><span class="line"></span><br><span class="line">skinparam usecase &#123;</span><br><span class="line"><span class="code">	BackgroundColor DarkSeaGreen</span></span><br><span class="line"><span class="code">	BorderColor DarkSlateGray</span></span><br><span class="line"></span><br><span class="line"><span class="code">	BackgroundColor&lt;&lt; Main &gt;&gt; YellowGreen</span></span><br><span class="line"><span class="code">	BorderColor&lt;&lt; Main &gt;&gt; YellowGreen</span></span><br><span class="line"><span class="code">	</span></span><br><span class="line"><span class="code">	ArrowColor Olive</span></span><br><span class="line"><span class="code">	ActorBorderColor black</span></span><br><span class="line"><span class="code">	ActorFontName Courier</span></span><br><span class="line"></span><br><span class="line"><span class="code">	ActorBackgroundColor&lt;&lt; Human &gt;&gt; Gold</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">User <span class="xml"><span class="tag">&lt;&lt; <span class="attr">Human</span> &gt;</span></span>&gt;</span><br><span class="line">:Main Database: as MySql <span class="xml"><span class="tag">&lt;&lt; <span class="attr">Application</span> &gt;</span></span>&gt;</span><br><span class="line">(Start) <span class="xml"><span class="tag">&lt;&lt; <span class="attr">One</span> <span class="attr">Shot</span> &gt;</span></span>&gt;</span><br><span class="line">(Use the application) as (Use) <span class="xml"><span class="tag">&lt;&lt; <span class="attr">Main</span> &gt;</span></span>&gt;</span><br><span class="line"></span><br><span class="line">User -&gt; (Start)</span><br><span class="line">User --&gt; (Use)</span><br><span class="line"></span><br><span class="line">MySql --&gt; (Use)</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/TP2nRiCm34Jdw2iuDaD_80WCf0dgBca68qD7nYPgmRBeKdICeEY_rrACr83HKNV7UwH2Ots7WYtKwAj1h2fvKEd9cF3m-a0b1e9lith1ilaKxdsrPyS21vIc8Co5o8ykIqKoSnmgvO8tivZSRk68raEMmGSvnyEouh-8MUr4UBXZJivUQLHAPPdZBsxaJVehUtt7bc3FlLYIL9465ZkzzIqcOiwkCZ_6d0C9p0opIJiTKF4o_ia6CC3nLdov6DfrdRCbgkKKVIeKHTVHENc2ecPDyjW9MXFWNtmTUwAHqjFP4_qvWwbfUaSXHesvan_2Bm00">
+
+
+
+<h2 id="活动图">3.3 活动图</h2><h3 id="开始-结束">3.3.1 开始/结束</h3><p> 你可以使用关键字<code>start</code>和<code>stop</code>表示图示的开始和结束。 </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">start</span><br><span class="line">:Hello world;</span><br><span class="line">:This is on defined on</span><br><span class="line">several <span class="strong">**lines**</span>;</span><br><span class="line">stop</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/Aov9B2hXil98pSd9LoZFByf9iUQo2id8B5O0elmyXPJKjCoyr1GWawiujIorA357GKih1oXKhALbpLLSaby00000">
+
+<h3 id="条件语句">3.3.2 条件语句</h3><ul>
+<li>可以使用关键字<code>if</code>，<code>then</code>和<code>else</code>设置分支测试。标注文字则放在括号中。 </li>
+<li>也可以使用关键字<code>elseif</code>设置多个分支测试</li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">start</span><br><span class="line">if (condition A) then (yes)</span><br><span class="line">  :Text 1;</span><br><span class="line">elseif (condition B) then (yes)</span><br><span class="line">  :Text 2;</span><br><span class="line">  stop</span><br><span class="line">elseif (condition C) then (yes)</span><br><span class="line">  :Text 3;</span><br><span class="line">elseif (condition D) then (yes)</span><br><span class="line">  :Text 4;</span><br><span class="line">else (nothing)</span><br><span class="line">  :Text else;</span><br><span class="line">endif</span><br><span class="line">stop</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/Aov9B2hXoanJq4ZEpql9BCdCprDmr5GeoKZDKz2eJ2tMv59Gi0f9hIXHCBJcIiqfJaLLweHLgP4ra5bSab-0HOSpLXt6s0ntmQhK1A9KGIClloGZCoyT8GCI1ae2jQTnWMm70000">
+
+<h3 id="循环">3.3.3 循环</h3><p>使用关键字<code>repeat</code>和<code>repeatwhile</code>进行重复循环。</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">start</span><br><span class="line"></span><br><span class="line">repeat</span><br><span class="line">  :read data;</span><br><span class="line">  :generate diagrams;</span><br><span class="line">repeat while (more data?)</span><br><span class="line"></span><br><span class="line">stop</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/BSf12e0m30J0UrwHetx17dpBGfPQiBOa0RylYiU1YOIdY7CIAQgR4wQ6H7bLUT6HL6keZXxbhteVxQGkVJY_lgyYaMC-">
+
+<p>使用关键字<code>while</code>和<code>end while</code>进行while循环。</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">start</span><br><span class="line"></span><br><span class="line">while (data available?)</span><br><span class="line">  :read data;</span><br><span class="line">  :generate diagrams;</span><br><span class="line">endwhile</span><br><span class="line"></span><br><span class="line">stop</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/7Sj12e0m34JHVKwHfLx1BZpBI8PQQAkaGQylTVbv_17m47dFKgcB8Q1uK2gEodqLrSq9qmbfLcQd8wXMa1rj966tVnSPSTqV">
+
+<h3 id="并行处理">3.3.4 并行处理</h3><p> 你可以使用关键字<code>fork</code>，<code>fork again</code>和<code>end fork</code>表示并行处理。 </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">start</span><br><span class="line"></span><br><span class="line">if (multiprocessor?) then (yes)</span><br><span class="line">  fork</span><br><span class="line"><span class="code">	:Treatment 1;</span></span><br><span class="line">  fork again</span><br><span class="line"><span class="code">	:Treatment 2;</span></span><br><span class="line">  end fork</span><br><span class="line">else (monoproc)</span><br><span class="line">  :Treatment 1;</span><br><span class="line">  :Treatment 2;</span><br><span class="line">endif</span><br><span class="line"></span><br><span class="line">stop</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/NSmn4a8X34NHsgmY9PHQVWituGOO3Lz6I9Wa5kvU66smVM_kCK_g02LZQA_gfQlSo4pq4j4Vn1ZUP14Gi-WJ3jjLANaZTZoUVokcFHLUljFyYE_VYghHu8LbwXFxPzPqX2K3c4l_0000">
+
+<h3 id="注释-1">3.3.5 注释</h3><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">start</span><br><span class="line">:foo1;</span><br><span class="line">floating note left: This is a note</span><br><span class="line">:foo2;</span><br><span class="line">note right</span><br><span class="line">  This note is on several</span><br><span class="line">  //lines// and can</span><br><span class="line">  contain <span class="xml"><span class="tag">&lt;<span class="name">b</span>&gt;</span></span>HTML<span class="xml"><span class="tag">&lt;/<span class="name">b</span>&gt;</span></span></span><br><span class="line">  ====</span><br><span class="line"><span class="bullet">  * </span>Calling the method ""foo()"" is prohibited</span><br><span class="line">end note</span><br><span class="line">stop</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/9Own3i8m34JtV8NL2LWY6DlIXOK1jlw0sxfDf61NYSNtumRBqadFf_CLnQokNKMkdLkJe4RUW4K94gtQmXXY0Lkii3fldQk67BUW3lwMIao5eT2NCYQxU9yYK_4Ua1UOaOtDmegHeP-6v_X-zNuQZDvjJ2xmm9IE2Xe8FgH15cWQUtewDysHlsS9SOfAYoFBhAMAolu3">
+
+<h3 id="颜色">3.3.6 颜色</h3><p>你可以为活动(activity)指定一种<a href="https://plantuml.com/zh/color" target="_blank" rel="noopener">颜色</a>。 </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">start</span><br><span class="line">:starting progress;</span><br><span class="line"><span class="section">#HotPink:reading configuration files</span></span><br><span class="line">These files should edited at this point!;</span><br><span class="line"><span class="section">#AAAAAA:ending of the process;</span></span><br><span class="line">stop</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/9Oqn3iGW30HxNk4el-2gT2clo0TGC61TP2FR-Vy5iiskDDAiUL8FqKOHL-WgLT7i4zPT_4lyYuef3tGA5wgt9YTXA7IXXQEXuRl1cjnN1ipac24vU2E3BiI-FBfj9Y9FcPG7uxWxvvkvz3y0">
+
+<h3 id="箭头">3.3.7 箭头</h3><p> 使用<code>-&gt;</code>标记，你可以给箭头添加文字或者修改箭头<a href="https://plantuml.com/zh/color" target="_blank" rel="noopener">颜色</a>。 </p>
+<p> 同时，你也可以选择点状 (dotted)，条状(dashed)，加粗或者是隐式箭头 </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">:foo1;</span><br><span class="line">-&gt; You can put text on arrows;</span><br><span class="line">if (test) then</span><br><span class="line">  -[#blue]-&gt;</span><br><span class="line">  :foo2;</span><br><span class="line">  -[#green,dashed]-&gt; The text can</span><br><span class="line">  also be on several lines</span><br><span class="line">  and <span class="strong">**very**</span> long...;</span><br><span class="line">  :foo3;</span><br><span class="line">else</span><br><span class="line">  -[#black,dotted]-&gt;</span><br><span class="line">  :foo4;</span><br><span class="line">endif</span><br><span class="line">-[#gray,bold]-&gt;</span><br><span class="line">:foo5;</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/DOv93i8m34NtEOKbDX2rbPWsHEefs2348ctSGKGsIboWjoSTMFg_h_TzQPZtHkKbt7Y0sXAy1W71hm0Js13u4utg6zWAHjc1T4WA8BzlAZ_W8o_JSKcEWrdIDY1Ivcpiq2KArmuNMrAdXlMHeSB97V6DmNhmFM6S43dGEcMZrk2Psg8ep6e_6eK-ud_Ori_CiSWyiLPEgKAkRzJyX1spYlsC9tWsFm00">
+
+<h3 id="连接器">3.3.8 连接器</h3><p>你可以使用括号定义连接器</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">start</span><br><span class="line">:Some activity;</span><br><span class="line">(A)</span><br><span class="line">detach</span><br><span class="line">(A)</span><br><span class="line">:Other activity;</span><br><span class="line">stop</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/Aov9B2hXiWhEpqrLI4mkoIpBBAcqvj9mrEHAIIr9JCu0CwtyIp9IYv3aYqlo2m00">
+
+<h3 id="组合">3.3.9 组合</h3><p> 通过定义分区(partition)，你可以把多个活动组合(group)在一起。 </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">start</span><br><span class="line">partition Initialization &#123;</span><br><span class="line"><span class="code">	:read config file;</span></span><br><span class="line"><span class="code">	:init internal variable;</span></span><br><span class="line">&#125;</span><br><span class="line">partition Running &#123;</span><br><span class="line"><span class="code">	:wait for user interaction;</span></span><br><span class="line"><span class="code">	:print information;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">stop</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/JOn13eCm30JFpIlyZl82hlt15X9aANKYnxGIYB_ZmAKNMvvTJpEeXUg3ZOlGABwHUSDrxk7nr8YPfYA95qgSu-2ClKOi5bMGwGjbl7jo_AbUgmZBSZb-y7ugIckBUZzYwgqkg-h0eUSVtF08eLcf9m00">
+
+<h3 id="泳道">3.3.10 泳道</h3><p> 你可以使用管道符<code>|</code>来定义泳道。 </p>
+<p> 还可以改变泳道的<a href="https://plantuml.com/zh/color" target="_blank" rel="noopener">颜色</a>。 </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">|Swimlane1|</span><br><span class="line">start</span><br><span class="line">:foo1;</span><br><span class="line">|#AntiqueWhite|Swimlane2|</span><br><span class="line">:foo2;</span><br><span class="line">:foo3;</span><br><span class="line">|Swimlane1|</span><br><span class="line">:foo4;</span><br><span class="line">|Swimlane2|</span><br><span class="line">:foo5;</span><br><span class="line">stop</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/gmakpypDISnBDQpXAYv9B2hXiahBppUqvgfHTimhoImiJGtFo2n9hO4fCwe1Ap2o1bF6G7L81e24J924e8fDhO56vnS00000">
+
+<h3 id="分离">3.3.11 分离</h3><p> 可以使用关键字<code>detach</code>移除箭头。 </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line"> :start;</span><br><span class="line"> fork</span><br><span class="line">   :foo1;</span><br><span class="line">   :foo2;</span><br><span class="line"> fork again</span><br><span class="line">   :foo3;</span><br><span class="line">   detach</span><br><span class="line"> endfork</span><br><span class="line"> if (foo4) then</span><br><span class="line">   :foo5;</span><br><span class="line">   detach</span><br><span class="line"> endif</span><br><span class="line"> :foo6;</span><br><span class="line"> detach</span><br><span class="line"> :foo7;</span><br><span class="line"> stop</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/ioekIImgiUPAoo_Avb9Gi4hBppUqXZAC8C8AYUc9cNbGCMEGP4fgIM9o1bTgNWfOMsQQWWPGoaHJeIGZ5QRG55LXPXeNIDJCcWig1kAPMtCLb-GN0000">
+
+<h3 id="特殊领域语言-SDL">3.3.12 特殊领域语言(SDL)</h3><p> 通过修改活动标签最后的分号分隔符(<code>;</code>)，可以为活动设置不同的形状。 </p>
+<ul>
+<li><code>|</code></li>
+<li><code>&lt;</code></li>
+<li><code>&gt;</code></li>
+<li><code>/</code></li>
+<li><code>]</code></li>
+<li><code>}</code></li>
+</ul>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">:Ready;</span><br><span class="line">:next(o)|</span><br><span class="line">:Receiving;</span><br><span class="line">split</span><br><span class="line"> :nak(i)<span class="xml"><span class="tag">&lt;</span></span></span><br><span class="line"><span class="xml"> :ack(o)&gt;</span></span><br><span class="line">split again</span><br><span class="line"> :ack(i)<span class="xml"><span class="tag">&lt;</span></span></span><br><span class="line"><span class="xml"> :next(o)</span></span><br><span class="line"><span class="xml"> on several line|</span></span><br><span class="line"><span class="xml"> :i := i + 1]</span></span><br><span class="line"><span class="xml"> :ack(o)&gt;</span></span><br><span class="line">split again</span><br><span class="line"> :err(i)<span class="xml"><span class="tag">&lt;</span></span></span><br><span class="line"><span class="xml"> :nak(o)&gt;</span></span><br><span class="line">split again</span><br><span class="line"> :foo/</span><br><span class="line">split again</span><br><span class="line"> :i &gt; 5&#125;</span><br><span class="line">stop</span><br><span class="line">end split</span><br><span class="line">:finish;</span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/TOwn2i9044Jx_Oej4op4mcPFyn7fBPPa4vSSU-7k20hntmrSR4IxOTxm66g5-wS3CddaAjGhK2kTwA8sEaYprmn8nbEbzMLBt4tRgYa4UMIrlIryrm06moIBHFRerMJTc29TKV60fzjVayJuCV4lFeHm_AeK6po_8EKmWrYFvJGDQfhkxWq0">
+
+<h3 id="完整实例">3.3.13 完整实例</h3><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&#123;% plantuml %&#125;</span><br><span class="line">start</span><br><span class="line">:ClickServlet.handleRequest();</span><br><span class="line">:new page;</span><br><span class="line">if (Page.onSecurityCheck) then (true)</span><br><span class="line">  :Page.onInit();</span><br><span class="line">  if (isForward?) then (no)</span><br><span class="line"><span class="code">	:Process controls;</span></span><br><span class="line"><span class="code">	if (continue processing?) then (no)</span></span><br><span class="line"><span class="code">	  stop</span></span><br><span class="line"><span class="code">	endif</span></span><br><span class="line"><span class="code">	</span></span><br><span class="line"><span class="code">	if (isPost?) then (yes)</span></span><br><span class="line"><span class="code">	  :Page.onPost();</span></span><br><span class="line"><span class="code">	else (no)</span></span><br><span class="line"><span class="code">	  :Page.onGet();</span></span><br><span class="line"><span class="code">	endif</span></span><br><span class="line"><span class="code">	:Page.onRender();</span></span><br><span class="line">  endif</span><br><span class="line">else (false)</span><br><span class="line">endif</span><br><span class="line"></span><br><span class="line">if (do redirect?) then (yes)</span><br><span class="line">  :redirect process;</span><br><span class="line">else</span><br><span class="line">  if (do forward?) then (yes)</span><br><span class="line"><span class="code">	:Forward request;</span></span><br><span class="line">  else (no)</span><br><span class="line"><span class="code">	:Render page template;</span></span><br><span class="line">  endif</span><br><span class="line">endif</span><br><span class="line"></span><br><span class="line">stop</span><br><span class="line"></span><br><span class="line">&#123;% endplantuml %&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="http://www.plantuml.com/plantuml/svg/NL4xSiCW5Ap5ALufDJu0Ab9u9fbq6li435fPZ0aey6IFRny4mabS0My_B4ja5LZ8epNwUaQuMV1XLcwqEE5xHUIswuLqkDEYBkY5cQWTqkxWtHbw3OOVnndwsX7FSDHoMD498hcJFft95aIRqiHt7-ugZ6-Lxtmd6Za4hn4ZQUyuU1jxqMpqxMZS2beARjpblv0eibz40pUQIJH5PUBW8p-93yJCh8asS4lKm4OyVIhwWHqiZdLyIcU4yf025VMaqjA9CihbZ9u2HXEWNoAaEofGtzDdbxsR99nUoYdHvTvPyiq_aZFyPfSbM_uVOdmjLZ7-v2pHSay_">
+
+
+
+<h2 id="类图">3.4 类图</h2><h1 id="思维导图">4 思维导图</h1><h2 id="安装插件">4.1 安装插件</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-simple-mindmap</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用">4.2 使用</h2><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;% pullquote mindmap mindmap-md %&#125;</span><br><span class="line"><span class="bullet">- </span>[<span class="string">在 Hexo 中使用思维导图</span>](<span class="link">https://hunterx.xyz/use-mindmap-in-hexo.html</span>)</span><br><span class="line"><span class="bullet">  - </span>前言</span><br><span class="line"><span class="bullet">  - </span>操作指南</span><br><span class="line"><span class="bullet">    - </span>准备需要的文件</span><br><span class="line"><span class="bullet">    - </span>为主题添加 CSS/JS 文件</span><br><span class="line"><span class="bullet">  - </span>使用方法</span><br><span class="line">&#123;% endpullquote %&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote class="pullquote mindmap mindmap-md"><ul>
+<li><a href="https://hunterx.xyz/use-mindmap-in-hexo.html" target="_blank" rel="noopener">在 Hexo 中使用思维导图</a><ul>
+<li>前言</li>
+<li>操作指南<ul>
+<li>准备需要的文件</li>
+<li>为主题添加 CSS/JS 文件</li>
+</ul>
+</li>
+<li>使用方法</li>
+</ul>
+</li>
+</ul>
+</blockquote><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text/javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.2.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.2.0/dist/mindmap.min.css">
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/tools/" rel="tag"># tools</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/01/03/hexo中的画图工具-Echarts/" rel="next" title="hexo中的画图工具-Echarts">
+                <i class="fa fa-chevron-left"></i> hexo中的画图工具-Echarts
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/01/16/Calibre导入Kindle电子书/" rel="prev" title="Calibre导入Kindle电子书">
+                Calibre导入Kindle电子书 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+		
+		  
+			<ul class="sidebar-nav motion-element">
+			  <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+				文章目录
+			  </li>
+			  <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+				站点概览
+			  </li>
+			</ul>
+		  
+		
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/han.jpg" alt="Rulei.Zhou">
+            
+              <p class="site-author-name" itemprop="name">Rulei.Zhou</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">39</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/ruleizhou" title="GitHub &rarr; https://github.com/ruleizhou" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:rulei.zhou@foxmail.com" title="E-Mail &rarr; mailto:rulei.zhou@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section></div>
+
+		
+		  
+		  <!--noindex-->
+			<section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+			  <div class="post-toc">
+
+				
+				  
+				
+
+				
+				  <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#PlantUML-简介"><span class="nav-text">1 PlantUML 简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#插件安装"><span class="nav-text">2 插件安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#语法"><span class="nav-text">3 语法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#顺序图"><span class="nav-text">3.1 顺序图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#声明参与者"><span class="nav-text">3.1.1 声明参与者</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改箭头样式"><span class="nav-text">3.1.2 修改箭头样式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改箭头颜色"><span class="nav-text">3.1.3 修改箭头颜色</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对消息序列编号"><span class="nav-text">3.1.4 对消息序列编号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分割示意图"><span class="nav-text">3.1.5 分割示意图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#组合消息"><span class="nav-text">3.1.6 组合消息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加注释"><span class="nav-text">3.1.7 添加注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分隔符"><span class="nav-text">3.1.8 分隔符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#引用"><span class="nav-text">3.1.9 引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#延迟"><span class="nav-text">3.1.10 延迟</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#增加空间"><span class="nav-text">3.1.11 增加空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生命线的激活与撤销"><span class="nav-text">3.1.12 生命线的激活与撤销</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建参与者"><span class="nav-text">3.1.13 创建参与者</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#激活，停用，创建的快捷语法"><span class="nav-text">3.1.14 激活，停用，创建的快捷语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#包裹参与者"><span class="nav-text">3.1.15 包裹参与者</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#移除脚注"><span class="nav-text">3.1.16 移除脚注</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#外观参数-skinparam"><span class="nav-text">3.1.17 外观参数(skinparam)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用例图"><span class="nav-text">3.2 用例图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用例"><span class="nav-text">3.2.1 用例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#角色"><span class="nav-text">3.2.2 角色</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用例描述"><span class="nav-text">3.2.3 用例描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基础示例"><span class="nav-text">3.2.4 基础示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#继承"><span class="nav-text">3.2.5 继承</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注释"><span class="nav-text">3.2.6 注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构造类型"><span class="nav-text">3.2.7 构造类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#箭头方向"><span class="nav-text">3.2.8 箭头方向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分割图示"><span class="nav-text">3.2.9 分割图示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构图方向"><span class="nav-text">3.2.10 构图方向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#显示参数"><span class="nav-text">3.2.11 显示参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#活动图"><span class="nav-text">3.3 活动图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#开始-结束"><span class="nav-text">3.3.1 开始/结束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条件语句"><span class="nav-text">3.3.2 条件语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#循环"><span class="nav-text">3.3.3 循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并行处理"><span class="nav-text">3.3.4 并行处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注释-1"><span class="nav-text">3.3.5 注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#颜色"><span class="nav-text">3.3.6 颜色</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#箭头"><span class="nav-text">3.3.7 箭头</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连接器"><span class="nav-text">3.3.8 连接器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#组合"><span class="nav-text">3.3.9 组合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#泳道"><span class="nav-text">3.3.10 泳道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分离"><span class="nav-text">3.3.11 分离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特殊领域语言-SDL"><span class="nav-text">3.3.12 特殊领域语言(SDL)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#完整实例"><span class="nav-text">3.3.13 完整实例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类图"><span class="nav-text">3.4 类图</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#思维导图"><span class="nav-text">4 思维导图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装插件"><span class="nav-text">4.1 安装插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用"><span class="nav-text">4.2 使用</span></a></li></ol></li></ol></div>
+				
+
+			  </div>
+			</section>
+		  <!--/noindex-->
+		  
+		
+
+      
+
+    </aside></div>
+  
+  
+
+
+        
+      </main></div>
+    
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rulei.Zhou</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.2"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '0a400e1f09cb117f3ea4',
+    clientSecret: 'f7d98253e2a12b03803742f2a506c174d06019a0',
+    repo: 'ruleizhou.github.io',
+    owner: 'ruleizhou',
+    admin: ['ruleizhou'],
+    id: md5(location.pathname),
+    
+      language: window.navigator.language || window.navigator.userLanguage,
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  
+  <script>
+    $('.highlight').each(function (i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap')
+      $(e).after($wrap)
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function (e) {
+        var code = $(this).parent().find('.code').find('.line').map(function (i, e) {
+          return $(e).text()
+        }).toArray().join('\n')
+        var ta = document.createElement('textarea')
+        document.body.appendChild(ta)
+        ta.style.position = 'absolute'
+        ta.style.top = '0px'
+        ta.style.left = '0px'
+        ta.value = code
+        ta.select()
+        ta.focus()
+        var result = document.execCommand('copy')
+        document.body.removeChild(ta)
+        
+          if(result)$(this).text('复制成功')
+          else $(this).text('复制失败')
+        
+        $(this).blur()
+      })).on('mouseleave', function (e) {
+        var $b = $(this).find('.copy-btn')
+        setTimeout(function () {
+          $b.text('复制')
+        }, 300)
+      }).append(e)
+    })
+  </script>
+
+
+  
+
+  
+
+</body>
+</html>

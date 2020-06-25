@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="google-site-verification" content="Ezui-oQp8Pno7S0Zg3T794uNOShGTYHv9PGKQ5Y1Au0">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+<script src="https://cdn.bootcss.com/echarts/4.1.0-release/echarts.min.js"></script>
+
+
+  
+
+
+
+
+  <meta name="description" content="1 FreeRTOS​    FreeRTOS 由 美国 的 Richard Barry 于 2003 年 发布， Richard Barry 是 FreeRTOS 的 拥 有者 和 维护者， 在过 去的 十 多年 中 FreeRTOS 历经 了 9 个 版本， 与众 多半 导体 厂商 合作 密切， 有数 百万 开发者， 是 目前 市场 占有 率 最高 的 RTOS。 ​    FreeRTOS">
+<meta name="keywords" content="FreeRTOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初识FreeRTOS">
+<meta property="og:url" content="https://ruleizhou.github.io/2019/08/12/初识FreeRTOS/index.html">
+<meta property="og:site_name" content="ZRL">
+<meta property="og:description" content="1 FreeRTOS​    FreeRTOS 由 美国 的 Richard Barry 于 2003 年 发布， Richard Barry 是 FreeRTOS 的 拥 有者 和 维护者， 在过 去的 十 多年 中 FreeRTOS 历经 了 9 个 版本， 与众 多半 导体 厂商 合作 密切， 有数 百万 开发者， 是 目前 市场 占有 率 最高 的 RTOS。 ​    FreeRTOS">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/08/12/初识FreeRTOS/1-1.png">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/08/12/初识FreeRTOS/1-2.png">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/08/12/初识FreeRTOS/1-3.png">
+<meta property="og:updated_time" content="2020-06-25T00:25:05.226Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="初识FreeRTOS">
+<meta name="twitter:description" content="1 FreeRTOS​    FreeRTOS 由 美国 的 Richard Barry 于 2003 年 发布， Richard Barry 是 FreeRTOS 的 拥 有者 和 维护者， 在过 去的 十 多年 中 FreeRTOS 历经 了 9 个 版本， 与众 多半 导体 厂商 合作 密切， 有数 百万 开发者， 是 目前 市场 占有 率 最高 的 RTOS。 ​    FreeRTOS">
+<meta name="twitter:image" content="https://ruleizhou.github.io/2019/08/12/初识FreeRTOS/1-1.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://ruleizhou.github.io/2019/08/12/初识FreeRTOS/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>初识FreeRTOS | ZRL</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ZRL</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ruleizhou.github.io/2019/08/12/初识FreeRTOS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rulei.Zhou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/han.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZRL">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">初识FreeRTOS
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-12 15:46:56" itemprop="dateCreated datePublished" datetime="2019-08-12T15:46:56+08:00">2019-08-12</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-06-25 08:25:05" itemprop="dateModified" datetime="2020-06-25T08:25:05+08:00">2020-06-25</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/FreeRTOS/" itemprop="url" rel="index"><span itemprop="name">FreeRTOS</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="FreeRTOS">1 FreeRTOS</h1><p>​    FreeRTOS 由 美国 的 Richard Barry 于 2003 年 发布， Richard Barry 是 FreeRTOS 的 拥 有者 和 维护者， 在过 去的 十 多年 中 FreeRTOS 历经 了 9 个 版本， 与众 多半 导体 厂商 合作 密切， 有数 百万 开发者， 是 目前 市场 占有 率 最高 的 RTOS。</p>
+<p>​    FreeRTOS 于 2018 年 被 亚马逊 收购， 改名 为 AWS FreeRTOS， 版本 号 升级 为 V10， 且 开源 协议 也由 原来 的 GPLv2+ 修改 为 MIT， 与 GPLv2+ 相比， MIT 更加 开放， 你 完全可以 理解 为 完全 免费。 V9 以前 的 版本 还是 维持 原样， V10 版本 相比 于 V9 就是 加入 了 一些 物 联网 相关 的 组件， 内核 基本 不变。</p>
+<h2 id="FreeRTOS-1">1.1 FreeRTOS</h2><p>​    FreeRTOS 是一 款“ 开源 免费” 的 实时 操作系统， 遵循 的 是 GPLv2+ 的 许可 协议。 这里 说到 的 开源， 指的 是 可以 免费 获取 FreeRTOS 的 源 代码， 且 当你 的 产品 使用 了 FreeRTOS 而 没有 修改 FreeRTOS 内核 源 码 时， 你的 产品 的 全部 代码 都可以 闭 源， 不用 开源， 但是 当你 修改 了 FreeRTOS 内核 源 码 时， 就必须 将 修改 的 这部 分 开源， 反馈 给 社区， 其他 应用 部分 不用 开源。 免费 的 意思是 无论 你是 个人 还是 公司， 都可以 免费 地 使用， 不需要 花费 一分钱。</p>
+<h2 id="OpenRTOS">1.2 OpenRTOS</h2><p>​    FreeRTOS 和 OpenRTOS 拥有 的 代码 是 一样 的， 但是 可从 官方 获取 的 服务 却是 不一样 的。 FreeRTOS 号称 免费， OpenRTOS 号称 收费。</p>
+<table>
+<thead>
+<tr>
+<th align="left">比较的项目</th>
+<th align="center">FreeRTOS</th>
+<th align="center">OpenRTOS</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">是否免费</td>
+<td align="center">是</td>
+<td align="center">否</td>
+</tr>
+<tr>
+<td align="left">是否商业使用</td>
+<td align="center">是</td>
+<td align="center">是</td>
+</tr>
+<tr>
+<td align="left">是否需要版权费</td>
+<td align="center">否</td>
+<td align="center">否</td>
+</tr>
+<tr>
+<td align="left">是否提供技术支持</td>
+<td align="center">否</td>
+<td align="center">是</td>
+</tr>
+<tr>
+<td align="left">是否被法律保护</td>
+<td align="center">否</td>
+<td align="center">是</td>
+</tr>
+<tr>
+<td align="left">是否需要开源工程代码</td>
+<td align="center">否</td>
+<td align="center">否</td>
+</tr>
+<tr>
+<td align="left">是否需要开源修改的内核代码</td>
+<td align="center">是</td>
+<td align="center">否</td>
+</tr>
+<tr>
+<td align="left">是否需要声明产品使用了FreeRTOS</td>
+<td align="center">如果发布源码，则需要声明</td>
+<td align="center">否</td>
+</tr>
+<tr>
+<td align="left">是否需要提供FreeRTOS的整个工程代码</td>
+<td align="center">如果发布源码，则需要声明</td>
+<td align="center">否</td>
+</tr>
+</tbody></table>
+<h2 id="SaveRTOS">1.3 SaveRTOS</h2><p>​    SaveRTOS 也 基于 FreeRTOS， 但是 SaveRTOS 为 某些 特定 的 领域 做了 安全 相关 的 设计， 有关 SaveRTOS 获得 的 安全 验证。 SaveRTOS 需要 收费。</p>
+<table>
+<thead>
+<tr>
+<th>行业类别</th>
+<th>验证编号</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>工控</td>
+<td>IEC 61508</td>
+</tr>
+<tr>
+<td>铁路</td>
+<td>EN 50128</td>
+</tr>
+<tr>
+<td>医疗</td>
+<td>IEC 62304/FDA 510K</td>
+</tr>
+<tr>
+<td>核工业</td>
+<td>IEC 61513</td>
+</tr>
+<tr>
+<td>汽车电子</td>
+<td>ISO 26262</td>
+</tr>
+<tr>
+<td>加工业</td>
+<td>IEC 61511</td>
+</tr>
+<tr>
+<td>航空</td>
+<td>DO178B</td>
+</tr>
+</tbody></table>
+<h1 id="FreeRTOS-资料获取">2 FreeRTOS 资料获取</h1><p>FreeRTOS的源码和相应的官方书籍均可从<a href="https://www.freertos.org/" target="_blank" rel="noopener">官网</a>获取。<img src="/2019/08/12/初识FreeRTOS/1-1.png" alt></p>
+<h2 id="获取源码-书籍">2.1 获取源码/书籍</h2><ul>
+<li><p>官网<img src="/2019/08/12/初识FreeRTOS/1-2.png" alt></p>
+<ul>
+<li><p>源码</p>
+<p>点击上图的<code>Download Source</code>按钮，可以下载FreeRTOS最新版本的源码。如果要下载以往版本可以从托管网站上下载。</p>
+</li>
+<li><p>书籍</p>
+<p>点击上图的<code>PDF Books</code>按钮可以下载FreeRTOS官方的两本电子书</p>
+<ul>
+<li><p>API参考手册</p>
+<p>FreeRTOS V10. 0. 0 Reference Manual. pdf</p>
+</li>
+<li><p>入门教程</p>
+<p>Mastering_ the_ FreeRTOS_ Real_ Time_ Kernel- A_ Hands- On_ Tutorial_ Guide. pdf</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>托管网站下载</p>
+<p><a href="https://sourceforge.net/projects/freertos/files/FreeRTOS/" target="_blank" rel="noopener">下载网址</a></p>
+</li>
+</ul>
+<h1 id="FreeRTOS的编程风格">3 FreeRTOS的编程风格</h1><h2 id="数据类型">3.1 数据类型</h2><p>​    在 FreeRTOS 中， 使用 的 数据 类型 虽然 都是 标准 C 里面 的 数据 类型， 但是 针对 不同 的 处理器， 对 标准 C 的 数据 类型 又 进行 了 重 定义， 给 它们 设置 了 一个 新的 名字， 比如 为 char 重新 定义 了 一个 名字 portCHAR， 这里 的 port 表示 接口， 在 将 FreeRTOS 移植 到 处理器 上 时， 需要 用 这些 接口 文件 把 它们 连接 在一起。 但是 用户 在 写 程序 时并 非 一定 要 遵循 FreeRTOS 的 风格， 仍可 以 直接 用 C 语言 的 标准 类型。 在 FreeRTOS 中， int 型 从不 使用， 只 使用 short 型 和 long 型。 在 Cortex- M 内核 的 MCU 中， short 为 16 位， long 为 32 位。</p>
+<p>​    FreeRTOS 中 详细 的 数据 类型 重 定义 在 portmacro. h 头 文件 中 实现。<img src="/2019/08/12/初识FreeRTOS/1-3.png" alt></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Type definitions. */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> portCHAR        char</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> portFLOAT       float</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> portDOUBLE      double</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> portLONG        long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> portSHORT       short</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> portSTACK_TYPE  uint32_t</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> portBASE_TYPE   long</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> portSTACK_TYPE StackType_t;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> BaseType_t;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">unsigned</span> <span class="keyword">long</span> UBaseType_t;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span>( configUSE_16_BIT_TICKS == 1 )</span></span><br><span class="line">    <span class="keyword">typedef</span> <span class="keyword">uint16_t</span> TickType_t;</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">define</span> portMAX_DELAY ( TickType_t ) 0xffff</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">    <span class="keyword">typedef</span> <span class="keyword">uint32_t</span> TickType_t;</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">define</span> portMAX_DELAY ( TickType_t ) 0xffffffffUL</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 32-bit tick type on a 32-bit architecture, so reads of the tick count do</span></span><br><span class="line"><span class="comment">    not need to be guarded with a critical section. */</span></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">define</span> portTICK_TYPE_IS_ATOMIC 1</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<p>​    在 编程 时，如果 用户 没有 明确 指定 char 的 符号 类型， 那么 编译器 会 默认 指定 char 型 的 变量 为 无符号 或者 有 符号。正是 基于 这个 原因，在 FreeRTOS 中， 我们 都 需要 明确 指定 变量 char 是有 符号 的 还是 无符号 的。</p>
+<h2 id="变量">3.2 变量</h2><p>​    在 FreeRTOS 中， 定义变量时往往会把 变量 的 类型当作前缀加在变量 上，这样做的好处是让用户 一看到这个变量就知道该变量的类型。比如char型变量的前缀是 c，short 型变量的前缀是s，long 型变量的前缀是 l， portBASE_ TYPE 类型变量的前缀是 x。 还有其他的数据类型，比如 数据 结构、任务句柄、队列 句柄等定义的变量名的前缀也是 x。</p>
+<p>​    如果 一个变量是无符号型的， 那么会有 一个前缀 u， 如果是一 个 指针变量， 则会有 一个 前缀 p。 因此，当 我们定义一个无符号的 char 型变量时会加 一个 uc 前缀， 当定义 一个 char 型的指针变量时会加 一个 pc 前缀。</p>
+<h2 id="函数">3.3 函数</h2><p>​    函数名包含了函数返回值的类型、函数所在的文件名和函数的功能，如果是私有的函数， 则会加 一个 prv（ private）的前缀。 特别地，在 函数 名 中 加入了函数所在的文件名，这将 帮助用户提高寻找函数定义的效率并了解函数作用，具体 举例 如下：</p>
+<ul>
+<li>vTaskPrioritySet() 函数 的 返回 值 为 void 型， 在 task. c 文件 中 定义。</li>
+<li>xQueueReceive() 函数 的 返回 值 为 portBASE_ TYPE 型， 在 queue. c 文件 中 定义。</li>
+</ul>
+<h2 id="宏">3.4 宏</h2><p>宏军邮大写字母表示，并配有小写字母前缀，前缀用于表示该宏在哪个头文件定义。</p>
+<table>
+<thead>
+<tr>
+<th>前缀</th>
+<th>宏定义文件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>port(ex: portMax_DELAY)</td>
+<td>portable.h</td>
+</tr>
+<tr>
+<td>task(ex: taskENTER_CRITICAL())</td>
+<td>task.h</td>
+</tr>
+<tr>
+<td>pd(ex: pdTRUE)</td>
+<td>projdefs.h</td>
+</tr>
+<tr>
+<td>config(ex: configUSE_PREEMPTION)</td>
+<td>FreeRTOSConfig.h</td>
+</tr>
+<tr>
+<td>err(ex: errUEUE_FULL)</td>
+<td>projdefs.h</td>
+</tr>
+</tbody></table>
+<p>注意：</p>
+<ul>
+<li>信号量的函数都是一个宏定义。但是其函数的命名方法遵循函数的命名方法而不是宏定义的方法。</li>
+</ul>
+<h2 id="格式">3.5 格式</h2><p>​    1 个 Tab 键 等于 4 个 空格键。 我们 在 编程 时 最好 使用 空格键 而 不是 使用 Tab 键， 当 2 个 编译器 的 Tab 键 大小 设置 得不 一样 时， 移植 代码 时 格式 就会 变乱， 而使 用 空格键 不会 出现 这种 问题。</p>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text/javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.2.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.2.0/dist/mindmap.min.css">
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/FreeRTOS/" rel="tag"># FreeRTOS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/25/Android-Treble-架构下的HIDL/" rel="next" title="Android Treble 架构下的HIDL">
+                <i class="fa fa-chevron-left"></i> Android Treble 架构下的HIDL
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/08/13/Goldendict/" rel="prev" title="Goldendict">
+                Goldendict <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+		
+		  
+			<ul class="sidebar-nav motion-element">
+			  <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+				文章目录
+			  </li>
+			  <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+				站点概览
+			  </li>
+			</ul>
+		  
+		
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/han.jpg" alt="Rulei.Zhou">
+            
+              <p class="site-author-name" itemprop="name">Rulei.Zhou</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">39</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/ruleizhou" title="GitHub &rarr; https://github.com/ruleizhou" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:rulei.zhou@foxmail.com" title="E-Mail &rarr; mailto:rulei.zhou@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section></div>
+
+		
+		  
+		  <!--noindex-->
+			<section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+			  <div class="post-toc">
+
+				
+				  
+				
+
+				
+				  <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#FreeRTOS"><span class="nav-text">1 FreeRTOS</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#FreeRTOS-1"><span class="nav-text">1.1 FreeRTOS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OpenRTOS"><span class="nav-text">1.2 OpenRTOS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SaveRTOS"><span class="nav-text">1.3 SaveRTOS</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FreeRTOS-资料获取"><span class="nav-text">2 FreeRTOS 资料获取</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#获取源码-书籍"><span class="nav-text">2.1 获取源码/书籍</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FreeRTOS的编程风格"><span class="nav-text">3 FreeRTOS的编程风格</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据类型"><span class="nav-text">3.1 数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#变量"><span class="nav-text">3.2 变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数"><span class="nav-text">3.3 函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#宏"><span class="nav-text">3.4 宏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#格式"><span class="nav-text">3.5 格式</span></a></li></ol></li></ol></div>
+				
+
+			  </div>
+			</section>
+		  <!--/noindex-->
+		  
+		
+
+      
+
+    </aside></div>
+  
+  
+
+
+        
+      </main></div>
+    
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rulei.Zhou</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.2"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '0a400e1f09cb117f3ea4',
+    clientSecret: 'f7d98253e2a12b03803742f2a506c174d06019a0',
+    repo: 'ruleizhou.github.io',
+    owner: 'ruleizhou',
+    admin: ['ruleizhou'],
+    id: md5(location.pathname),
+    
+      language: window.navigator.language || window.navigator.userLanguage,
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  
+  <script>
+    $('.highlight').each(function (i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap')
+      $(e).after($wrap)
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function (e) {
+        var code = $(this).parent().find('.code').find('.line').map(function (i, e) {
+          return $(e).text()
+        }).toArray().join('\n')
+        var ta = document.createElement('textarea')
+        document.body.appendChild(ta)
+        ta.style.position = 'absolute'
+        ta.style.top = '0px'
+        ta.style.left = '0px'
+        ta.value = code
+        ta.select()
+        ta.focus()
+        var result = document.execCommand('copy')
+        document.body.removeChild(ta)
+        
+          if(result)$(this).text('复制成功')
+          else $(this).text('复制失败')
+        
+        $(this).blur()
+      })).on('mouseleave', function (e) {
+        var $b = $(this).find('.copy-btn')
+        setTimeout(function () {
+          $b.text('复制')
+        }, 300)
+      }).append(e)
+    })
+  </script>
+
+
+  
+
+  
+
+</body>
+</html>

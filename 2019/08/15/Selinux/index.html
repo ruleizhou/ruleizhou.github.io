@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="google-site-verification" content="Ezui-oQp8Pno7S0Zg3T794uNOShGTYHv9PGKQ5Y1Au0">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+<script src="https://cdn.bootcss.com/echarts/4.1.0-release/echarts.min.js"></script>
+
+
+  
+
+
+
+
+  <meta name="description" content="1 Selinux 概述1.1 概述 两种安全机制  DAC   –&amp;gt; Discretionary Access Control 在DAC里，如果一个应用获取了一个用户权限，如root，那么他的所有的操作都是基于这个用户的权限  MAC  –&amp;gt; Mandatory Access Control 无论你是谁，甚至是有Root用户权限，文件权限为777，但每个动作都是需要被允许之后可以被执">
+<meta name="keywords" content="Android,Selinux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Selinux">
+<meta property="og:url" content="https://ruleizhou.github.io/2019/08/15/Selinux/index.html">
+<meta property="og:site_name" content="ZRL">
+<meta property="og:description" content="1 Selinux 概述1.1 概述 两种安全机制  DAC   –&amp;gt; Discretionary Access Control 在DAC里，如果一个应用获取了一个用户权限，如root，那么他的所有的操作都是基于这个用户的权限  MAC  –&amp;gt; Mandatory Access Control 无论你是谁，甚至是有Root用户权限，文件权限为777，但每个动作都是需要被允许之后可以被执">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/08/15/Selinux/1.2-1.png">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/08/15/Selinux/1.2-2.png">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/08/15/Selinux/1.2-3.png">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/08/15/Selinux/1.2-4.png">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/08/15/Selinux/1.2-5.png">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/08/15/Selinux/1.2-6.png">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/08/15/Selinux/1.2-7.png">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/08/15/Selinux/1.2-8.png">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/08/15/Selinux/1.2-9.png">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/08/15/Selinux/1.2-10.png">
+<meta property="og:updated_time" content="2020-06-25T00:25:05.210Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Selinux">
+<meta name="twitter:description" content="1 Selinux 概述1.1 概述 两种安全机制  DAC   –&amp;gt; Discretionary Access Control 在DAC里，如果一个应用获取了一个用户权限，如root，那么他的所有的操作都是基于这个用户的权限  MAC  –&amp;gt; Mandatory Access Control 无论你是谁，甚至是有Root用户权限，文件权限为777，但每个动作都是需要被允许之后可以被执">
+<meta name="twitter:image" content="https://ruleizhou.github.io/2019/08/15/Selinux/1.2-1.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://ruleizhou.github.io/2019/08/15/Selinux/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Selinux | ZRL</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ZRL</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ruleizhou.github.io/2019/08/15/Selinux/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rulei.Zhou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/han.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZRL">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Selinux
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-15 14:55:01" itemprop="dateCreated datePublished" datetime="2019-08-15T14:55:01+08:00">2019-08-15</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-06-25 08:25:05" itemprop="dateModified" datetime="2020-06-25T08:25:05+08:00">2020-06-25</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Selinux-概述">1 Selinux 概述</h1><h2 id="概述">1.1 概述</h2><ul>
+<li><p>两种安全机制</p>
+<ul>
+<li><p>DAC   –&gt; Discretionary Access Control</p>
+<p>在DAC里，如果一个应用获取了一个用户权限，如root，那么他的所有的操作都是基于这个用户的权限</p>
+</li>
+<li><p>MAC  –&gt; Mandatory Access Control</p>
+<p>无论你是谁，甚至是有Root用户权限，文件权限为777，但每个动作都是需要被允许之后可以被执行。这里可以是在安全策略文件中被允许，与可以是用户手动允许。</p>
+</li>
+</ul>
+</li>
+<li><p>MAC基于LSM(Linux Security Module)标准实现的。</p>
+</li>
+<li><p>SELinux全称Security-Enhanced Linux。SELinux在MAC上实现的，所以SELinux也是基于LSM标准。在Linux kernel 2.6后正式直接整合进Linux里面</p>
+</li>
+<li><p>MAC的安全策略文件的作用就是表明了允许干什么。学名是TEAC（Type Enforcement Access Control）。简称TE。里面的语言被称为强制类型语言。</p>
+</li>
+<li><p>Security Context，安全上下文。Security Context的作用就是相当于这些文件和进程的“身份证”。</p>
+</li>
+<li><p>SELinux Mode</p>
+<ul>
+<li><p>Permissve Mode（宽容模式）</p>
+<p>只会打印acvl log，不会进行拦截</p>
+</li>
+<li><p>Enforcing Mode（强制模式）</p>
+<p>真正的拦截并打印avc log</p>
+</li>
+<li><p>模式查看</p>
+<ul>
+<li><p>getenforce</p>
+</li>
+<li><p>cat /sys/fs/selinux/enforce</p>
+<p>1    –&gt; Enforcing Mode</p>
+<p>0    –&gt; Permissve Mode</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="架构">1.2 架构</h2><p><img src="/2019/08/15/Selinux/1.2-1.png" alt></p>
+<ul>
+<li>TE文件的规则和用户主动允许的动作等等会存储在图中的database里</li>
+<li>当一个进程执行read动作（Event）被Security Server检测到的时候，DAC会作初步检查。然后把动作传进LSM，同时LSM会找到该进程和文件的安全上下文。</li>
+<li>SELinux在初始化的时候会实现一些由LSM提供的抽象函数（abstract）和把一些LSM回调（Hook）注册进LSM。LSM会读取SELinux里database的TE规则，或者在AVC（AccessVector cache）里寻找相应的规则。AVC相当于一个规则的缓存，加快读取的速度。找到相应的规则后又把它传回LSM，在LSM里做出最后的判断</li>
+</ul>
+<p><img src="/2019/08/15/Selinux/1.2-2.png" alt></p>
+<p>​    从图中可以看到，SEAndroid安全机制包含有内核空间（Kernel Space）和用户空间（User Space）两部分支持，以SELinux文件系统（SELinux File system）接口为边界。在内核空间，主要涉及到一个SELinux LSM模块。而在用户空间中，涉到安全上下文（Security Context）、安全服务（Security Server）和安全策略（SEAndroid Policy）等模块。这些内核空间模块和用户空间模块的作用以及交互如下：</p>
+<ul>
+<li><p><strong>内核空间的SELinux LSM模块</strong>负责内核资源的安全访问控制。</p>
+</li>
+<li><p><strong>用户空间的Security Context</strong>描述的是资源安全上下文。</p>
+<p>从上文我们知道，SEAndroid的安全访问策略就是在资源（进程、文件等）的安全上下文基础上实现的</p>
+</li>
+<li><p><strong>用户空间的SEAndroid Policy</strong>描述的是资源安全访问策略。</p>
+<p>系统在启动的时候，用户空间的Security Server会将这些安全访问策略加载内核空间的SELinux LSM模块中去。这是通过SELinux文件系统接口实现的。</p>
+</li>
+<li><p><strong>用户空间的Security Server</strong>一方面需要到用户空间的Security Context去检索对象的安全上下文，另一方面也需要到内核空间去操作对象的安全上下文。</p>
+</li>
+<li><p><strong>用户空间的libselinux库</strong>封装了对SELinux文件系统接口的读写操作。</p>
+<p>用户空间的Security Server访问内核空间的SELinux LSM模块时，都是间接地通过libselinux进行的。这样可以将对SELinux文件系统接口的读写操作封装成更有意义的函数调用。</p>
+<p>用户空间的Security Server到用户空间的Security Context去检索对象的安全上下文时，同样也是通过libselinux库来进行的。</p>
+</li>
+</ul>
+<h2 id="流程">1.3 流程</h2><p><img src="/2019/08/15/Selinux/1.2-3.png" alt></p>
+<p><img src="/2019/08/15/Selinux/1.2-4.png" alt></p>
+<ul>
+<li><p>从上层到驱动层的调用流程，但是我们重点关注sContext</p>
+</li>
+<li><p>file_contexts</p>
+<p>系统中所有file_contexts安全上下文</p>
+</li>
+<li><p>seapp_contexts</p>
+<p>app安全上下文</p>
+</li>
+<li><p>property_contexts</p>
+<p>属性的安全上下文</p>
+</li>
+<li><p>service_contexts</p>
+<p>service文件安全上下文</p>
+</li>
+<li><p>genfs_contexts</p>
+<p>虚拟文件系统安全上下文</p>
+</li>
+</ul>
+<h1 id="基础概念">2 基础概念</h1><h2 id="主体-Subject-客体-Object">2.1 主体(Subject)/客体(Object)</h2><p>​    SELinux两个最基本的对象是主体（Subject）和客体（Object）。主体和客体分别对应的是“进程”和“文件”。这里的文件并不单指的是实际存在的文件，而是指Linux里“一切皆文件”里指的文件。如Socket，系统属性等</p>
+<p>​    在SEAndroid，对主体和客体进行了进一步形式上的封装和扩展，其实差不多。SEAndroid里细分为：系统文件，服务，系统属性，Bindert和Socket。这里的系统属性指的是build.prop里的属性，也是getprop命令查询出来的属性。</p>
+<h2 id="安全上下文">2.2 安全上下文</h2><p>​    全策略又是建立在对象的安全上下文的基础上的，安全上下文实际上就是一个附加在对象上的标签（label）。这个标签实际上就是一个字符串，它由四部分内容组成，分别是<strong>SELinux用户</strong>、<strong>SELinux 角色</strong>、<strong>类型</strong>、<strong>安全级别</strong>，每一个部分都通过一个冒号来分隔，格式为“user:role:type:rank”。</p>
+<ul>
+<li><p>文件的安全上下文</p>
+<ul>
+<li><p>ls -Z init.rc</p>
+<p><em>-rwxr-x— root     root    <strong>u:object_r:rootfs:s0</strong> init.rc</em></p>
+</li>
+</ul>
+</li>
+<li><p>进程的安全上下文</p>
+<ul>
+<li><p>ps -Z</p>
+<p>LABEL                          USER     PID  PPID  NAME</p>
+<p><strong>u:r:init:s0</strong>                    root         1       0        /init*</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="用户和角色">2.2.1 用户和角色</h3><p>​    对于进程来，SELinux用户和SELinux角色只是用来限制进程可以标注的类型。对于文件来说，SELinux用户和SELinux角色就可以完全忽略不计。</p>
+<p>​    <strong>进程</strong>的安全上下文中，用户固定为 u，角色固定为 r。</p>
+<p>​    <strong>文件</strong>的安全上下文中，用户固定为 u，角色固定为 obejct_r</p>
+<h3 id="安全级别">2.2.2 安全级别</h3><p>​    在SELinux中，安全级别是可选的，也就是说，可以选择启用或者不启用。通常在进程及文件的安全上下文中安全级别都设置为s0</p>
+<h3 id="类型">2.2.3 类型</h3><p>​    <strong>进程</strong>的安全上下文的类型称为domain，<strong>文件</strong>的安全上下文中的类型称为file_type。</p>
+<p>​    上面我们看到进程init的安全上下文为u:r:init:s0，type为init，这也是合法的，为什么呢？在Android中我们可以通过如下语句定义type:</p>
+<p><em>type init domain;</em></p>
+<p>即将domain设置为init的属性，这样就可以用init为type来描述进程的安全上下文了。</p>
+<h2 id="安全上下文描述">2.3 安全上下文描述</h2><p>​    安全上下文根据主体对象不同，有如下几种，在Android O上一般都存放在/system/sepolicy/private/目录下。</p>
+<h3 id="mac-permissions-xml">2.3.1 mac_permissions.xml</h3><p>​    用于给不同签名的App分配不同的seinfo字符串，例如，在AOSP源码环境下编译并且使用平台签名的App获得的seinfo为“platform”。这个seinfo描述的是其实并不是安全上下文中的Type，它是用来在另外一个文件seapp_contexts中查找对应的Type的。</p>
+<p><img src="/2019/08/15/Selinux/1.2-5.png" alt></p>
+<h3 id="Seapp-contexts">2.3.2 Seapp_contexts</h3><p>​    用于声明APP进程和创建数据目录的安全上下文，O上将该文件拆分为plat和nonplat 前缀的两个文件，plat前缀的文件用于声明system app，nonplat前缀的文件用于声明vendor app。</p>
+<p><img src="/2019/08/15/Selinux/1.2-6.png" alt></p>
+<p>​    从前面的分析可知，对于使用平台签名的App来说，它的seinfo为“platform”。这样我们就可以知道，使用平台签名的<strong>App</strong>所运行在的进程domain为“platform_app”，并且它的数据文件的file_type为“platform_app_data_file”。</p>
+<h3 id="File-contexts">2.3.3 File_contexts</h3><p>​    用于声明文件的安全上下文，plat前缀的文件用于声明system、rootfs、data等与设备无关的文件。Nonplat 用于声明vendor、data/vendor 等文件。</p>
+<p><img src="/2019/08/15/Selinux/1.2-7.png" alt></p>
+<p>​    如上，/system目录包括子目录和文件的安全上下文为u:object_r:system_file:s0，这意味着只有有权限访问Type为system_file的资源的进程才可以访问这些文件。</p>
+<h3 id="Service-contexts">2.3.4 Service_contexts</h3><p>​    用于声明java service 的安全上下文， O上将该文件拆分为plat和nonplat 前缀的两个文件，但nonplat前缀的文件并没有具体的内容（vendor和system java service不允许binder 操作）</p>
+<p><img src="/2019/08/15/Selinux/1.2-8.png" alt></p>
+<p>​    如上，service为netd的安全上下文为u:object_r:netd_service:s0，这意味着只有有权限访问Type为netd_service的资源的进程才可以访问这些service。</p>
+<h3 id="Property-contexts">2.3.5 Property_contexts</h3><p>​    用于声明属性的安全上下文，plat 前缀的文件用于声明system属性，nonplat前缀的文件用于声明vendor 属性。</p>
+<p><img src="/2019/08/15/Selinux/1.2-9.png" alt></p>
+<p>​    如上，ril.开头的属性的安全上下文为u:object_r:radio_prop:s0，这意味着只有有权限访问Type为radio_prop的资源的进程才可以访问这些属性。</p>
+<h3 id="Hwservice-contexts">2.3.6 Hwservice_contexts</h3><p>​    O 上新增文件，用于声明HIDL service 安全上下文。</p>
+<p><img src="/2019/08/15/Selinux/1.2-10.png" alt></p>
+<p>​    如上，android.frameworks.sensorservice::ISensorManager的hw service的安全上下文为u:object_r:fwk_sensor_hwservice:s0，这意味着只有有权限访问Type为fwk_sensor_hwservice的资源的进程才可以访问这些hw service。</p>
+<h1 id="策略文件">3 策略文件</h1><h2 id="文件预览">3.1 文件预览</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">sepolicy/attributes		</span><br><span class="line"><span class="meta">	--&gt;</span>所定义的attributes都在这个文件</span><br><span class="line">sepolicy/access_vectors	</span><br><span class="line"><span class="meta">	--&gt;</span>对应每一个class可以别允许执行的命令</span><br><span class="line">sepolicy/roles			</span><br><span class="line"><span class="meta">	--&gt;</span>Android中只定义了一个role，名字就是r，将r和attribute domain关联起来</span><br><span class="line">sepolicy/users			</span><br><span class="line"><span class="meta">	--&gt;</span>其实是将user与roles进行了关联，设置了user的安全级别，s0为最低级是默认的级别</span><br><span class="line">sepolicy/security_class	</span><br><span class="line"><span class="meta">	--&gt;</span>指的是上文命令中的class，个人认为这个class的内容是指在android运行过程中，程序或者系统可能用到的操作的模块 </span><br><span class="line">sepolicy/te_macros		</span><br><span class="line"><span class="meta">	--&gt;</span>系统定义的宏全在te_macros文件 </span><br><span class="line">sepolicy/*.te			</span><br><span class="line"><span class="meta">	--&gt;</span>一些策略的文件，包含了各种运行的规则</span><br></pre></td></tr></table></figure>
+
+<h2 id="基本定义">3.2 基本定义</h2><h3 id="定义类型">3.2.1 定义类型</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>定义type</span><br><span class="line"><span class="meta">#</span>格式：type 类型名称 [alias 别名集] [,属性集]</span><br><span class="line">type XXXXX;</span><br><span class="line">tyep  alias&#123; aa , bb , cc &#125;     XX ,  YY;</span><br></pre></td></tr></table></figure>
+
+<p>在TE中所有的东西都会被抽象成类型。进程抽象成类型、资源抽象成类型。属性是类型的集合。所以在TE规则中的最小单位就是类型</p>
+<h3 id="申明别名">3.2.2 申明别名</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>使用typealias申明别名</span><br><span class="line">type mozilla_t, domain;</span><br><span class="line">typealias mozilla_t alias netscape_t;</span><br><span class="line"><span class="meta">#</span>上面两句等于下面一句</span><br><span class="line">type mozilla_t alias netscape_t, domain;</span><br></pre></td></tr></table></figure>
+
+<h3 id="声明属性">3.2.3 声明属性</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>格式:attribute 属性名</span><br><span class="line">attribute domain；</span><br></pre></td></tr></table></figure>
+
+<h3 id="类型与属性关联">3.2.4 类型与属性关联</h3><p>类型与属性的关联有两种方式，一种是定义类型的时候进行关联</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>格式：type 类型名称 [alias 别名集] [,属性集]</span><br><span class="line">type app_data_file, file_type, data_file_type;</span><br></pre></td></tr></table></figure>
+
+<p>另一种是使用typeattribute进行类型与属性的关联</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>格式：typeattribute 类型名 [属性集]</span><br><span class="line">type httpd_user_content_t; </span><br><span class="line">typeattribute httpd_user_content_t file_type, httpdcontent;</span><br></pre></td></tr></table></figure>
+
+<h2 id="访问向量-AV">3.3 访问向量(AV)</h2><p>访问向量(AV)规则用来描述主体对客体的访问许可。通常有类AV规则：</p>
+<ul>
+<li><p>allow</p>
+<p>表示允许主体对客体执行许可的操作。</p>
+</li>
+<li><p>neverallow</p>
+<p>表示不允许主体对客体执行制定的操作。</p>
+</li>
+<li><p>auditallow</p>
+<p>表示允许操作并记录访问决策信息。</p>
+</li>
+<li><p>dontaudit</p>
+<p>表示不记录违反规则的决策信息，切违反规则不影响运行。</p>
+</li>
+</ul>
+<h2 id="语法">3.4 语法</h2><p>格式：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rule_name source_type target_type:class perm_s</span><br></pre></td></tr></table></figure>
+
+<p>  rule_name 就是上面说的allow 等</p>
+<p>注意：</p>
+<p>​    如果有多个source_type，target_type，class或perm_set，可以用”{}”括起来；</p>
+<ul>
+<li><code>”~”</code>号，表示除了”~”以外；</li>
+<li><code>”-”</code>号，表示去除某项内容；</li>
+<li><code>“*”</code>号，表示所有内容</li>
+</ul>
+<h3 id="Demo1">3.4.1 Demo1</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">allow appdomain zygote_tmpfs:file read;</span><br></pre></td></tr></table></figure>
+
+<p>允许appdomain域的进程对zygote_tmpfs类型的文件（file）执行read操作；</p>
+<h3 id="Demo2">3.4.2 Demo2</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">allow zygote appdomain:process &#123; getpgid setpgid &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>允许zygote域的进程对appdomain类型的进程执行getpgid和setpgid操作；</p>
+<h3 id="Demo3">3.4.3 Demo3</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">allow bluetooth &#123; tun_device uhid_device hci_attach_dev &#125;:chr_file &#123; read write &#125;</span><br></pre></td></tr></table></figure>
+
+<p>允许bluetooth域的进程对tun_device, uhid_device, hci_attach_dev类型的字符文件（chr_file）执行读写操作；</p>
+<h3 id="Demo4">3.4.4 Demo4</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">allow init &#123;</span><br><span class="line"></span><br><span class="line">  shell_data_file</span><br><span class="line"></span><br><span class="line">  app_data_file</span><br><span class="line"></span><br><span class="line">&#125;:&#123; chr_file file &#125; ~&#123;entrypoint execute_no_trans execmod execute relabelto&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>表示允许init域的进程对shell_data_file,app_data_file类型的字符文件（chr_file），普通文件（file）执行除了entrypointexecute_no_trans execmod execute relabelto以外的操作；</p>
+<h3 id="Demo5">3.4.5 Demo5</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">allow init &#123; file_type -system_file &#125;:dir relabelto;</span><br></pre></td></tr></table></figure>
+
+<p>”-”符号表示去除某项，即允许init域的进程对file_type类型中除了system_file类型外的目录执行relabelto操作</p>
+<h3 id="Demo6">3.4.6 Demo6</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">allow system_server self:netlink_selinux_socket *;</span><br></pre></td></tr></table></figure>
+
+<p>”*”符号表示所有内容，即system_server域的进程能够对system_server类型执行所有netlink_selinux_socket类相关的操作；</p>
+<h3 id="Demo7">3.4.7 Demo7</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">neverallow &#123;</span><br><span class="line"></span><br><span class="line">  domain -keystore</span><br><span class="line"></span><br><span class="line">&#125; keystore_data_file:dir ~&#123; open create read getattr setattr search relabelto &#125;;</span><br></pre></td></tr></table></figure>
+
+<p> 简单来说就是不允许除keystore域外的其它域对keystore_data_file类型的目录执行open，create等操作；</p>
+<p>特别注意，前面提到权限必须显示声明，没有声明的话默认就没有权限。那么neverallow语句就没有存在的必要了，因为“无权限”是不需要声明的。确实如此，neverallow语句的作用只是在生成安全策略文件时进行检查，判断是否有违反neverallow语句的策略存在。</p>
+<h1 id="Type转换">4 Type转换</h1><h2 id="概述-1">4.1 概述</h2><p>type类型转换分两种情况，一种是进程主体type转换，另一种是资源客体type转换。</p>
+<ul>
+<li><p>DT –&gt;Domain Transition</p>
+<p>某个进行的Domain切换到一个合适的Domain中去</p>
+</li>
+<li><p>TT –&gt;Type  Transition</p>
+<p>假设目录A的SContext为u:r:dir_a，那么默认情况下，在该目录下创建的文件的SContext就是u:r:dir_a，如果想让它的SContext发生变化，那么就需要TypeTransition</p>
+</li>
+</ul>
+<h2 id="DT转换">4.2 DT转换</h2><p>语法格式：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">type_transition  source_type  target_type : class  default_type</span><br></pre></td></tr></table></figure>
+
+<p>表示source_type域的进程在对target_type类型的资源进行object class定义的许可操作时，进程会切换到default_type域中.</p>
+<p>例如：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">type_transition init shell_exec:process init_shell</span><br></pre></td></tr></table></figure>
+
+<p>当init域的进程执行（process）shell_exec类型的可执行文件时，进程会从init域切换到init_shell域.</p>
+<p>但是上述策略要想被执行的话,至少还有三个前提:</p>
+<ul>
+<li><p>首先，你得让init域的进程要能够执行shell_exec类型的文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">allow init shell_exec:file execute;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>告诉SELinux，允许init域的进程切换到init_shell域</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">allow init init_shell:process transition;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>告诉SELinux，域切换的入口（entrypoint）是执行shell_exec类型的文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">allow init_shell shell_exec:file entrypoint;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>这样看来转换需要的步骤还挺多的,好在Android Selinux定义了一个宏,可以一次性做完上面的四步操作.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">domain_auto_trans(init, shell_exec, init_shell)</span><br></pre></td></tr></table></figure>
+
+<h2 id="TT转换">4.3 TT转换</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file_type_trans(domain, dir_type, file_type)</span><br></pre></td></tr></table></figure>
+
+<p>该宏的意思就是当domain域的进程在dir_type类型的目录创建文件时，该文件的SContext应该是file_type类型</p>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text/javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.2.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.2.0/dist/mindmap.min.css">
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/Selinux/" rel="tag"># Selinux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/15/input/" rel="next" title="input">
+                <i class="fa fa-chevron-left"></i> input
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/08/23/Kernel-Command-Line/" rel="prev" title="Kernel  Command Line">
+                Kernel  Command Line <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+		
+		  
+			<ul class="sidebar-nav motion-element">
+			  <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+				文章目录
+			  </li>
+			  <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+				站点概览
+			  </li>
+			</ul>
+		  
+		
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/han.jpg" alt="Rulei.Zhou">
+            
+              <p class="site-author-name" itemprop="name">Rulei.Zhou</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">39</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/ruleizhou" title="GitHub &rarr; https://github.com/ruleizhou" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:rulei.zhou@foxmail.com" title="E-Mail &rarr; mailto:rulei.zhou@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section></div>
+
+		
+		  
+		  <!--noindex-->
+			<section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+			  <div class="post-toc">
+
+				
+				  
+				
+
+				
+				  <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Selinux-概述"><span class="nav-text">1 Selinux 概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-text">1.1 概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#架构"><span class="nav-text">1.2 架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#流程"><span class="nav-text">1.3 流程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基础概念"><span class="nav-text">2 基础概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#主体-Subject-客体-Object"><span class="nav-text">2.1 主体(Subject)/客体(Object)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安全上下文"><span class="nav-text">2.2 安全上下文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用户和角色"><span class="nav-text">2.2.1 用户和角色</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安全级别"><span class="nav-text">2.2.2 安全级别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型"><span class="nav-text">2.2.3 类型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安全上下文描述"><span class="nav-text">2.3 安全上下文描述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mac-permissions-xml"><span class="nav-text">2.3.1 mac_permissions.xml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Seapp-contexts"><span class="nav-text">2.3.2 Seapp_contexts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#File-contexts"><span class="nav-text">2.3.3 File_contexts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Service-contexts"><span class="nav-text">2.3.4 Service_contexts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Property-contexts"><span class="nav-text">2.3.5 Property_contexts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hwservice-contexts"><span class="nav-text">2.3.6 Hwservice_contexts</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#策略文件"><span class="nav-text">3 策略文件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#文件预览"><span class="nav-text">3.1 文件预览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本定义"><span class="nav-text">3.2 基本定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义类型"><span class="nav-text">3.2.1 定义类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#申明别名"><span class="nav-text">3.2.2 申明别名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#声明属性"><span class="nav-text">3.2.3 声明属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型与属性关联"><span class="nav-text">3.2.4 类型与属性关联</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#访问向量-AV"><span class="nav-text">3.3 访问向量(AV)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#语法"><span class="nav-text">3.4 语法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Demo1"><span class="nav-text">3.4.1 Demo1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Demo2"><span class="nav-text">3.4.2 Demo2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Demo3"><span class="nav-text">3.4.3 Demo3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Demo4"><span class="nav-text">3.4.4 Demo4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Demo5"><span class="nav-text">3.4.5 Demo5</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Demo6"><span class="nav-text">3.4.6 Demo6</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Demo7"><span class="nav-text">3.4.7 Demo7</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Type转换"><span class="nav-text">4 Type转换</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述-1"><span class="nav-text">4.1 概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DT转换"><span class="nav-text">4.2 DT转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TT转换"><span class="nav-text">4.3 TT转换</span></a></li></ol></li></ol></div>
+				
+
+			  </div>
+			</section>
+		  <!--/noindex-->
+		  
+		
+
+      
+
+    </aside></div>
+  
+  
+
+
+        
+      </main></div>
+    
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rulei.Zhou</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.2"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '0a400e1f09cb117f3ea4',
+    clientSecret: 'f7d98253e2a12b03803742f2a506c174d06019a0',
+    repo: 'ruleizhou.github.io',
+    owner: 'ruleizhou',
+    admin: ['ruleizhou'],
+    id: md5(location.pathname),
+    
+      language: window.navigator.language || window.navigator.userLanguage,
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  
+  <script>
+    $('.highlight').each(function (i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap')
+      $(e).after($wrap)
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function (e) {
+        var code = $(this).parent().find('.code').find('.line').map(function (i, e) {
+          return $(e).text()
+        }).toArray().join('\n')
+        var ta = document.createElement('textarea')
+        document.body.appendChild(ta)
+        ta.style.position = 'absolute'
+        ta.style.top = '0px'
+        ta.style.left = '0px'
+        ta.value = code
+        ta.select()
+        ta.focus()
+        var result = document.execCommand('copy')
+        document.body.removeChild(ta)
+        
+          if(result)$(this).text('复制成功')
+          else $(this).text('复制失败')
+        
+        $(this).blur()
+      })).on('mouseleave', function (e) {
+        var $b = $(this).find('.copy-btn')
+        setTimeout(function () {
+          $b.text('复制')
+        }, 300)
+      }).append(e)
+    })
+  </script>
+
+
+  
+
+  
+
+</body>
+</html>

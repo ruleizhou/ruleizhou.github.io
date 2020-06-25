@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="google-site-verification" content="Ezui-oQp8Pno7S0Zg3T794uNOShGTYHv9PGKQ5Y1Au0">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+<script src="https://cdn.bootcss.com/echarts/4.1.0-release/echarts.min.js"></script>
+
+
+  
+
+
+
+
+  <meta name="description" content="1 Input 概述1.1 系统整体框图 1.2 Input 子系统框图  设备驱动层 主要实现对硬件设备的读写访问,中断设置,并把硬件产生的事件转换为核心层定义的规范提交给事件处理层  核心层 为设备驱动层提供了规范和接口. 设备驱动层只要关心如何驱动硬件并获得硬件数据, 然后调用核心层的接口,  核心层会自动把数据提交给事件处理层.  事件处理层 是用户编程的接口(设备节点), 并处理驱动层提">
+<meta name="keywords" content="Android,Kernel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="input">
+<meta property="og:url" content="https://ruleizhou.github.io/2019/08/15/input/index.html">
+<meta property="og:site_name" content="ZRL">
+<meta property="og:description" content="1 Input 概述1.1 系统整体框图 1.2 Input 子系统框图  设备驱动层 主要实现对硬件设备的读写访问,中断设置,并把硬件产生的事件转换为核心层定义的规范提交给事件处理层  核心层 为设备驱动层提供了规范和接口. 设备驱动层只要关心如何驱动硬件并获得硬件数据, 然后调用核心层的接口,  核心层会自动把数据提交给事件处理层.  事件处理层 是用户编程的接口(设备节点), 并处理驱动层提">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/08/15/input/1.1-1.png">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/08/15/input/1.1-2.png">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/08/15/input/1.1-3.png">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/08/15/input/1.1-4.png">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/08/15/input/1.1-6.jpeg">
+<meta property="og:image" content="https://ruleizhou.github.io/2019/08/15/input/1.1-5.jpg">
+<meta property="og:updated_time" content="2020-06-25T00:25:05.218Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="input">
+<meta name="twitter:description" content="1 Input 概述1.1 系统整体框图 1.2 Input 子系统框图  设备驱动层 主要实现对硬件设备的读写访问,中断设置,并把硬件产生的事件转换为核心层定义的规范提交给事件处理层  核心层 为设备驱动层提供了规范和接口. 设备驱动层只要关心如何驱动硬件并获得硬件数据, 然后调用核心层的接口,  核心层会自动把数据提交给事件处理层.  事件处理层 是用户编程的接口(设备节点), 并处理驱动层提">
+<meta name="twitter:image" content="https://ruleizhou.github.io/2019/08/15/input/1.1-1.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://ruleizhou.github.io/2019/08/15/input/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>input | ZRL</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ZRL</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ruleizhou.github.io/2019/08/15/input/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rulei.Zhou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/han.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZRL">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">input
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-15 14:26:57" itemprop="dateCreated datePublished" datetime="2019-08-15T14:26:57+08:00">2019-08-15</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-06-25 08:25:05" itemprop="dateModified" datetime="2020-06-25T08:25:05+08:00">2020-06-25</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Kernel/" itemprop="url" rel="index"><span itemprop="name">Kernel</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Input-概述">1 Input 概述</h1><h2 id="系统整体框图">1.1 系统整体框图</h2><p><img src="/2019/08/15/input/1.1-1.png" alt></p>
+<h2 id="Input-子系统框图">1.2 Input 子系统框图</h2><p><img src="/2019/08/15/input/1.1-2.png" alt></p>
+<ul>
+<li><p>设备驱动层</p>
+<p>主要实现对硬件设备的读写访问,中断设置,并把硬件产生的事件转换为核心层定义的规范提交给事件处理层</p>
+</li>
+<li><p>核心层</p>
+<p>为设备驱动层提供了规范和接口. 设备驱动层只要关心如何驱动硬件并获得硬件数据, 然后调用核心层的接口,  核心层会自动把数据提交给事件处理层.</p>
+</li>
+<li><p>事件处理层</p>
+<p>是用户编程的接口(设备节点), 并处理驱动层提交的数据</p>
+</li>
+</ul>
+<h2 id="数据关系框图">1.3 数据关系框图</h2><p><img src="/2019/08/15/input/1.1-3.png" alt></p>
+<ul>
+<li><p>input_dev</p>
+<ul>
+<li>是硬件驱动层，代表一个input设备</li>
+<li>通过全局的input_dev_list链接在一起。设备注册的时候实现这个操作</li>
+<li>Input_dev可以通过Input_handle找到Input_handler</li>
+</ul>
+</li>
+<li><p>Input_handler</p>
+<ul>
+<li>是事件处理层，代表一个事件处理器(如 evdev mousedev等)</li>
+<li>通过全局的input_handler_list链接在一起。事件处理器注册的时候实现这个操作</li>
+<li>事件处理器一般内核自带，一般不需要我们来写</li>
+<li>Input_handler可以通过Input_handle找到Input_dev</li>
+</ul>
+</li>
+<li><p>Input_handle</p>
+<ul>
+<li>属于核心层，代表一个配对的input设备与input事件处理器</li>
+<li>input_hande 没有一个全局的链表，它注册的时候将自己分别挂在了input_dev 和 input_handler 的h_list上了。</li>
+<li>通过input_handle也可以找到input_dev和input_handler</li>
+</ul>
+</li>
+<li><p>一个device可能对应多个handler,而一个handler也不能只处理一个device</p>
+<p>比如说一个鼠标,它可以对应evdev_handler,也可以对应mouse_handler,因此当其注册时与系统中的handler进行匹配,就有可能产生两个实例,一个是evdev,另一个是mousedev,而任何一个实例中都只有一个handle，至于以何种方式来传递事件,就由用户程序打开哪个实例来决定</p>
+</li>
+</ul>
+<h1 id="设备驱动层">2 设备驱动层</h1><h2 id="概述">2.1 概述</h2><p>纯硬件操作层, 包含不同硬件接口处理. 对于每种不同的具体硬件操作都对应着不同的Input_dev结构体.</p>
+<h2 id="数据结构">2.2 数据结构</h2><h3 id="input-dev">2.2.1 input_dev</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">input_dev</span> &#123;</span>  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">void</span> *<span class="keyword">private</span>;              <span class="comment">//输入设备私有指针，一般指向用于描述设备驱动层的设备结构  </span></span><br><span class="line">  </span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *name;           <span class="comment">//提供给用户的输入设备的名称  </span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *phys;           <span class="comment">//提供给编程者的设备节点的名称  </span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *uniq;           <span class="comment">//指定唯一的ID号，就像MAC地址一样  </span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">input_id</span> <span class="title">id</span>;</span>         <span class="comment">//输入设备标识ID，用于和事件处理层进行匹配  </span></span><br><span class="line">  </span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> evbit[NBITS(EV_MAX)];     <span class="comment">//位图，记录设备支持的事件类型  </span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> keybit[NBITS(KEY_MAX)];       <span class="comment">//位图，记录设备支持的按键类型  </span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> relbit[NBITS(REL_MAX)];       <span class="comment">//位图，记录设备支持的相对坐标  </span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> absbit[NBITS(ABS_MAX)];       <span class="comment">//位图，记录设备支持的绝对坐标  </span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> mscbit[NBITS(MSC_MAX)];   <span class="comment">//位图，记录设备支持的其他功能  </span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> ledbit[NBITS(LED_MAX)];       <span class="comment">//位图，记录设备支持的指示灯  </span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> sndbit[NBITS(SND_MAX)];       <span class="comment">//位图，记录设备支持的声音或警报  </span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> ffbit[NBITS(FF_MAX)];     <span class="comment">//位图，记录设备支持的作用力功能  </span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> swbit[NBITS(SW_MAX)];     <span class="comment">//位图，记录设备支持的开关功能  </span></span><br><span class="line">  </span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> keycodemax;        <span class="comment">//设备支持的最大按键值个数  </span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> keycodesize;       <span class="comment">//每个按键的字节大小  </span></span><br><span class="line">    <span class="keyword">void</span> *keycode;              <span class="comment">//指向按键池，即指向按键值数组首地址  </span></span><br><span class="line">    <span class="keyword">int</span> (*setkeycode)(struct input_dev *dev, <span class="keyword">int</span> scancode, <span class="keyword">int</span> keycode);    <span class="comment">//修改按键值  </span></span><br><span class="line">    <span class="keyword">int</span> (*getkeycode)(struct input_dev *dev, <span class="keyword">int</span> scancode, <span class="keyword">int</span> *keycode);   <span class="comment">//获取按键值  </span></span><br><span class="line">  </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ff_device</span> *<span class="title">ff</span>;</span>           <span class="comment">//用于强制更新输入设备的部分内容  </span></span><br><span class="line">  </span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> repeat_key;        <span class="comment">//重复按键的键值  </span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timer_list</span> <span class="title">timer</span>;</span>        <span class="comment">//设置当有连击时的延时定时器  </span></span><br><span class="line">  </span><br><span class="line">    <span class="keyword">int</span> state;      <span class="comment">//设备状态  </span></span><br><span class="line">  </span><br><span class="line">    <span class="keyword">int</span> sync;       <span class="comment">//同步事件完成标识，为1说明事件同步完成  </span></span><br><span class="line">  </span><br><span class="line">    <span class="keyword">int</span> <span class="built_in">abs</span>[ABS_MAX + <span class="number">1</span>];       <span class="comment">//记录坐标的值  </span></span><br><span class="line">    <span class="keyword">int</span> rep[REP_MAX + <span class="number">1</span>];       <span class="comment">//记录重复按键的参数值  </span></span><br><span class="line">  </span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> key[NBITS(KEY_MAX)];      <span class="comment">//位图，按键的状态  </span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> led[NBITS(LED_MAX)];      <span class="comment">//位图，led的状态  </span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> snd[NBITS(SND_MAX)];      <span class="comment">//位图，声音的状态  </span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> sw[NBITS(SW_MAX)];            <span class="comment">//位图，开关的状态  </span></span><br><span class="line">  </span><br><span class="line">    <span class="keyword">int</span> absmax[ABS_MAX + <span class="number">1</span>];                    <span class="comment">//位图，记录坐标的最大值  </span></span><br><span class="line">    <span class="keyword">int</span> absmin[ABS_MAX + <span class="number">1</span>];                    <span class="comment">//位图，记录坐标的最小值  </span></span><br><span class="line">    <span class="keyword">int</span> absfuzz[ABS_MAX + <span class="number">1</span>];                   <span class="comment">//位图，记录坐标的分辨率  </span></span><br><span class="line">    <span class="keyword">int</span> absflat[ABS_MAX + <span class="number">1</span>];                   <span class="comment">//位图，记录坐标的基准值  </span></span><br><span class="line">  </span><br><span class="line">    <span class="keyword">int</span> (*open)(struct input_dev *dev);         <span class="comment">//输入设备打开函数  </span></span><br><span class="line">    <span class="keyword">void</span> (*close)(struct input_dev *dev);           <span class="comment">//输入设备关闭函数  </span></span><br><span class="line">    <span class="keyword">int</span> (*flush)(struct input_dev *dev, struct file *file); <span class="comment">//输入设备断开后刷新函数</span></span><br><span class="line">    <span class="comment">//事件处理 </span></span><br><span class="line">    <span class="keyword">int</span> (*event)(struct input_dev *dev, <span class="keyword">unsigned</span> <span class="keyword">int</span> type, <span class="keyword">unsigned</span> <span class="keyword">int</span> code, <span class="keyword">int</span> value);   </span><br><span class="line">  </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">input_handle</span> *<span class="title">grab</span>;</span>      <span class="comment">//类似私有指针，可以直接访问到事件处理接口event  </span></span><br><span class="line">  </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">mutex</span> <span class="title">mutex</span>;</span>     <span class="comment">//用于open、close函数的连续访问互斥  </span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> users;     <span class="comment">//设备使用计数  </span></span><br><span class="line">  </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">class_device</span> <span class="title">cdev</span>;</span>   <span class="comment">//输入设备的类信息  </span></span><br><span class="line">    <span class="keyword">union</span> &#123;             <span class="comment">//设备结构体  </span></span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">device</span> *<span class="title">parent</span>;</span>  </span><br><span class="line">    &#125; dev;  </span><br><span class="line">  </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span>    <span class="title">h_list</span>;</span> <span class="comment">//handle链表  </span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span>    <span class="title">node</span>;</span>   <span class="comment">//input_dev链表  </span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>Input_dev通过全局变量input_dev_list链接在一起. 设备注册的时候实现这个操作.</p>
+<h3 id="input-id">2.2.2 input_id</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">input_id</span> &#123;</span>  </span><br><span class="line">    __u16 bustype;   <span class="comment">//总线类型  </span></span><br><span class="line">    __u16 vendor;    <span class="comment">//生产厂商  </span></span><br><span class="line">    __u16 product;   <span class="comment">//产品类型  </span></span><br><span class="line">    __u16 version;   <span class="comment">//版本  </span></span><br><span class="line"> &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>如果需要特定的事件处理器来处理这个设备的话,这几个参数非常重要, 因为子系统核心时通过他们将设备驱动与事件处理层联系起来的. 但因为触摸屏所用的处理器为evdev, 匹配所有,所以这个初始化也无关紧要了.</p>
+<h2 id="输入设备驱动注册">2.3 输入设备驱动注册</h2><p><img src="/2019/08/15/input/1.1-4.png" alt></p>
+<p><img src="/2019/08/15/input/1.1-6.jpeg" alt></p>
+<ul>
+<li>输入设备驱动最终的目的即使能够与事件处理层的事件驱动相互匹配. 但是在drivers/input目录下有evdev.c事件驱动、mousedev.c事件驱动、joydev.c事件驱动等等. 我们的输入设备产生的事件最终上报给谁, 然后让事件驱动再去处理呢?</li>
+<li>evdev.c、mousedev.c 等是根据硬件输入设备的处理方式不同而抽象出来不同的事件处理接口帮助上层去调用的. 而我们写的设备驱动程序只不过是完成了硬件寄存器中的数据读写, 但提交给用户的事件必须是经过事件处理层的封装和同步才能够完成的.</li>
+</ul>
+<h1 id="核心层">3 核心层</h1><h2 id="概述-1">3.1 概述</h2><p>主要功能</p>
+<ul>
+<li>注册主设备号</li>
+<li>对于swi进入的open函数进行第一层处理, 并通过此设备号选择handler进入第二次open,也就是真正的open所在的file_operation, 并返回该file_operation的fd</li>
+<li>提供input_register_device 和 input_register_handler函数分别用于注册device和handler</li>
+</ul>
+<h2 id="数据结构-1">3.2 数据结构</h2><h3 id="input-handle">3.2.1 input_handle</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">input_handle</span> &#123;</span>  </span><br><span class="line">    <span class="comment">//每个配对的事件处理器都会分配一个对应的设备结构，如evdev事件处理器的evdev结构，注意这个结构与设备驱动层的input_dev不同，初始化handle时，保存到这里。</span></span><br><span class="line">    <span class="keyword">void</span> *<span class="keyword">private</span>;     </span><br><span class="line">    <span class="comment">//打开标志，每个input_handle 打开后才能操作，这个一般通过事件处理器的open方法间接设置  </span></span><br><span class="line">    <span class="keyword">int</span> open;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *name;   </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">input_dev</span> *<span class="title">dev</span>;</span>  <span class="comment">//关联的input_dev结构  </span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">input_handler</span> *<span class="title">handler</span>;</span> <span class="comment">//关联的input_handler结构  </span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span>    <span class="title">d_node</span>;</span>  <span class="comment">//input_handle通过d_node连接到了input_dev上的h_list链表上  </span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span>    <span class="title">h_node</span>;</span>  <span class="comment">//input_handle通过h_node连接到了input_handler的h_list链表上  </span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="函数调用">3.3 函数调用</h2><h3 id="input-register-device">3.3.1 input_register_device</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">input_register_device</span><span class="params">(struct input_dev *dev)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="comment">/* 用于记录输入设备名称的索引值 */</span>  </span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">atomic_t</span> input_no = ATOMIC_INIT(<span class="number">0</span>);  </span><br><span class="line">    <span class="comment">/* 输入事件的处理接口指针，用于和设备的事件类型进行匹配 */</span>  </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">input_handler</span> *<span class="title">handler</span>;</span>  </span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *path;  </span><br><span class="line">    <span class="keyword">int</span> error;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">/* 默认所有的输入设备都支持EV_SYN同步事件 */</span>  </span><br><span class="line">    set_bit(EV_SYN, dev-&gt;evbit);  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">/* </span></span><br><span class="line"><span class="comment">     * 如果设备驱动没有指定重复按键（连击），系统默认提供以下的支持 </span></span><br><span class="line"><span class="comment">     * 其中init_timer为连击产生的定时器，时间到调用input_repeat_key函数 </span></span><br><span class="line"><span class="comment">     * 上报，REP_DELAY用于设置重复按键的键值，REP_PERIOD设置延时时间 </span></span><br><span class="line"><span class="comment">     */</span>  </span><br><span class="line">    init_timer(&amp;dev-&gt;timer);  </span><br><span class="line">    <span class="keyword">if</span> (!dev-&gt;rep[REP_DELAY] &amp;&amp; !dev-&gt;rep[REP_PERIOD]) &#123;  </span><br><span class="line">        dev-&gt;timer.data = (<span class="keyword">long</span>) dev;  </span><br><span class="line">        dev-&gt;timer.function = input_repeat_key;  </span><br><span class="line">        dev-&gt;rep[REP_DELAY] = <span class="number">250</span>;  </span><br><span class="line">        dev-&gt;rep[REP_PERIOD] = <span class="number">33</span>;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">/* 如果设备驱动没有设置自己的获取键值的函数，系统默认 */</span>  </span><br><span class="line">    <span class="keyword">if</span> (!dev-&gt;getkeycode)  </span><br><span class="line">        dev-&gt;getkeycode = input_default_getkeycode;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">/* 如果设备驱动没有指定按键重置函数，系统默认 */</span>  </span><br><span class="line">    <span class="keyword">if</span> (!dev-&gt;setkeycode)  </span><br><span class="line">        dev-&gt;setkeycode = input_default_setkeycode;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">/* 重要，把设备挂到全局的input子系统设备链表input_dev_list上 */</span>  </span><br><span class="line">    list_add_tail(&amp;dev-&gt;node, &amp;input_dev_list);  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">/* 动态获取input设备的ID号，名称为input*，其中后面的“*”动态获得，唯一的 */</span>  </span><br><span class="line">    <span class="built_in">snprintf</span>(dev-&gt;cdev.class_id, <span class="keyword">sizeof</span>(dev-&gt;cdev.class_id),  </span><br><span class="line">         <span class="string">"input%ld"</span>, (<span class="keyword">unsigned</span> <span class="keyword">long</span>) atomic_inc_return(&amp;input_no) - <span class="number">1</span>);  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">/* 如果这个值没有设置，系统把输入设备挂入设备链表 */</span>  </span><br><span class="line">    <span class="keyword">if</span> (!dev-&gt;cdev.dev)  </span><br><span class="line">        dev-&gt;cdev.dev = dev-&gt;dev.parent;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">/* 在/sys目录下创建设备目录和文件 */</span>  </span><br><span class="line">    error = class_device_add(&amp;dev-&gt;cdev);  </span><br><span class="line">    <span class="keyword">if</span> (error)  </span><br><span class="line">        <span class="keyword">return</span> error;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">/* 获取并打印设备的绝对路径名称 */</span>  </span><br><span class="line">    path = kobject_get_path(&amp;dev-&gt;cdev.kobj, GFP_KERNEL);  </span><br><span class="line">    printk(KERN_INFO <span class="string">"input: %s as %s\n"</span>,  </span><br><span class="line">        dev-&gt;name ? dev-&gt;name : <span class="string">"Unspecified device"</span>, path ? path : <span class="string">"N/A"</span>);  </span><br><span class="line">    kfree(path);  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">/* 核心重点，input设备在增加到input_dev_list链表上之后，会查找 </span></span><br><span class="line"><span class="comment">     * input_handler_list事件处理链表上的handler进行匹配，这里的匹配 </span></span><br><span class="line"><span class="comment">     * 方式与设备模型的device和driver匹配过程很相似，所有的input </span></span><br><span class="line"><span class="comment">     * 都挂在input_dev_list上，所有类型的事件都挂在input_handler_list </span></span><br><span class="line"><span class="comment">     * 上，进行“匹配相亲”*/</span>  </span><br><span class="line">    list_for_each_entry(handler, &amp;input_handler_list, node)  </span><br><span class="line">        input_attach_handler(dev, handler);  </span><br><span class="line">  </span><br><span class="line">    input_wakeup_procfs_readers();  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>主要功能:</p>
+<ul>
+<li>进一步初始化输入设备</li>
+<li>将自己的device结构添加到linux设备模型当中，将input_dev添加到input_dev_list链表中</li>
+<li>需要合适的handler与Input_handler配对，配对的核心函数Input_attach_handler</li>
+</ul>
+<h4 id="input-attach-handler">3.3.1.1 input_attach_handler</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">input_attach_handler</span><span class="params">(struct input_dev *dev, struct input_handler *handler)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">input_device_id</span> *<span class="title">id</span>;</span>  </span><br><span class="line">    <span class="keyword">int</span> error;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">//如果handler的blacklist被赋值了并且则优先匹配</span></span><br><span class="line">    <span class="keyword">if</span> (handler-&gt;blacklist &amp;&amp; input_match_device(handler-&gt;blacklist, dev))  </span><br><span class="line">        <span class="keyword">return</span> -ENODEV;  </span><br><span class="line">    </span><br><span class="line">    <span class="comment">//否则利用handler-&gt;id_table和dev进行匹配，后面讲述匹配什么和过程</span></span><br><span class="line">    id = input_match_device(handler-&gt;id_table, dev);  </span><br><span class="line">    <span class="keyword">if</span> (!id)  </span><br><span class="line">        <span class="keyword">return</span> -ENODEV;  </span><br><span class="line">    </span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     *配对成功调用handler的connect函数</span></span><br><span class="line"><span class="comment">     *这个函数在事件处理器中定义，主要生成一个input_handle结构，并初始化</span></span><br><span class="line"><span class="comment">     *还生成一个事件处理器相关的设备结构</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    error = handler-&gt;connect(handler, dev, id);</span><br><span class="line">    <span class="keyword">if</span> (error &amp;&amp; error != -ENODEV)  </span><br><span class="line">        printk(KERN_ERR  </span><br><span class="line">            <span class="string">"input: failed to attach handler %s to device %s, "</span>  </span><br><span class="line">            <span class="string">"error: %d\n"</span>,  </span><br><span class="line">            handler-&gt;name, kobject_name(&amp;dev-&gt;dev.kobj), error);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> error;  </span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="input-match-device">3.3.1.2 input_match_device</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">struct input_device_id *<span class="title">input_match_device</span><span class="params">(struct input_handler *handler,</span></span></span><br><span class="line"><span class="function"><span class="params">							struct input_dev *dev)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">input_device_id</span> *<span class="title">id</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 事件处理层中的对应flags如果设置或者driver_info被设置则进行匹配 */</span>  </span><br><span class="line">	<span class="keyword">for</span> (id = handler-&gt;id_table; id-&gt;flags || id-&gt;driver_info; id++) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* 以下通过flags中设置的位来匹配设备的总线类型、经销商、生产ID和版本ID </span></span><br><span class="line"><span class="comment">          如果没有匹配上将进行MATCH_BIT匹配 */</span></span><br><span class="line">		<span class="keyword">if</span> (id-&gt;flags &amp; INPUT_DEVICE_ID_MATCH_BUS)</span><br><span class="line">			<span class="keyword">if</span> (id-&gt;bustype != dev-&gt;id.bustype)</span><br><span class="line">				<span class="keyword">continue</span>;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (id-&gt;flags &amp; INPUT_DEVICE_ID_MATCH_VENDOR)</span><br><span class="line">			<span class="keyword">if</span> (id-&gt;vendor != dev-&gt;id.vendor)</span><br><span class="line">				<span class="keyword">continue</span>;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (id-&gt;flags &amp; INPUT_DEVICE_ID_MATCH_PRODUCT)</span><br><span class="line">			<span class="keyword">if</span> (id-&gt;product != dev-&gt;id.product)</span><br><span class="line">				<span class="keyword">continue</span>;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (id-&gt;flags &amp; INPUT_DEVICE_ID_MATCH_VERSION)</span><br><span class="line">			<span class="keyword">if</span> (id-&gt;version != dev-&gt;id.version)</span><br><span class="line">				<span class="keyword">continue</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* 用于匹配设备驱动中是否设置了这些位 </span></span><br><span class="line"><span class="comment">        * 我们在设备驱动中设置的事件类型会与事件链表中的 </span></span><br><span class="line"><span class="comment">        * 所有事件类型进行比较，匹配成功了将返回id，证明真的很合适，否则NULL </span></span><br><span class="line"><span class="comment">        */</span> </span><br><span class="line">		<span class="keyword">if</span> (!bitmap_subset(id-&gt;evbit, dev-&gt;evbit, EV_MAX))</span><br><span class="line">			<span class="keyword">continue</span>;</span><br><span class="line">		<span class="keyword">if</span> (!bitmap_subset(id-&gt;keybit, dev-&gt;keybit, KEY_MAX))</span><br><span class="line">			<span class="keyword">continue</span>;</span><br><span class="line">		<span class="keyword">if</span> (!bitmap_subset(id-&gt;relbit, dev-&gt;relbit, REL_MAX))</span><br><span class="line">			<span class="keyword">continue</span>;</span><br><span class="line">		<span class="keyword">if</span> (!bitmap_subset(id-&gt;absbit, dev-&gt;absbit, ABS_MAX))</span><br><span class="line">			<span class="keyword">continue</span>;</span><br><span class="line">		<span class="keyword">if</span> (!bitmap_subset(id-&gt;mscbit, dev-&gt;mscbit, MSC_MAX))</span><br><span class="line">			<span class="keyword">continue</span>;</span><br><span class="line">		<span class="keyword">if</span> (!bitmap_subset(id-&gt;ledbit, dev-&gt;ledbit, LED_MAX))</span><br><span class="line">			<span class="keyword">continue</span>;</span><br><span class="line">		<span class="keyword">if</span> (!bitmap_subset(id-&gt;sndbit, dev-&gt;sndbit, SND_MAX))</span><br><span class="line">			<span class="keyword">continue</span>;</span><br><span class="line">		<span class="keyword">if</span> (!bitmap_subset(id-&gt;ffbit, dev-&gt;ffbit, FF_MAX))</span><br><span class="line">			<span class="keyword">continue</span>;</span><br><span class="line">		<span class="keyword">if</span> (!bitmap_subset(id-&gt;swbit, dev-&gt;swbit, SW_MAX))</span><br><span class="line">			<span class="keyword">continue</span>;</span><br><span class="line">		<span class="keyword">if</span> (!handler-&gt;match || handler-&gt;match(handler, dev))</span><br><span class="line">			<span class="keyword">return</span> id;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>首先看id-&gt;driver_info有没有设置, 如果设置了说明匹配所有的id, evdev就是这个样的handler</li>
+<li>然后依据id-&gt;flag来比较内容, 如果比较成功后则比较所支持事件的类型,只有所有位都匹配才成功返回</li>
+<li>主要是比较Input_dev中的id和handler支持的id, 这个存放在handler的id_table中</li>
+</ul>
+<h3 id="input-register-handle">3.3.2 input_register_handle</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">input_register_handle</span><span class="params">(struct input_handle *handle)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">input_handler</span> *<span class="title">handler</span> = <span class="title">handle</span>-&gt;<span class="title">handler</span>;</span>  </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">input_dev</span> *<span class="title">dev</span> = <span class="title">handle</span>-&gt;<span class="title">dev</span>;</span>  </span><br><span class="line">    <span class="keyword">int</span> error;  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">/* 将d_node链接到输入设备的h_list，h_node链接到事件层的h_list链表上 </span></span><br><span class="line"><span class="comment">    * 因此，在handle中是输入设备和事件层的关联结构体，通过输入设备可以 </span></span><br><span class="line"><span class="comment">    * 找到对应的事件处理层接口，通过事件处理层也可找到匹配的输入设备 </span></span><br><span class="line"><span class="comment">    */</span>  </span><br><span class="line">    error = mutex_lock_interruptible(&amp;dev-&gt;mutex);  </span><br><span class="line">    <span class="keyword">if</span> (error)  </span><br><span class="line">        <span class="keyword">return</span> error;  </span><br><span class="line">    list_add_tail_rcu(&amp;handle-&gt;d_node, &amp;dev-&gt;h_list);  </span><br><span class="line">    mutex_unlock(&amp;dev-&gt;mutex);  </span><br><span class="line">    </span><br><span class="line">    list_add_tail(&amp;handle-&gt;h_node, &amp;handler-&gt;h_list);  </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (handler-&gt;start)  </span><br><span class="line">        handler-&gt;start(handle);  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="input-register-handler">3.3.3 input_register_handler</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">input_register_handler</span><span class="params">(struct input_handler *handler)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">input_dev</span> *<span class="title">dev</span>;</span></span><br><span class="line">	<span class="keyword">int</span> error;</span><br><span class="line"></span><br><span class="line">	error = mutex_lock_interruptible(&amp;input_mutex);</span><br><span class="line">	<span class="keyword">if</span> (error)</span><br><span class="line">		<span class="keyword">return</span> error;</span><br><span class="line"></span><br><span class="line">	INIT_LIST_HEAD(&amp;handler-&gt;h_list);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 链接到input_handler_list链表中</span></span><br><span class="line">	list_add_tail(&amp;handler-&gt;node, &amp;input_handler_list);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//又是配对，不过这次遍历input_dev，和注册input_dev过程一样的</span></span><br><span class="line">	list_for_each_entry(dev, &amp;input_dev_list, node)</span><br><span class="line">		input_attach_handler(dev, handler);</span><br><span class="line"></span><br><span class="line">	input_wakeup_procfs_readers();</span><br><span class="line"></span><br><span class="line">	mutex_unlock(&amp;input_mutex);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="事件处理层">4 事件处理层</h1><h2 id="概述-2">4.1 概述</h2><p>handler层是纯软件层， 包含不同的解决方案，如键盘、鼠标、游戏手柄等，但是没有涉及到硬件方面的操作。对于不同的解决方案，都包含一个名为Input_handler的结构体。</p>
+<h2 id="数据结构-2">4.2 数据结构</h2><h3 id="Input-handler">4.2.1 Input_handler</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">input_handler</span> &#123;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">void</span> *<span class="keyword">private</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">void</span> (*event)(struct input_handle *handle, <span class="keyword">unsigned</span> <span class="keyword">int</span> type, <span class="keyword">unsigned</span> <span class="keyword">int</span> code, <span class="keyword">int</span> value);<span class="comment">/*event用于处理事件*/</span></span><br><span class="line">    <span class="keyword">void</span> (*events)(struct input_handle *handle,<span class="keyword">const</span> struct input_value *vals, <span class="keyword">unsigned</span> <span class="keyword">int</span> count);</span><br><span class="line">    <span class="keyword">bool</span> (*filter)(struct input_handle *handle, <span class="keyword">unsigned</span> <span class="keyword">int</span> type, <span class="keyword">unsigned</span> <span class="keyword">int</span> code, <span class="keyword">int</span> value);</span><br><span class="line">    <span class="keyword">bool</span> (*match)(struct input_handler *handler, struct input_dev *dev);</span><br><span class="line">    <span class="keyword">int</span> (*connect)(struct input_handler *handler, struct input_dev *dev, <span class="keyword">const</span> struct input_device_id *id);<span class="comment">/*connect用于建立handler和device的联系*/</span></span><br><span class="line">    <span class="keyword">void</span> (*disconnect)(struct input_handle *handle);<span class="comment">/*disconnect用于解除handler和device的联系*/</span></span><br><span class="line">    <span class="keyword">void</span> (*start)(struct input_handle *handle);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">bool</span> legacy_minors;</span><br><span class="line">    <span class="keyword">int</span> minor;<span class="comment">//次设备号</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *name;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">input_device_id</span> *<span class="title">id_table</span>;</span><span class="comment">//用于和input_dev匹配</span></span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span>    <span class="title">h_list</span>;</span><span class="comment">//用于链接和此input_handler相关的input_handle</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span>    <span class="title">node</span>;</span><span class="comment">//用于将该input_handler链入input_handler_list</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="事件处理器-evdev">4.3 事件处理器(evdev)</h2><h3 id="evdev设备结构">4.3.1 evdev设备结构</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">evdev</span> &#123;</span>  </span><br><span class="line">    <span class="keyword">int</span> exist;  </span><br><span class="line">    <span class="keyword">int</span> open;           <span class="comment">//打开标志  </span></span><br><span class="line">    <span class="keyword">int</span> minor;          <span class="comment">//次设备号  </span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">input_handle</span> <span class="title">handle</span>;</span>  <span class="comment">//关联的input_handle  </span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">/*等待队列，当进程读取设备，而没有事件产生的时候，进程就会睡在其上面*/</span></span><br><span class="line">    <span class="keyword">wait_queue_head_t</span> wait; </span><br><span class="line">    </span><br><span class="line">    <span class="comment">/*强制绑定的evdev_client结构，这个结构后面再分析*/</span> </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">evdev_client</span> *<span class="title">grab</span>;</span></span><br><span class="line">     </span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">      *evdev_client 链表</span></span><br><span class="line"><span class="comment">      *这说明一个evdev设备可以处理多个evdev_client</span></span><br><span class="line"><span class="comment">      *可以有多个进程访问evdev设备</span></span><br><span class="line"><span class="comment">      */</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> <span class="title">client_list</span>;</span>   </span><br><span class="line">    <span class="keyword">spinlock_t</span> client_lock;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">mutex</span> <span class="title">mutex</span>;</span> </span><br><span class="line">    </span><br><span class="line">    <span class="comment">/*device结构，说明这是一个设备结构*/</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">device</span> <span class="title">dev</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>evdev结构体在配对成功后生成,由handler-&gt;connect生成, 对应设备文件为/sys/class/Input/event(n)</li>
+<li>如触摸屏驱动的event0，这个设备是用户空间要访问的设备，可以理解它是一个虚拟设备，因为没有对应的硬件，但是通过handle-&gt;dev 就可以找到input_dev结构，而它对应着触摸屏，设备文件为/sys/class/input/input0。这个设备结构生成之后保存在evdev_table中，索引值是minor</li>
+</ul>
+<h3 id="evdev用户端设备结构">4.3.2 evdev用户端设备结构</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">evdev_client</span> &#123;</span></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     *这个是一个input_event数据结构的数组</span></span><br><span class="line"><span class="comment">     *input_event代表一个事件</span></span><br><span class="line"><span class="comment">     *基本成员：类型（type），编码（code），值（value）</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">input_event</span> <span class="title">buffer</span>[<span class="title">EVDEV_BUFFER_SIZE</span>];</span>    </span><br><span class="line">    <span class="keyword">int</span> head;              <span class="comment">//针对buffer数组的索引  </span></span><br><span class="line">    <span class="keyword">int</span> tail;              <span class="comment">//针对buffer数组的索引，当head与tail相等的时候，说明没有事件  </span></span><br><span class="line">    <span class="keyword">spinlock_t</span> buffer_lock;  </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">fasync_struct</span> *<span class="title">fasync</span>;</span>  <span class="comment">//异步通知函数  </span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">evdev</span> *<span class="title">evdev</span>;</span>           <span class="comment">//evdev设备  </span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> <span class="title">node</span>;</span>         <span class="comment">// evdev_client 链表项  </span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>这个结构在进程打开event0设备时候调用evdev的open函数, 在open中创建设个结构,并初始化. 在关闭设备文件的时候释放这个结构</li>
+</ul>
+<h3 id="evdev-handler结构体">4.3.3 evdev_handler结构体</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">input_handler</span> <span class="title">evdev_handler</span> = &#123;</span></span><br><span class="line">	.event		= evdev_event,<span class="comment">//当硬件有事件上传将调用</span></span><br><span class="line">	.connect	= evdev_connect,<span class="comment">//当有新的input_dev和它匹配成功时调用</span></span><br><span class="line">	.disconnect	= evdev_disconnect,</span><br><span class="line">	.fops		= &amp;evdev_fops,<span class="comment">//提供读写函数</span></span><br><span class="line">	.minor		= EVDEV_MINOR_BASE,<span class="comment">//次设备起始号</span></span><br><span class="line">	.name		= <span class="string">"evdev"</span>,</span><br><span class="line">	.id_table	= evdev_ids,<span class="comment">//它可接受的input_dev条件</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="数据结构关系图">4.3.4 数据结构关系图</h3><p><img src="/2019/08/15/input/1.1-5.jpg" alt></p>
+<h3 id="connect函数">4.3.5 connect函数</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">evdev_connect</span><span class="params">(struct input_handler *handler, struct input_dev *dev,</span></span></span><br><span class="line"><span class="function"><span class="params">             <span class="keyword">const</span> struct input_device_id *id)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">evdev</span> *<span class="title">evdev</span>;</span></span><br><span class="line">    <span class="keyword">int</span> minor;</span><br><span class="line">    <span class="keyword">int</span> dev_no;</span><br><span class="line">    <span class="keyword">int</span> error;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/*申请一个新的次设备号*/</span></span><br><span class="line">    minor = input_get_new_minor(EVDEV_MINOR_BASE, EVDEV_MINORS, <span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 这说明内核已经没办法再分配这种类型的设备了 */</span> </span><br><span class="line">    <span class="keyword">if</span> (minor &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        error = minor;</span><br><span class="line">        pr_err(<span class="string">"failed to reserve new minor: %d\n"</span>, error);</span><br><span class="line">        <span class="keyword">return</span> error;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 开始给evdev事件层驱动分配空间了 */</span>  </span><br><span class="line">    evdev = kzalloc(<span class="keyword">sizeof</span>(struct evdev), GFP_KERNEL);</span><br><span class="line">    <span class="keyword">if</span> (!evdev) &#123;</span><br><span class="line">        error = -ENOMEM;</span><br><span class="line">        <span class="keyword">goto</span> err_free_minor;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 初始化client_list列表和evdev_wait队列 */</span>  </span><br><span class="line">    INIT_LIST_HEAD(&amp;evdev-&gt;client_list);</span><br><span class="line">    spin_lock_init(&amp;evdev-&gt;client_lock);</span><br><span class="line">    mutex_init(&amp;evdev-&gt;mutex);</span><br><span class="line">    init_waitqueue_head(&amp;evdev-&gt;wait);</span><br><span class="line">    evdev-&gt;exist = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    dev_no = minor;</span><br><span class="line">    <span class="comment">/* Normalize device number if it falls into legacy range */</span></span><br><span class="line">    <span class="keyword">if</span> (dev_no &lt; EVDEV_MINOR_BASE + EVDEV_MINORS)</span><br><span class="line">        dev_no -= EVDEV_MINOR_BASE;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/*设置设备节点名称，/dev/eventX 就是在此时设置*/</span></span><br><span class="line">    dev_set_name(&amp;evdev-&gt;dev, <span class="string">"event%d"</span>, dev_no);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 初始化evdev结构体，其中handle为输入设备和事件处理的关联接口 */</span>  </span><br><span class="line">    evdev-&gt;handle.dev = input_get_device(dev);</span><br><span class="line">    evdev-&gt;handle.name = dev_name(&amp;evdev-&gt;dev);</span><br><span class="line">    evdev-&gt;handle.handler = handler;</span><br><span class="line">    evdev-&gt;handle.<span class="keyword">private</span> = evdev;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*设置设备号，应用层就是通过设备号，找到该设备的*/</span></span><br><span class="line">    evdev-&gt;dev.devt = MKDEV(INPUT_MAJOR, minor);</span><br><span class="line">    evdev-&gt;dev<span class="class">.<span class="keyword">class</span> = &amp;<span class="title">input_class</span>;</span></span><br><span class="line">    evdev-&gt;dev.parent = &amp;dev-&gt;dev;</span><br><span class="line">    evdev-&gt;dev.release = evdev_free;</span><br><span class="line">    device_initialize(&amp;evdev-&gt;dev);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* input_dev设备驱动和handler事件处理层的关联，就在这时由handle完成 */</span> </span><br><span class="line">    error = input_register_handle(&amp;evdev-&gt;handle);</span><br><span class="line">    <span class="keyword">if</span> (error)</span><br><span class="line">        <span class="keyword">goto</span> err_free_evdev;</span><br><span class="line"></span><br><span class="line">    cdev_init(&amp;evdev-&gt;cdev, &amp;evdev_fops);</span><br><span class="line">    evdev-&gt;cdev.kobj.parent = &amp;evdev-&gt;dev.kobj;</span><br><span class="line">    error = cdev_add(&amp;evdev-&gt;cdev, evdev-&gt;dev.devt, <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">if</span> (error)</span><br><span class="line">        <span class="keyword">goto</span> err_unregister_handle;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*将设备加入到Linux设备模型，它的内部将找到它的bus，然后让它的bus</span></span><br><span class="line"><span class="comment">    给它找到它的driver，在驱动或者总线的probe函数中，一般会在/dev/目录</span></span><br><span class="line"><span class="comment">    先创建相应的设备节点，这样应用程序就可以通过该设备节点来使用设备了</span></span><br><span class="line"><span class="comment">    ，/dev/eventX 设备节点就是在此时生成</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    error = device_add(&amp;evdev-&gt;dev);</span><br><span class="line">    <span class="keyword">if</span> (error)</span><br><span class="line">        <span class="keyword">goto</span> err_cleanup_evdev;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"> err_cleanup_evdev:</span><br><span class="line">    evdev_cleanup(evdev);</span><br><span class="line"> err_unregister_handle:</span><br><span class="line">    input_unregister_handle(&amp;evdev-&gt;handle);</span><br><span class="line"> err_free_evdev:</span><br><span class="line">    put_device(&amp;evdev-&gt;dev);</span><br><span class="line"> err_free_minor:</span><br><span class="line">    input_free_minor(minor);</span><br><span class="line">    <span class="keyword">return</span> error;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="A-B-slot-协议">5 A/B(slot)协议</h1><h2 id="A协议">5.1 A协议</h2><h3 id="描述">5.1.1 描述</h3><ul>
+<li>如果不管当前坐标点和上一坐标点数据是否一致都上报, 称为A协议</li>
+</ul>
+<h3 id="上报流程">5.1.2 上报流程</h3><h4 id="按下">5.1.2.1 按下</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ABS_MT_POSITION_X x[<span class="number">0</span>]</span><br><span class="line">ABS_MT_POSITION_Y y[<span class="number">0</span>]</span><br><span class="line">SYN_MT_REPORT</span><br><span class="line">ABS_MT_POSITION_X x[<span class="number">1</span>]</span><br><span class="line">ABS_MT_POSITION_Y y[<span class="number">1</span>]</span><br><span class="line">SYN_MT_REPORT</span><br><span class="line">...</span><br><span class="line">SYN_REPORT</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>是以SYN_MT_REPORT作为一个点的结尾</li>
+<li>是以SYN_REPORT为一次事件的结尾</li>
+<li>多指触摸的时候,native层每收到一次SYN_MT_REPORT就形成一个点的信息,收到一个点之后并不会立即处理,而是一个事件完成之后才会处理, SYN_REPORT就是这个事件的标志.</li>
+<li>A协议中有的只是点的坐标信息,那么系统如何去判断当前的多点属于哪一条线呢?<ul>
+<li>假设一次事件共有5个点, 本次触摸也有5个点. </li>
+<li>系统会分别计算一次前5个点和当前5个点的距离, 这样就产生了 5x5=25个数据.</li>
+<li>对这个25个数字进行排序, 判断当前点与哪一次的点最近,那么赋予它们相同的id, 就可以知道当前点属于哪条线了.</li>
+</ul>
+</li>
+</ul>
+<h4 id="抬起">5.1.2.2 抬起</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SYN_MT_REPORT</span><br><span class="line">SYN_REPORT</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>只有SYNC, 没有任何信息,系统就会认为此次事件为UP</li>
+</ul>
+<h2 id="B-slot-协议">5.2 B(slot)协议</h2><h3 id="描述-1">5.2.1 描述</h3><ul>
+<li>如果当前坐标点和上一坐标点数据一致,则该点不上报, 称为B(slot)协议</li>
+<li>slot直译为位置、槽,两层含义:一层是位置, 另一层是容器</li>
+<li>B协议使用了slot, 还有一个新的面孔TRACKING_ID</li>
+</ul>
+<h3 id="上报流程-1">5.2.2 上报流程</h3><h4 id="按下-1">5.2.2.1 按下</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ABS_MT_SLOT <span class="number">0</span></span><br><span class="line">ABS_MT_TRACKING_ID **</span><br><span class="line">ABS_MT_POSITION_X x[<span class="number">0</span>]</span><br><span class="line">ABS_MT_POSITION_Y y[<span class="number">0</span>]</span><br><span class="line">ABS_MT_SLOT <span class="number">1</span></span><br><span class="line">ABS_MT_TRACKING_ID **</span><br><span class="line">ABS_MT_POSITION_X x[<span class="number">1</span>]</span><br><span class="line">ABS_MT_POSITION_Y y[<span class="number">1</span>]</span><br><span class="line">...</span><br><span class="line">SYN_REPORT</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>相同的ABS_MT_TRACKING_ID点,它们属于同一条线</li>
+</ul>
+<h4 id="抬起-1">5.2.2.2 抬起</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ABS_MT_SLOT <span class="number">0</span></span><br><span class="line">ABS_MT_TRACKING_ID <span class="number">-1</span></span><br><span class="line">SYN_REPORT</span><br><span class="line">ABS_MT_SLOT <span class="number">1</span></span><br><span class="line">ABS_MT_TRACKING_ID <span class="number">-1</span></span><br><span class="line">SYN_REPORT</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>点上报的时候 ABS_MT_TRACKING_ID 为-1, 系统会清除对应的ID.</li>
+</ul>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text/javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.2.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.2.0/dist/mindmap.min.css">
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/Kernel/" rel="tag"># Kernel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/15/git-patch/" rel="next" title="git patch">
+                <i class="fa fa-chevron-left"></i> git patch
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/08/15/Selinux/" rel="prev" title="Selinux">
+                Selinux <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+		
+		  
+			<ul class="sidebar-nav motion-element">
+			  <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+				文章目录
+			  </li>
+			  <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+				站点概览
+			  </li>
+			</ul>
+		  
+		
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/han.jpg" alt="Rulei.Zhou">
+            
+              <p class="site-author-name" itemprop="name">Rulei.Zhou</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">39</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/ruleizhou" title="GitHub &rarr; https://github.com/ruleizhou" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:rulei.zhou@foxmail.com" title="E-Mail &rarr; mailto:rulei.zhou@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section></div>
+
+		
+		  
+		  <!--noindex-->
+			<section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+			  <div class="post-toc">
+
+				
+				  
+				
+
+				
+				  <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Input-概述"><span class="nav-text">1 Input 概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#系统整体框图"><span class="nav-text">1.1 系统整体框图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Input-子系统框图"><span class="nav-text">1.2 Input 子系统框图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据关系框图"><span class="nav-text">1.3 数据关系框图</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#设备驱动层"><span class="nav-text">2 设备驱动层</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-text">2.1 概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据结构"><span class="nav-text">2.2 数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#input-dev"><span class="nav-text">2.2.1 input_dev</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#input-id"><span class="nav-text">2.2.2 input_id</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#输入设备驱动注册"><span class="nav-text">2.3 输入设备驱动注册</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#核心层"><span class="nav-text">3 核心层</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述-1"><span class="nav-text">3.1 概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据结构-1"><span class="nav-text">3.2 数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#input-handle"><span class="nav-text">3.2.1 input_handle</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数调用"><span class="nav-text">3.3 函数调用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#input-register-device"><span class="nav-text">3.3.1 input_register_device</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#input-attach-handler"><span class="nav-text">3.3.1.1 input_attach_handler</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#input-match-device"><span class="nav-text">3.3.1.2 input_match_device</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#input-register-handle"><span class="nav-text">3.3.2 input_register_handle</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#input-register-handler"><span class="nav-text">3.3.3 input_register_handler</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#事件处理层"><span class="nav-text">4 事件处理层</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述-2"><span class="nav-text">4.1 概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据结构-2"><span class="nav-text">4.2 数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Input-handler"><span class="nav-text">4.2.1 Input_handler</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件处理器-evdev"><span class="nav-text">4.3 事件处理器(evdev)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#evdev设备结构"><span class="nav-text">4.3.1 evdev设备结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#evdev用户端设备结构"><span class="nav-text">4.3.2 evdev用户端设备结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#evdev-handler结构体"><span class="nav-text">4.3.3 evdev_handler结构体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据结构关系图"><span class="nav-text">4.3.4 数据结构关系图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#connect函数"><span class="nav-text">4.3.5 connect函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#A-B-slot-协议"><span class="nav-text">5 A/B(slot)协议</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#A协议"><span class="nav-text">5.1 A协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#描述"><span class="nav-text">5.1.1 描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#上报流程"><span class="nav-text">5.1.2 上报流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#按下"><span class="nav-text">5.1.2.1 按下</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#抬起"><span class="nav-text">5.1.2.2 抬起</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#B-slot-协议"><span class="nav-text">5.2 B(slot)协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#描述-1"><span class="nav-text">5.2.1 描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#上报流程-1"><span class="nav-text">5.2.2 上报流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#按下-1"><span class="nav-text">5.2.2.1 按下</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#抬起-1"><span class="nav-text">5.2.2.2 抬起</span></a></li></ol></li></ol></li></ol></li></ol></div>
+				
+
+			  </div>
+			</section>
+		  <!--/noindex-->
+		  
+		
+
+      
+
+    </aside></div>
+  
+  
+
+
+        
+      </main></div>
+    
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rulei.Zhou</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.2"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '0a400e1f09cb117f3ea4',
+    clientSecret: 'f7d98253e2a12b03803742f2a506c174d06019a0',
+    repo: 'ruleizhou.github.io',
+    owner: 'ruleizhou',
+    admin: ['ruleizhou'],
+    id: md5(location.pathname),
+    
+      language: window.navigator.language || window.navigator.userLanguage,
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  
+  <script>
+    $('.highlight').each(function (i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap')
+      $(e).after($wrap)
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function (e) {
+        var code = $(this).parent().find('.code').find('.line').map(function (i, e) {
+          return $(e).text()
+        }).toArray().join('\n')
+        var ta = document.createElement('textarea')
+        document.body.appendChild(ta)
+        ta.style.position = 'absolute'
+        ta.style.top = '0px'
+        ta.style.left = '0px'
+        ta.value = code
+        ta.select()
+        ta.focus()
+        var result = document.execCommand('copy')
+        document.body.removeChild(ta)
+        
+          if(result)$(this).text('复制成功')
+          else $(this).text('复制失败')
+        
+        $(this).blur()
+      })).on('mouseleave', function (e) {
+        var $b = $(this).find('.copy-btn')
+        setTimeout(function () {
+          $b.text('复制')
+        }, 300)
+      }).append(e)
+    })
+  </script>
+
+
+  
+
+  
+
+</body>
+</html>

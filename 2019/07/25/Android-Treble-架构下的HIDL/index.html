@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="google-site-verification" content="Ezui-oQp8Pno7S0Zg3T794uNOShGTYHv9PGKQ5Y1Au0">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+<script src="https://cdn.bootcss.com/echarts/4.1.0-release/echarts.min.js"></script>
+
+
+  
+
+
+
+
+  <meta name="description" content="1 HIDL 简介​    HIDL 读作 hide-l，全称是 Hardware Interface Definition Language。它在 Android Project Treble 中被起草，在 Android 8.0 中被全面使用，其诞生目的是使 Android 可以在不重新编译 HAL 的情况下对 Framework 进行 OTA 升级。  ​    使用 HIDL 描述的 HA">
+<meta name="keywords" content="Android,Treble">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Treble 架构下的HIDL">
+<meta property="og:url" content="https://ruleizhou.github.io/2019/07/25/Android-Treble-架构下的HIDL/index.html">
+<meta property="og:site_name" content="ZRL">
+<meta property="og:description" content="1 HIDL 简介​    HIDL 读作 hide-l，全称是 Hardware Interface Definition Language。它在 Android Project Treble 中被起草，在 Android 8.0 中被全面使用，其诞生目的是使 Android 可以在不重新编译 HAL 的情况下对 Framework 进行 OTA 升级。  ​    使用 HIDL 描述的 HA">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-06-25T00:25:05.182Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android Treble 架构下的HIDL">
+<meta name="twitter:description" content="1 HIDL 简介​    HIDL 读作 hide-l，全称是 Hardware Interface Definition Language。它在 Android Project Treble 中被起草，在 Android 8.0 中被全面使用，其诞生目的是使 Android 可以在不重新编译 HAL 的情况下对 Framework 进行 OTA 升级。  ​    使用 HIDL 描述的 HA">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://ruleizhou.github.io/2019/07/25/Android-Treble-架构下的HIDL/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Android Treble 架构下的HIDL | ZRL</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ZRL</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ruleizhou.github.io/2019/07/25/Android-Treble-架构下的HIDL/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rulei.Zhou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/han.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZRL">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android Treble 架构下的HIDL
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-25 22:34:01" itemprop="dateCreated datePublished" datetime="2019-07-25T22:34:01+08:00">2019-07-25</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-06-25 08:25:05" itemprop="dateModified" datetime="2020-06-25T08:25:05+08:00">2020-06-25</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="HIDL-简介">1 HIDL 简介</h1><p>​    HIDL 读作 hide-l，全称是 Hardware Interface Definition Language。它在 Android Project Treble 中被起草，在 Android 8.0 中被全面使用，其诞生目的是使 Android 可以在不重新编译 HAL 的情况下对 Framework 进行 OTA 升级。 </p>
+<p>​    <code>使用 HIDL 描述的 HAL 描述文件替换旧的用头文件描述的 HAL 文件的过程称为 HAL 的 binder 化（binderization）</code>。所有运行 Android O 的设备都必须只支持 binder 化后的 HAL 模块。</p>
+<p>​    HIDL是一种接口定义语言，描述了HAL和它的用户之间的接口。同aidi类似，我们只需要为hal定义相关接口，然后通过hidl-gen工具即可自动编译生成对应的C++或者java源文件，定义hal接口的文件命名为xxx.hal，为了编译这些.hal文件，需要编写相应的Android.bp或者Android.mk文件</p>
+<ul>
+<li>Android.bp文件用于编译C++</li>
+<li>Android.mk文件用于编译Java</li>
+</ul>
+<h2 id="HIDL-HAL-类型">1.1 HIDL HAL 类型</h2><h3 id="直通模式-Passthrough">1.1.1 直通模式(Passthrough)</h3><p>​    和 Framework 工作在同一个进程当中，因没有 service 进程，服务也没有被事先注册到<br>hwservicemanager，Framework 通过 Binder 得到的是同一个进程中的实例。在 manifest.xml 中 transport 类型为 passthrough。以 <code>android.hardware.graphics.composer@2.1</code> 为例，在 <a href="https://android.googlesource.com/platform/hardware/interfaces/+/refs/tags/android-8.1.0_r65/graphics/composer/2.1/default/Android.bp#22" target="_blank" rel="noopener">Android.bp</a> 中，Hwc.cpp 被编译为 <code>android.hardware.graphics.composer@2.1-impl.so</code>，其 <a href="https://android.googlesource.com/platform/hardware/interfaces/+/refs/tags/android-8.1.0_r65/graphics/composer/2.1/default/Hwc.cpp#747" target="_blank" rel="noopener">HIDL_FETCH_IComposer</a> 方法中会使用 hw_get_module() 方法去加载传统 HAL。</p>
+<h3 id="绑定模式-Binderized">1.1.2 绑定模式(Binderized)</h3><p>​    而将直通模式中的直通式 HAL，添加上 service 进程，修改 transport 类型为 hwbinder，就成为了绑定模式。service 的注册使用的是 <a href="https://android.googlesource.com/platform/hardware/interfaces/+/refs/tags/android-8.1.0_r65/graphics/composer/2.1/default/service.cpp#43" target="_blank" rel="noopener">defaultPassthroughServiceImplementation()</a> 方法。</p>
+<h3 id="纯绑定模式">1.1.3 纯绑定模式</h3><p>​    service 的注册方法都是 <code>registerAsService()</code>，在 manifest.xml 中的 transport 类型为 hwbinder，不再单独编译 <code>*-impl.so</code>，而是全编译进 service 中。以 <code>android.hardware.power@1.1</code> 默认实现为例。<code>android.hardware.power@1.1-service</code> 服务启动时，服务的注册方法是 <a href="https://android.googlesource.com/platform/hardware/interfaces/+/62cc79bdf0c52c773602d9e93bbf732b1c54b934/power/1.1/default/service.cpp#74" target="_blank" rel="noopener">registerAsService()</a>。在 <a href="https://android.googlesource.com/platform/hardware/interfaces/+/62cc79bdf0c52c773602d9e93bbf732b1c54b934/power/1.1/default/Android.bp#21" target="_blank" rel="noopener">Android.bp</a> 中将两个源文件编译为 <code>android.hardware.power@1.1-service</code>。有意思的是在 service 的 main 方法中居然会去 <a href="https://android.googlesource.com/platform/hardware/interfaces/+/62cc79bdf0c52c773602d9e93bbf732b1c54b934/power/1.1/default/service.cpp#47" target="_blank" rel="noopener">hw_get_module(POWER_HARDWARE_MODULE_ID, &amp;hw_module)</a> 加载传统 HAL，那这个默认实现 1.1 版相对于 1.0 版就没有意义了。也因并没有厂商使用这个默认版，<a href="https://android.googlesource.com/platform/hardware/interfaces/+/4497a5fe338c4a19dc31312641b2caa8454eb24e" target="_blank" rel="noopener">谷歌干脆移除了</a>。</p>
+<h1 id="HIDL-编程规范">2 HIDL 编程规范</h1><p><a href="https://blog.csdn.net/shift_wwx/article/details/86525761" target="_blank" rel="noopener">参考网站</a></p>
+<p>​    HIDL 代码样式类似于 Android 框架中的 C++ 代码，缩进 4 个空格，并且采用混用大小写的文件名。软件包声明、导入和文档字符串与 Java 中的类似，只有些微差别。</p>
+<p>下面针对 <code>IFoo.hal</code> 和 <code>types.hal</code> 的示例展示了 HIDL 代码样式。</p>
+<p><code>hardware/interfaces/foo/1.0/IFoo.hal</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"> * (License Notice)</span><br><span class="line"> */</span><br><span class="line"> </span><br><span class="line">package android.hardware.foo@1.0;</span><br><span class="line"> </span><br><span class="line">import android.hardware.bar@1.0::IBar;</span><br><span class="line"> </span><br><span class="line">import IBaz;</span><br><span class="line">import IFooClientCallback;</span><br><span class="line"> </span><br><span class="line">/**</span><br><span class="line"> * IFoo is an interface that…</span><br><span class="line"> */</span><br><span class="line">interface IFoo &#123;</span><br><span class="line"> </span><br><span class="line">    /**</span><br><span class="line">     * This is a multiline docstring.</span><br><span class="line">     * @return result 0 if successful, nonzero otherwise.</span><br><span class="line">     */</span><br><span class="line">     foo() generates (FooStatus result);</span><br><span class="line"> </span><br><span class="line">    /**</span><br><span class="line">     * Restart controller by power cycle.</span><br><span class="line">     * @param bar callback interface that…</span><br><span class="line">     * @return result 0 if successful, nonzero otherwise.</span><br><span class="line">     */</span><br><span class="line">    powerCycle(IBar bar) generates (FooStatus result);</span><br><span class="line"> </span><br><span class="line">    /** Single line docstring. */</span><br><span class="line">    baz();</span><br><span class="line"> </span><br><span class="line">    /**</span><br><span class="line">     * The bar function.</span><br><span class="line">     * @param clientCallback callback after function is called</span><br><span class="line">     * @param baz related baz object</span><br><span class="line">     * @param data input data blob</span><br><span class="line">     */</span><br><span class="line">    bar(IFooClientCallback clientCallback,</span><br><span class="line">        IBaz baz,</span><br><span class="line">        FooData data);</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>hardware/interfaces/foo/1.0/types.hal</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"> * (License Notice)</span><br><span class="line"> */</span><br><span class="line"> </span><br><span class="line">package android.hardware.foo@1.0;</span><br><span class="line"> </span><br><span class="line">/** Replied status. */</span><br><span class="line">enum Status : int32_t &#123;</span><br><span class="line">    OK,</span><br><span class="line">    ERR_ARG, // invalid arguments</span><br><span class="line">    ERR_UNKNOWN = -1, // note, no transport related errors</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">struct ArgData &#123;</span><br><span class="line">    int32_t[20]  someArray;</span><br><span class="line">    vec&lt;uint8_t&gt; data;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="命令规范">2.1 命令规范</h2><h3 id="目录结构和文件命令">2.1.1 目录结构和文件命令</h3><p>目录结构应如下所示：</p>
+<ul>
+<li>Root-dir<ul>
+<li>Module<ul>
+<li>SubModule<ul>
+<li>Version<ul>
+<li>Android.bp</li>
+<li>IInterface_1.hal</li>
+<li>IInterface_2.hal</li>
+<li>…</li>
+<li>IInterface_n.hal</li>
+<li>types.hal (可选)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>其中：</p>
+<ul>
+<li><p>Root-dir</p>
+<ul>
+<li>hardware/interfaces 核心HIDL软件包</li>
+<li>vendor/VENDOR/interfaces 供应商软件包</li>
+</ul>
+</li>
+<li><p>Module</p>
+<p>描述系统的小写字词。如果多个字词，需使用嵌套式SubModule</p>
+</li>
+<li><p>Version</p>
+<p>版本号，格式：major.minor</p>
+</li>
+<li><p>IInterface_x</p>
+<p>接口名称</p>
+</li>
+</ul>
+<h3 id="软件包名称">2.1.2 软件包名称</h3><p>软件包名称必须采用<a href="https://source.android.com/devices/architecture/hidl/code-style#fqn" target="_blank" rel="noopener">完全限定名称(FQN)</a>格式（称为：PACKAGE-NAME）。格式如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PACKAGE.MODULE[.SUBMODULE[.SUBMODULE[…]]]@VERSION</span><br></pre></td></tr></table></figure>
+
+<h3 id="版本">2.1.3 版本</h3><p>格式如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MAJOR.MINOR</span><br></pre></td></tr></table></figure>
+
+<p>MAJOR 和 MINOR 版本都应该是一个整数。</p>
+<h3 id="导入">2.1.4 导入</h3><p>格式如下：</p>
+<ul>
+<li><p>完整软件包导入</p>
+<p><code>import PACKAGE-NAME</code></p>
+</li>
+<li><p>部分导入</p>
+<p><code>import PACKAGE-NAME::UDT;</code>（或者，如果导入的类型是在同一个软件包中，则为 <code>import UDT;</code>）。</p>
+</li>
+<li><p>仅类型导入</p>
+<p><code>import PACKAGE-NAME::types;</code></p>
+</li>
+</ul>
+<p>如果当前软件包types.hal存在，则自动导入。</p>
+<p>在软件包声明之后(在导入之前)，添加一个空行。每个导入都应占用一行，且不能缩进。按一下顺序对导入进行分组：</p>
+<ul>
+<li>android.harder 软件包（使用完全限定名称）</li>
+<li>vendor.VENDOR软件包（使用完全限定名称）<ul>
+<li>每个供应商应为一组</li>
+<li>按字母顺序对供应商进行排序</li>
+</ul>
+</li>
+<li>源自同一个软件包的其他接口导入（使用简单名称）</li>
+</ul>
+<p>在组与组之间添加一行空行。每个组内，按照字母顺序对导入进行排序。</p>
+<h3 id="接口名称">2.1.5 接口名称</h3><p>接口名称必须以 <code>I</code> 开头，后跟 <code>UpperCamelCase</code>/<code>PascalCase</code> 名称。名称为 <code>IFoo</code> 的接口必须在文件 <code>IFoo.hal</code> 中定义。此文件只能包含 <code>IFoo</code> 接口的定义（接口 <code>INAME</code> 应位于 <code>INAME.hal</code> 中）。</p>
+<h3 id="函数">2.1.6 函数</h3><p>对于函数名称、参数和返回变量名称，请使用 <code>lowerCamelCase</code>。例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">open(INfcClientCallback clientCallback) generates (<span class="keyword">int32_t</span> retVal);</span><br><span class="line"><span class="function">oneway <span class="title">pingAlive</span><span class="params">(IFooCallback cb)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="结构体-联合字段名称">2.1.7 结构体/联合字段名称</h3><p>对于结构体/联合字段名称，请使用 <code>lowerCamelCase</code>。例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">FooReply</span> &#123;</span></span><br><span class="line">    vec&lt;<span class="keyword">uint8_t</span>&gt; replyData;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="类型名称">2.1.8 类型名称</h3><p>类型名称指结构体/联合定义、枚举类型定义和 <code>typedef</code>。对于这些名称，请使用 <code>UpperCamelCase</code>/<code>PascalCase</code>。例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> NfcStatus : <span class="keyword">int32_t</span> &#123;</span><br><span class="line">    <span class="comment">/*...*/</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">NfcData</span> &#123;</span></span><br><span class="line">    <span class="comment">/*...*/</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="枚举值">2.1.9 枚举值</h3><p>枚举值应为 <code>UPPER_CASE_WITH_UNDERSCORES</code>。将枚举值作为函数参数传递以及作为函数返回项返回时，请使用实际枚举类型（而不是基础整数类型）。例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> NfcStatus : <span class="keyword">int32_t</span> &#123;</span><br><span class="line">    HAL_NFC_STATUS_OK               = <span class="number">0</span>,</span><br><span class="line">    HAL_NFC_STATUS_FAILED           = <span class="number">1</span>,</span><br><span class="line">    HAL_NFC_STATUS_ERR_TRANSPORT    = <span class="number">2</span>,</span><br><span class="line">    HAL_NFC_STATUS_ERR_CMD_TIMEOUT  = <span class="number">3</span>,</span><br><span class="line">    HAL_NFC_STATUS_REFUSED          = <span class="number">4</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>注意：</p>
+<p>​    枚举类型的基础类型是在冒号后显式声明的。因为它不依赖于编译器，所以使用实际枚举类型会更明晰</p>
+<h2 id="备注">2.2 备注</h2><h3 id="文件备注">2.2.1 文件备注</h3><p>​    每个文件的开头都应为相应的许可通知。对于核心 HAL，该通知应为 <a href="https://android.googlesource.com/platform/development/+/master/docs/copyright-templates/c.txt" target="_blank" rel="noopener">development/docs/copyright-templates/c.txt</a> 中的 AOSP Apache 许可。请务必更新年份，并使用 <code>/* */</code> 样式的多行备注（如上所述）。</p>
+<p>​    您可以视需要在许可通知后空一行，后跟变更日志/版本编号信息。使用 /* */ 样式的多行备注（如上所述），在变更日志后空一行，后跟软件包声明。</p>
+<h3 id="TODO-备注">2.2.2 TODO 备注</h3><p>TODO 备注应包含全部大写的字符串 <code>TODO</code>，后跟一个冒号。例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// <span class="doctag">TODO:</span> remove this code before foo is checked in.</span></span><br></pre></td></tr></table></figure>
+
+<p>只有在开发期间才允许使用 TODO 备注；TODO 备注不得存在于已发布的接口中。</p>
+<h3 id="接口-函数备注">2.2.3 接口/函数备注</h3><p>对于多行和单行文档字符串，请使用 <code>/** */</code>。对于文档字符串，请勿使用 <code>//</code>。</p>
+<p>接口的文档字符串应描述接口的一般机制、设计原理、目的等。函数的文档字符串应针对特定函数（软件包级文档位于软件包目录下的 README 文件中）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * IFooController is the controller for foos.</span><br><span class="line"> */</span><br><span class="line">interface IFooController &#123;</span><br><span class="line">    /**</span><br><span class="line">     * Opens the controller.</span><br><span class="line">     * @return status HAL_FOO_OK if successful.</span><br><span class="line">     */</span><br><span class="line">    open() generates (FooStatus status);</span><br><span class="line"> </span><br><span class="line">    /** Close the controller. */</span><br><span class="line">    close();</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>必须为每个参数/返回值添加 <code>@param</code> 和 <code>@return</code>：</p>
+<ul>
+<li>必须为每个参数添加 <code>@param</code>。其后应跟参数的名称，然后是文档字符串</li>
+<li>必须为每个返回值添加 <code>@return</code>。其后应跟返回值的名称，然后是文档字符串</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Explain what foo does.</span><br><span class="line"> * @param arg1 explain what arg1 is</span><br><span class="line"> * @param arg2 explain what arg2 is</span><br><span class="line"> * @return ret1 explain what ret1 is</span><br><span class="line"> * @return ret2 explain what ret2 is</span><br><span class="line"> */</span><br><span class="line">foo(T arg1, T arg2) generates (S ret1, S ret2);</span><br></pre></td></tr></table></figure>
+
+<h2 id="格式">2.3 格式</h2><p>一般格式规则包括:</p>
+<ul>
+<li><p>行长：每行文字最长不应超过 <strong>80</strong> 列</p>
+</li>
+<li><p>空格：各行不得包含尾随空格；空行不得包含空格。</p>
+</li>
+<li><p>空格与制表符：仅使用空格</p>
+</li>
+<li><p>缩进大小：数据块缩进 <strong>4</strong> 个空格，换行缩进 <strong>8</strong> 个空格。</p>
+</li>
+<li><p>大括号：（<a href="https://source.android.com/devices/architecture/hidl/code-style#annotations" target="_blank" rel="noopener">注释值</a>除外）<strong>左</strong>大括号与前面的代码在同一行，<strong>右</strong>大括号与后面的分号占一整行。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">interface INfc &#123;</span><br><span class="line">	close();</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="软件包声明">2.3.1 软件包声明</h3><p>软件包声明应位于文件顶部，在许可通知之后，应占一整行，并且不应缩进。声明软件包时需采用以下格式（有关名称格式，请参阅<a href="https://source.android.com/devices/architecture/hidl/code-style#package-names" target="_blank" rel="noopener">软件包名称</a>）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package PACKAGE-NAME;</span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package android.hardware.fingerprint@2.1;</span><br></pre></td></tr></table></figure>
+
+<h3 id="函数声明">2.3.2 函数声明</h3><p>函数名称、参数、<code>generates</code> 和返回值应在同一行中（如果放得下）。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">interface IFoo &#123;</span><br><span class="line">    /** ... */</span><br><span class="line">    easyMethod(int32_t data) generates (int32_t result);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>如果一行中放不下，则尝试按相同的缩进量放置参数和返回值，并突出 <code>generate</code>，以便读取器快速看到参数和返回值。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">interface IFoo &#123;</span><br><span class="line">    suchALongMethodThatCannotFitInOneLine(int32_t theFirstVeryLongParameter,</span><br><span class="line">                                          int32_t anotherVeryLongParameter);</span><br><span class="line">    anEvenLongerMethodThatCannotFitInOneLine(int32_t theFirstLongParameter,</span><br><span class="line">                                             int32_t anotherVeryLongParameter)</span><br><span class="line">                                  generates (int32_t theFirstReturnValue,</span><br><span class="line">                                             int32_t anotherReturnValue);</span><br><span class="line">    superSuperSuperSuperSuperSuperSuperLongMethodThatYouWillHateToType(</span><br><span class="line">            int32_t theFirstVeryLongParameter, // 8 spaces</span><br><span class="line">            int32_t anotherVeryLongParameter</span><br><span class="line">        ) generates (</span><br><span class="line">            int32_t theFirstReturnValue,</span><br><span class="line">            int32_t anotherReturnValue</span><br><span class="line">        );</span><br><span class="line">    // method name is even shorter than &apos;generates&apos;</span><br><span class="line">    foobar(AReallyReallyLongType aReallyReallyLongParameter,</span><br><span class="line">           AReallyReallyLongType anotherReallyReallyLongParameter)</span><br><span class="line">        generates (ASuperLongType aSuperLongReturnValue, // 4 spaces</span><br><span class="line">                   ASuperLongType anotherSuperLongReturnValue);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其他细节：</p>
+<ul>
+<li>左括号始终与函数名称在同一行</li>
+<li>函数名称和左括号之间不能有空格</li>
+<li>括号和参数之间不能有空格，它们之间出现换行时除外。</li>
+<li>如果 <code>generates</code> 与前面的右括号在同一行，则前面加一个空格。如果 <code>generates</code> 与接下来的左括号在同一行，则后面加一个空格。</li>
+<li>将所有参数和返回值对齐（如果可能）。</li>
+<li>默认缩进 4 个空格。</li>
+<li>将换行的参数与上一行的第一个参数对齐，如果不能对齐，则这些参数缩进 8 个空格。</li>
+</ul>
+<h3 id="注释">2.3.3 注释</h3><p>格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@annotate(keyword = value, keyword = &#123;value, value, value&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>按字母顺序对注释进行排序，并在等号两边加空格。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@callflow(key = value)</span><br><span class="line">@entry</span><br><span class="line">@exit</span><br></pre></td></tr></table></figure>
+
+<p>如果注释在同一行中放不下，则缩进 8 个空格。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@annotate(</span><br><span class="line">        keyword = value,</span><br><span class="line">        keyword = &#123;</span><br><span class="line">                value,</span><br><span class="line">                value</span><br><span class="line">        &#125;,</span><br><span class="line">        keyword = value)</span><br></pre></td></tr></table></figure>
+
+<p>如果整个值数组在同一行中放不下，则在左大括号 <code>{</code> 后和数组内的每个逗号后换行。在最后一个值后紧跟着添加一个右括号。如果只有一个值，请勿使用大括号。</p>
+<p>如果整个值数组可以放到同一行，则请勿在左大括号后和右大括号前加空格，并在每个逗号后加一个空格。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// Good</span><br><span class="line">@callflow(key = &#123;&quot;val&quot;, &quot;val&quot;&#125;)</span><br><span class="line"> </span><br><span class="line">// Bad</span><br><span class="line">@callflow(key = &#123; &quot;val&quot;,&quot;val&quot; &#125;)</span><br></pre></td></tr></table></figure>
+
+<p>注释和函数声明之间不得有空行。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// Good</span><br><span class="line">@entry</span><br><span class="line">foo();</span><br><span class="line"> </span><br><span class="line">// Bad</span><br><span class="line">@entry</span><br><span class="line"> </span><br><span class="line">foo();</span><br></pre></td></tr></table></figure>
+
+<h3 id="枚举声明">2.3.4 枚举声明</h3><p>对于结构体声明，遵循如下规则：</p>
+<ul>
+<li>如果与其他软件包共用枚举声明，则将声明放在 <code>types.hal</code> 中，而不是嵌入到接口内。</li>
+<li>在冒号前后加空格，并在基础类型后和左大括号前加空格。</li>
+<li>最后一个枚举值可以有也可以没有额外的逗号。</li>
+</ul>
+<h3 id="结构体声明">2.3.5 结构体声明</h3><p>对于结构体声明，遵循如下规则：</p>
+<ul>
+<li><p>如果与其他软件包共用结构体声明，则将声明放在 <code>types.hal</code> 中，而不是嵌入到接口内。</p>
+</li>
+<li><p>在结构体类型名称后和左大括号前加空格。</p>
+</li>
+<li><p>对齐字段名称（可选）。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">struct MyStruct &#123;</span><br><span class="line">    vec&lt;uint8_t&gt;   data;</span><br><span class="line">    int32_t        someInt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="数组声明">2.3.6 数组声明</h3><p>请勿在以下内容之间加空格：</p>
+<ul>
+<li>元素类型和左方括号</li>
+<li>左方括号和数组大小</li>
+<li>数组大小和右方括号</li>
+<li>右方括号和接下来的左方括号（如果存在多个维度）。</li>
+</ul>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// Good</span><br><span class="line">int32_t[5] array;</span><br><span class="line">     </span><br><span class="line">// Good</span><br><span class="line">int32_t[5][6] multiDimArray;</span><br><span class="line">    </span><br><span class="line">// Bad</span><br><span class="line">int32_t [ 5 ] [ 6 ] array;</span><br></pre></td></tr></table></figure>
+
+<h3 id="矢量声明">2.3.7 矢量声明</h3><p>请勿在以下内容之间加空格：</p>
+<ul>
+<li><code>vec</code> 和左尖括号。</li>
+<li>左尖括号和元素类型（例外情况：元素类型也是 <code>vec</code>）。</li>
+<li>元素类型和右尖括号（例外情况：元素类型也是 <code>vec</code>）。</li>
+</ul>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// Good</span><br><span class="line">vec&lt;int32_t&gt; array;</span><br><span class="line"> </span><br><span class="line">// Good</span><br><span class="line">vec&lt;vec&lt;int32_t&gt;&gt; array;</span><br><span class="line"> </span><br><span class="line">// Good</span><br><span class="line">vec&lt; vec&lt;int32_t&gt; &gt; array;</span><br><span class="line"> </span><br><span class="line">// Bad</span><br><span class="line">vec &lt; int32_t &gt; array;</span><br><span class="line"> </span><br><span class="line">// Bad</span><br><span class="line">vec &lt; vec &lt; int32_t &gt; &gt; array;</span><br></pre></td></tr></table></figure>
+
+<h1 id="hidl-gen-使用">3 hidl-gen 使用</h1><p>系统定义的所有的<code>.hal</code>接口，都是通过<code>hidl-gen</code>工具转换成对应的代码。<code>hidl-gen</code>源码路径：system/tools/hidl，是在ubuntu上可执行的二进制文件</p>
+<h2 id="编译工具">3.1 编译工具</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make -j18 hidl-gen</span><br></pre></td></tr></table></figure>
+
+<p>编译之后会在out 下生成，详细看out/host/linux-x86/bin/hidl-gen。</p>
+<h2 id="使用方法">3.2 使用方法</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hidl-gen -o output_path -L language (-r interface:root) hidl_name</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>-L</p>
+<p>语言类型，包括c++, c++-headers, c++-sources, export-header, c++-impl, java, java-constants, vts, makefile, androidbp, androidbp-impl, hash等。hidl-gen可根据传入的语言类型产生不同的文件。</p>
+</li>
+<li><p>hidl_name</p>
+<p>完全限定名称的输入文件。格式：<code>package@version</code></p>
+</li>
+<li><p>-r</p>
+<p>格式：package:path，可选，对hidl_name对应的文件来说，用来指定包名和文件所在的目录到Android系统源码根目录的路径。如果没有制定，前缀默认是：android.hardware，目录是Android源码的根目录</p>
+</li>
+<li><p>-o</p>
+<p>存放hidl-gen产生的中间文件的路径</p>
+</li>
+</ul>
+<h2 id="实例">3.3 实例</h2><ol>
+<li><p>在<code>hardware/interfaces/</code>目录下新建<code>han/1.0/</code>目录，并创建接口文件<code>IHan.hal</code>，目录结构如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">└── 1.0</span><br><span class="line">    └── IHan.hal</span><br></pre></td></tr></table></figure>
+
+<p>在IHal.hal文件中只有一个接口IHan和一个方法helloWorld(string name)，代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">package android.hardware.han@2.0;</span><br><span class="line"> </span><br><span class="line">interface IHan&#123;</span><br><span class="line">            helloWorld(string name) generates (string result);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>自动生成对应的C++模板文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PACKAGE=android.hardware.han@1.0</span><br><span class="line">LOC=hardware/interfaces/han/1.0/default/</span><br><span class="line">hidl-gen -o $LOC -Lc++-impl -r android.hardware:hardware/interfaces -r  android.hidl:system/libhidl/transport $PACKAGE</span><br></pre></td></tr></table></figure>
+
+<p>自动生成模板后目录结构如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">└── 1.0</span><br><span class="line">    ├── default</span><br><span class="line">    │   ├── Han.cpp</span><br><span class="line">    │   └── Han.h</span><br><span class="line">    └── IHan.hal</span><br></pre></td></tr></table></figure>
+
+<p>C++ 代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"Han.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> android &#123;</span><br><span class="line"><span class="keyword">namespace</span> hardware &#123;</span><br><span class="line"><span class="keyword">namespace</span> han &#123;</span><br><span class="line"><span class="keyword">namespace</span> V1_0 &#123;</span><br><span class="line"><span class="keyword">namespace</span> implementation &#123;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Methods from ::android::hardware::han::V1_0::IHan follow.</span></span><br><span class="line"><span class="function">Return&lt;<span class="keyword">void</span>&gt; <span class="title">Han::helloWorld</span><span class="params">(<span class="keyword">const</span> hidl_string&amp; name, helloWorld_cb _hidl_cb)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// TODO implement</span></span><br><span class="line">    <span class="keyword">return</span> Void();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Methods from ::android::hidl::base::V1_0::IBase follow.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//IHan* HIDL_FETCH_IHan(const char* /* name */) &#123;</span></span><br><span class="line">    <span class="comment">//return new Han();</span></span><br><span class="line"><span class="comment">//&#125;</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line">&#125;  <span class="comment">// namespace implementation</span></span><br><span class="line">&#125;  <span class="comment">// namespace V1_0</span></span><br><span class="line">&#125;  <span class="comment">// namespace han</span></span><br><span class="line">&#125;  <span class="comment">// namespace hardware</span></span><br><span class="line">&#125;  <span class="comment">// namespace android</span></span><br></pre></td></tr></table></figure>
+
+<p>如果是直通模式HAL，需要开启HIDL_FETCH_IHan。</p>
+</li>
+<li><p>自动生成C++模板对应的Android.bp文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hidl-gen -o $LOC -Landroidbp-impl -r android.hardware:hardware/interfaces  -r android.hidl:system/libhidl/transport $PACKAGE</span><br></pre></td></tr></table></figure>
+
+<p>执行命令后目录结构如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">└── 1.0</span><br><span class="line">    ├── default</span><br><span class="line">    │   ├── Android.bp</span><br><span class="line">    │   ├── Han.cpp</span><br><span class="line">    │   └── Han.h</span><br><span class="line">    └── IHan.hal</span><br></pre></td></tr></table></figure>
+
+<p>Android.bp内容如下：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">cc_library_shared &#123;</span><br><span class="line">    // FIXME: this should only be -impl for a passthrough hal.</span><br><span class="line">    // In most cases, to convert this to a binderized implementation, you should:</span><br><span class="line">    // - change '-impl' to '-service' here and make it a cc_binary instead of a</span><br><span class="line">    //   cc_library_shared.</span><br><span class="line">    // - add a *.rc file for this module.</span><br><span class="line">    // - delete HIDL_FETCH_I* functions.</span><br><span class="line">    // - call configureRpcThreadpool and registerAsService on the instance.</span><br><span class="line">    // You may also want to append '-impl/-service' with a specific identifier like</span><br><span class="line">    // '-vendor' or '-&lt;hardware identifier&gt;' etc to distinguish it. </span><br><span class="line">    name: <span class="string">"android.hardware.han@1.0-impl"</span>,</span><br><span class="line">    relative_install_path: <span class="string">"hw"</span>,</span><br><span class="line">    // FIXME: this should be 'vendor: true' for modules that will eventually be</span><br><span class="line">    // on AOSP.</span><br><span class="line">    proprietary: true,</span><br><span class="line">    srcs: [</span><br><span class="line">        <span class="string">"Han.cpp"</span>,</span><br><span class="line">    ],  </span><br><span class="line">    shared_libs: [</span><br><span class="line">        <span class="string">"libhidlbase"</span>,</span><br><span class="line">        <span class="string">"libhidltransport"</span>,</span><br><span class="line">        <span class="string">"libutils"</span>,</span><br><span class="line">        <span class="string">"android.hardware.han@1.0"</span>,</span><br><span class="line">    ],  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>默认适合直通模式HAL，如果是绑定模式需要按照提示进行修改。</p>
+</li>
+<li><p>使用脚本<code>update-makefiles.sh</code>，来更新Makefile。自动在<code>hardware/interfaces/han/1.0</code>目录下生成Android.bp</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">└── 1.0</span><br><span class="line">    ├── Android.bp</span><br><span class="line">    ├── default</span><br><span class="line">    │   ├── Android.bp</span><br><span class="line">    │   ├── Han.cpp</span><br><span class="line">    │   └── Han.h</span><br><span class="line">    └── IHan.hal</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在<code>hardware/interfaces/han/1.0/default</code>目录下新建<code>service.cpp</code> <code>android.hardware.han@1.0-service.rc</code>。</p>
+<ol>
+<li><p><code>android.hardware.han@1.0-service.rc</code> 实现</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">service han_hal_service /vendor/bin/hw/android.hardware.han@1.0-service</span><br><span class="line">    class   hal </span><br><span class="line">    user    system</span><br><span class="line">    group   system</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>service.cpp</code> 实现</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> LOG_TAG <span class="meta-string">"android.hardware.han@1.0-service"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;android/hardware/han/1.0/IHan.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;hidl/LegacySupport.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> android::hardware::han::V1_0::IHan;</span><br><span class="line"><span class="keyword">using</span> android::hardware::defaultPassthroughServiceImplementation;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> defaultPassthroughServiceImplementation&lt;IHan&gt; (); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在<code>hardware/interfaces/han/1.0/default</code>的Android.bp中增加如下内容：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">cc_binary &#123;</span><br><span class="line">    name: <span class="string">"android.hardware.han@1.0-service"</span>,</span><br><span class="line">    init_rc: [<span class="string">"android.hardware.han@1.0-service.rc"</span>],</span><br><span class="line">    vendor: true,</span><br><span class="line">    proprietary: true</span><br><span class="line">    relative_install_path: <span class="string">"hw"</span>,</span><br><span class="line">    srcs: [</span><br><span class="line">        <span class="string">"service.cpp"</span>,</span><br><span class="line">    ],  </span><br><span class="line"></span><br><span class="line">    shared_libs: [</span><br><span class="line">        <span class="string">"libcutils"</span>,</span><br><span class="line">        <span class="string">"liblog"</span>,</span><br><span class="line">        <span class="string">"libhidlbase"</span>,</span><br><span class="line">        <span class="string">"libhidltransport"</span>,</span><br><span class="line">        <span class="string">"libhardware"</span>,</span><br><span class="line">        <span class="string">"libutils"</span>,</span><br><span class="line">        <span class="string">"android.hardware.han@1.0"</span>,</span><br><span class="line">    ],  </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>至此更HAL相关代码已经实现完成。</p>
+</li>
+</ol>
+</li>
+<li><p>编译生成服务端和客服端要用的各种库文件。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./hardware/interfaces/update-makefiles.sh</span><br><span class="line">mmm hardware/interfaces/han/1.0</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="7">
+<li><p>在<code>manifest.xml</code>文件里添加接口定义</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">hal</span> <span class="attr">format</span>=<span class="string">"hidl"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">name</span>&gt;</span>android.hardware.han<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">transport</span>&gt;</span>hwbinder<span class="tag">&lt;/<span class="name">transport</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">interface</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">name</span>&gt;</span>IHan<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">instance</span>&gt;</span>default<span class="tag">&lt;/<span class="name">instance</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">interface</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">hal</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="8">
+<li><p>使用C++实现客户端调用</p>
+<p>在<code>hardware/interfaces/han/1.0</code>目录下创建test目录。并在test目录下新建HanTest.cpp Android.bp</p>
+<ol>
+<li><p>C++实现客户端调用</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> LOG_TAG <span class="meta-string">"android.hardware.han@1.0-service"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;hidl/Status.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;hidl/HidlSupport.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;hidl/LegacySupport.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;utils/misc/h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> ::android::hardware::hidl_string;</span><br><span class="line"><span class="keyword">using</span> ::android::sp;</span><br><span class="line"><span class="keyword">using</span> android::hardware::han::V1_0::IHan;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    android::sp&lt;IHan&gt; service = IHan::getService();</span><br><span class="line">    <span class="keyword">if</span>(service == <span class="literal">NULL</span>)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Failed to get service\n"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    service-&gt;helloWorld(<span class="string">"Hello Woprld"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Android.bp</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">cc_binary &#123;</span><br><span class="line">    name: <span class="string">"han_client"</span>,</span><br><span class="line">    defaluts: [<span class="string">"hidl_defaults"</span>],</span><br><span class="line">    relative_install_path: <span class="string">"hw"</span>,</span><br><span class="line">    proprietary: true,</span><br><span class="line">    srcs: [</span><br><span class="line">        <span class="string">"HanTest.cpp"</span>,</span><br><span class="line">    ],  </span><br><span class="line">    shared_libs: [</span><br><span class="line">        <span class="string">"liblog"</span>,</span><br><span class="line">        <span class="string">"libhardware"</span>,</span><br><span class="line">        <span class="string">"libhidlbase"</span>,</span><br><span class="line">        <span class="string">"libhidltransport"</span>,</span><br><span class="line">        <span class="string">"libutils"</span>,</span><br><span class="line">        <span class="string">"android.hardware.han@1.0"</span>,</span><br><span class="line">    ],  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+</li>
+</ol>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text/javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.2.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.2.0/dist/mindmap.min.css">
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/Treble/" rel="tag"># Treble</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/25/Android Treble架构分析/" rel="next" title="Android Treble架构分析">
+                <i class="fa fa-chevron-left"></i> Android Treble架构分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/08/12/初识FreeRTOS/" rel="prev" title="初识FreeRTOS">
+                初识FreeRTOS <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+		
+		  
+			<ul class="sidebar-nav motion-element">
+			  <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+				文章目录
+			  </li>
+			  <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+				站点概览
+			  </li>
+			</ul>
+		  
+		
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/han.jpg" alt="Rulei.Zhou">
+            
+              <p class="site-author-name" itemprop="name">Rulei.Zhou</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">39</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/ruleizhou" title="GitHub &rarr; https://github.com/ruleizhou" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:rulei.zhou@foxmail.com" title="E-Mail &rarr; mailto:rulei.zhou@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section></div>
+
+		
+		  
+		  <!--noindex-->
+			<section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+			  <div class="post-toc">
+
+				
+				  
+				
+
+				
+				  <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#HIDL-简介"><span class="nav-text">1 HIDL 简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HIDL-HAL-类型"><span class="nav-text">1.1 HIDL HAL 类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#直通模式-Passthrough"><span class="nav-text">1.1.1 直通模式(Passthrough)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绑定模式-Binderized"><span class="nav-text">1.1.2 绑定模式(Binderized)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#纯绑定模式"><span class="nav-text">1.1.3 纯绑定模式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HIDL-编程规范"><span class="nav-text">2 HIDL 编程规范</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#命令规范"><span class="nav-text">2.1 命令规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#目录结构和文件命令"><span class="nav-text">2.1.1 目录结构和文件命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#软件包名称"><span class="nav-text">2.1.2 软件包名称</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#版本"><span class="nav-text">2.1.3 版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#导入"><span class="nav-text">2.1.4 导入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接口名称"><span class="nav-text">2.1.5 接口名称</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数"><span class="nav-text">2.1.6 函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结构体-联合字段名称"><span class="nav-text">2.1.7 结构体/联合字段名称</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型名称"><span class="nav-text">2.1.8 类型名称</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#枚举值"><span class="nav-text">2.1.9 枚举值</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#备注"><span class="nav-text">2.2 备注</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#文件备注"><span class="nav-text">2.2.1 文件备注</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TODO-备注"><span class="nav-text">2.2.2 TODO 备注</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接口-函数备注"><span class="nav-text">2.2.3 接口/函数备注</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#格式"><span class="nav-text">2.3 格式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#软件包声明"><span class="nav-text">2.3.1 软件包声明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数声明"><span class="nav-text">2.3.2 函数声明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注释"><span class="nav-text">2.3.3 注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#枚举声明"><span class="nav-text">2.3.4 枚举声明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结构体声明"><span class="nav-text">2.3.5 结构体声明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数组声明"><span class="nav-text">2.3.6 数组声明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#矢量声明"><span class="nav-text">2.3.7 矢量声明</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#hidl-gen-使用"><span class="nav-text">3 hidl-gen 使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#编译工具"><span class="nav-text">3.1 编译工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用方法"><span class="nav-text">3.2 使用方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实例"><span class="nav-text">3.3 实例</span></a></li></ol></li></ol></div>
+				
+
+			  </div>
+			</section>
+		  <!--/noindex-->
+		  
+		
+
+      
+
+    </aside></div>
+  
+  
+
+
+        
+      </main></div>
+    
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rulei.Zhou</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.2"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '0a400e1f09cb117f3ea4',
+    clientSecret: 'f7d98253e2a12b03803742f2a506c174d06019a0',
+    repo: 'ruleizhou.github.io',
+    owner: 'ruleizhou',
+    admin: ['ruleizhou'],
+    id: md5(location.pathname),
+    
+      language: window.navigator.language || window.navigator.userLanguage,
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  
+  <script>
+    $('.highlight').each(function (i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap')
+      $(e).after($wrap)
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function (e) {
+        var code = $(this).parent().find('.code').find('.line').map(function (i, e) {
+          return $(e).text()
+        }).toArray().join('\n')
+        var ta = document.createElement('textarea')
+        document.body.appendChild(ta)
+        ta.style.position = 'absolute'
+        ta.style.top = '0px'
+        ta.style.left = '0px'
+        ta.value = code
+        ta.select()
+        ta.focus()
+        var result = document.execCommand('copy')
+        document.body.removeChild(ta)
+        
+          if(result)$(this).text('复制成功')
+          else $(this).text('复制失败')
+        
+        $(this).blur()
+      })).on('mouseleave', function (e) {
+        var $b = $(this).find('.copy-btn')
+        setTimeout(function () {
+          $b.text('复制')
+        }, 300)
+      }).append(e)
+    })
+  </script>
+
+
+  
+
+  
+
+</body>
+</html>
