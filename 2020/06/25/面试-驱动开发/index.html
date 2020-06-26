@@ -101,15 +101,20 @@
 
 
 
-  <meta name="keywords" content="面试">
+  <meta name="description" content="1 Linux相关1.1 Linux中用户模式和内核模式是什么含意？1.2 linux用户进程间通信主要有哪几种方式？1.3 linux内存如何划分及如何使用？虚拟地址及物理地址的概念及转换，高端内存的概念？1.4 linux中内核空间和用户空间区别？用户空间和内核空间通信方式有哪些？1.5 linux中系统调用过程？如应用程序中read()在linux中执行过程（从用户空间到内核空间）？1.6">
+<meta name="keywords" content="面试">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试-驱动开发">
 <meta property="og:url" content="https://ruleizhou.github.io/2020/06/25/面试-驱动开发/index.html">
 <meta property="og:site_name" content="ZRL">
+<meta property="og:description" content="1 Linux相关1.1 Linux中用户模式和内核模式是什么含意？1.2 linux用户进程间通信主要有哪几种方式？1.3 linux内存如何划分及如何使用？虚拟地址及物理地址的概念及转换，高端内存的概念？1.4 linux中内核空间和用户空间区别？用户空间和内核空间通信方式有哪些？1.5 linux中系统调用过程？如应用程序中read()在linux中执行过程（从用户空间到内核空间）？1.6">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-06-25T12:37:06.453Z">
+<meta property="og:image" content="https://ruleizhou.github.io/2020/06/25/面试-驱动开发/%E4%B8%AD%E6%96%AD%E7%9B%B8%E5%BA%94%E6%B5%81%E7%A8%8B%E5%9B%BE.png">
+<meta property="og:updated_time" content="2020-06-26T15:49:52.028Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试-驱动开发">
+<meta name="twitter:description" content="1 Linux相关1.1 Linux中用户模式和内核模式是什么含意？1.2 linux用户进程间通信主要有哪几种方式？1.3 linux内存如何划分及如何使用？虚拟地址及物理地址的概念及转换，高端内存的概念？1.4 linux中内核空间和用户空间区别？用户空间和内核空间通信方式有哪些？1.5 linux中系统调用过程？如应用程序中read()在linux中执行过程（从用户空间到内核空间）？1.6">
+<meta name="twitter:image" content="https://ruleizhou.github.io/2020/06/25/面试-驱动开发/%E4%B8%AD%E6%96%AD%E7%9B%B8%E5%BA%94%E6%B5%81%E7%A8%8B%E5%9B%BE.png">
 
 
 
@@ -381,13 +386,23 @@
                 
               
 
-              <time title="创建时间：2020-06-25 20:36:10 / 修改时间：20:37:06" itemprop="dateCreated datePublished" datetime="2020-06-25T20:36:10+08:00">2020-06-25</time>
+              <time title="创建时间：2020-06-25 20:36:10" itemprop="dateCreated datePublished" datetime="2020-06-25T20:36:10+08:00">2020-06-25</time>
             </span>
           
 
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-06-26 23:49:52" itemprop="dateModified" datetime="2020-06-26T23:49:52+08:00">2020-06-26</time>
+              </span>
             
           
 
@@ -438,7 +453,145 @@
       
 
       
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text/javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.2.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.2.0/dist/mindmap.min.css">
+        <h1 id="Linux相关">1 Linux相关</h1><h2 id="Linux中用户模式和内核模式是什么含意？">1.1 Linux中用户模式和内核模式是什么含意？</h2><h2 id="linux用户进程间通信主要有哪几种方式？">1.2 linux用户进程间通信主要有哪几种方式？</h2><h2 id="linux内存如何划分及如何使用？虚拟地址及物理地址的概念及转换，高端内存的概念？">1.3 linux内存如何划分及如何使用？虚拟地址及物理地址的概念及转换，高端内存的概念？</h2><h2 id="linux中内核空间和用户空间区别？用户空间和内核空间通信方式有哪些？">1.4 linux中内核空间和用户空间区别？用户空间和内核空间通信方式有哪些？</h2><h2 id="linux中系统调用过程？如应用程序中read-在linux中执行过程（从用户空间到内核空间）？">1.5 linux中系统调用过程？如应用程序中read()在linux中执行过程（从用户空间到内核空间）？</h2><h2 id="linux调度原理">1.6 linux调度原理</h2><h2 id="linux-RCU原理">1.7 linux RCU原理</h2><h2 id="linux编译时用到的参数含义">1.8 linux编译时用到的参数含义</h2><h2 id="linux内核的启动过程（源代码级）">1.9 linux内核的启动过程（源代码级）</h2><h1 id="基础相关">2 基础相关</h1><h2 id="怎么用C先嵌入式系统的死循环的？">2.1 怎么用C先嵌入式系统的死循环的？</h2><h2 id="copy-to-user-和copy-from-user-主要用于实现什么功能？一般用于file-operations结构的哪些函数里面？">2.2 copy_to_user() 和copy_from_user()主要用于实现什么功能？一般用于file_operations结构的哪些函数里面？</h2><h2 id="ioctl和unlock-ioctl有什么区别？">2.3 ioctl和unlock_ioctl有什么区别？</h2><h2 id="kmalloc和vmalloc的区别">2.4 kmalloc和vmalloc的区别</h2><h2 id="内核函数mmap的实现原理，机制？">2.5 内核函数mmap的实现原理，机制？</h2><h2 id="怎样申请大块内核内存？">2.6 怎样申请大块内核内存？</h2><h2 id="framebuffer机制">2.7 framebuffer机制</h2><h2 id="内核配置编译及Makefile">2.8 内核配置编译及Makefile</h2><h2 id="列举最少3种你所知道的嵌入式的体系结构，并请说明什么时ARM体系结构？">2.9 列举最少3种你所知道的嵌入式的体系结构，并请说明什么时ARM体系结构？</h2><h1 id="驱动模型相关">3 驱动模型相关</h1><h2 id="字符设备和块设备的区别，请分别列举一些实际的设备说出它们是属于哪一类设备？">3.1 字符设备和块设备的区别，请分别列举一些实际的设备说出它们是属于哪一类设备？</h2><h2 id="请简述主设备号和次设备号的用途。如果执行mknod-chartest-c-4-64，创建chartest设备。请分析chartest使用的是哪一类设备驱动程序？">3.2 请简述主设备号和次设备号的用途。如果执行mknod chartest c 4 64，创建chartest设备。请分析chartest使用的是哪一类设备驱动程序？</h2><h2 id="设备驱动程序中如何注册一个字符设备？分别解释下它的几个参数的含义？">3.3 设备驱动程序中如何注册一个字符设备？分别解释下它的几个参数的含义？</h2><h2 id="字符型驱动设备怎么创建文件？">3.4 字符型驱动设备怎么创建文件？</h2><h2 id="insmod一个驱动模块，会执行模块中的哪个函数？rmmod呢？这两个函数在设计上要注意哪些？遇到过卸载驱动出现异常没？是什么问题引起的？">3.5 insmod一个驱动模块，会执行模块中的哪个函数？rmmod呢？这两个函数在设计上要注意哪些？遇到过卸载驱动出现异常没？是什么问题引起的？</h2><h2 id="设备驱动模型三个重要的成员是？platform总线的匹配规则是？在具体应用上要不要先注册驱动在注册设备？有先后顺序没？">3.6 设备驱动模型三个重要的成员是？platform总线的匹配规则是？在具体应用上要不要先注册驱动在注册设备？有先后顺序没？</h2><h2 id="驱动中操作物理绝对地址为什么要先ioremap？">3.7 驱动中操作物理绝对地址为什么要先ioremap？</h2><h2 id="查看驱动模块中打印信息应该使用什么命令？如何查看内核中已有的字符设备的信息？如何查看正在使用的哪些中断号？">3.8 查看驱动模块中打印信息应该使用什么命令？如何查看内核中已有的字符设备的信息？如何查看正在使用的哪些中断号？</h2><h1 id="Bus相关">4 Bus相关</h1><h2 id="IIC原理，总线框架，设备编写方法，i2c-msg">4.1 IIC原理，总线框架，设备编写方法，i2c_msg</h2><h1 id="Debug相关">5 Debug相关</h1><h2 id="kernel-panic">5.1 kernel panic</h2><h2 id="在驱动调试过程中遇到过oops没？怎么处理的？">5.2 在驱动调试过程中遇到过oops没？怎么处理的？</h2><h1 id="同步相关">6 同步相关</h1><h2 id="spinlock与信号量的区别？">6.1 spinlock与信号量的区别？</h2><h2 id="linux中的同步机制？">6.2 linux中的同步机制？</h2><h2 id="linux系统实现原子操作有哪些方法？">6.3 linux系统实现原子操作有哪些方法？</h2><h2 id="自旋锁和信号量在互斥使用时需要注意哪些？在中断服务程序里面的互斥是使用自旋锁还是信号量？还是两者都能用？为什么">6.4 自旋锁和信号量在互斥使用时需要注意哪些？在中断服务程序里面的互斥是使用自旋锁还是信号量？还是两者都能用？为什么</h2><h2 id="驱动里面为什么要有并发、互斥的控制？如何实现？讲个例子？">6.5 驱动里面为什么要有并发、互斥的控制？如何实现？讲个例子？</h2><h1 id="中断相关">7 中断相关</h1><h2 id="系统软中断、tasklet、工作队列work-queue的区别及使用">7.1 系统软中断、tasklet、工作队列work queue的区别及使用</h2><p>中断上半部：</p>
+<ul>
+<li>对时间要求比较高的工作</li>
+<li>硬件相关的操作</li>
+<li>不能被中断打断，因为进入中断时候一般都会禁止本地CPU中断</li>
+</ul>
+<p>中断下半部：</p>
+<ul>
+<li>可延迟执行的操作（对时间要求不高）</li>
+</ul>
+<h3 id="软中断">7.1.1 软中断</h3><p>目前Linux系统最多支持32个软中断，系统已经定义使用了10个，剩下的用户可以自己指定。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span></span><br><span class="line">&#123;</span><br><span class="line">    HI_SOFTIRQ=<span class="number">0</span>,</span><br><span class="line">    TIMER_SOFTIRQ,</span><br><span class="line">    NET_TX_SOFTIRQ,</span><br><span class="line">    NET_RX_SOFTIRQ,</span><br><span class="line">    BLOCK_SOFTIRQ,</span><br><span class="line">    BLOCK_IOPOLL_SOFTIRQ,</span><br><span class="line">    TASKLET_SOFTIRQ,</span><br><span class="line">    SCHED_SOFTIRQ,</span><br><span class="line">    HRTIMER_SOFTIRQ,</span><br><span class="line">    RCU_SOFTIRQ,    <span class="comment">/* Preferable RCU should always be the last softirq */</span></span><br><span class="line"></span><br><span class="line">    NR_SOFTIRQS</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>上面列出的软中断类型越靠前优先级越高，其中有两个需要关注一下，就是HI_SOFTIRQ和TASKLET_SOFTIRQ，系统已经帮我们初始化好了，tasklet就是基于这两个软中断去实现的。具体代码如下:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//init/main.c</span></span><br><span class="line"><span class="function">asmlinkage __visible <span class="keyword">void</span> __init <span class="title">start_kernel</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> *command_line;</span><br><span class="line">    <span class="keyword">char</span> *after_dashes;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * Need to run as early as possible, to initialize the</span></span><br><span class="line"><span class="comment">     * lockdep hash:</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    lockdep_init();</span><br><span class="line">    set_task_stack_end_magic(&amp;init_task);</span><br><span class="line">    smp_setup_processor_id();</span><br><span class="line">    debug_objects_early_init();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * Set up the the initial canary ASAP:</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    boot_init_stack_canary();</span><br><span class="line"></span><br><span class="line">    cgroup_init_early();</span><br><span class="line"></span><br><span class="line">    local_irq_disable();</span><br><span class="line">    early_boot_irqs_disabled = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    ....    ....</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * These use large bootmem allocations and must precede</span></span><br><span class="line"><span class="comment">     * kmem_cache_init()</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    setup_log_buf(<span class="number">0</span>);</span><br><span class="line">    pidhash_init();</span><br><span class="line">    vfs_caches_init_early();</span><br><span class="line">    sort_main_extable();</span><br><span class="line">    trap_init();</span><br><span class="line">    mm_init();</span><br><span class="line">    ....    ....</span><br><span class="line">    early_irq_init();</span><br><span class="line">    init_IRQ();</span><br><span class="line">    tick_init();</span><br><span class="line">    rcu_init_nohz();</span><br><span class="line">    init_timers();</span><br><span class="line">    hrtimers_init();</span><br><span class="line">    softirq_init();<span class="comment">//初始化软中断</span></span><br><span class="line">    timekeeping_init();</span><br><span class="line">    time_init();</span><br><span class="line">    ....</span><br><span class="line">    ....</span><br><span class="line">    ....</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> CONFIG_X86_ESPFIX64</span></span><br><span class="line">    <span class="comment">/* Should be run before the first non-init thread is created */</span></span><br><span class="line">    init_espfix_bsp();</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">    thread_info_cache_init();</span><br><span class="line">    cred_init();</span><br><span class="line">    fork_init();</span><br><span class="line">    ....    ....</span><br><span class="line"></span><br><span class="line">    check_bugs();</span><br><span class="line"></span><br><span class="line">    acpi_subsystem_init();</span><br><span class="line">    sfi_init_late();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (efi_enabled(EFI_RUNTIME_SERVICES)) &#123;</span><br><span class="line">        efi_late_init();</span><br><span class="line">        efi_free_boot_services();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ftrace_init();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Do the rest non-__init'ed, we're now alive */</span></span><br><span class="line">    rest_init();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//kernel/softirq.c</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> __init <span class="title">softirq_init</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> cpu;</span><br><span class="line"></span><br><span class="line">    for_each_possible_cpu(cpu) &#123;</span><br><span class="line">        per_cpu(tasklet_vec, cpu).tail =</span><br><span class="line">            &amp;per_cpu(tasklet_vec, cpu).head;</span><br><span class="line">        per_cpu(tasklet_hi_vec, cpu).tail =</span><br><span class="line">            &amp;per_cpu(tasklet_hi_vec, cpu).head;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    open_softirq(TASKLET_SOFTIRQ, tasklet_action);</span><br><span class="line">    open_softirq(HI_SOFTIRQ, tasklet_hi_action);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中：</p>
+<p>open_softirq(TASKLET_SOFTIRQ, tasklet_action);</p>
+<p>open_softirq(HI_SOFTIRQ, tasklet_hi_action);</p>
+<p>就是系统为我们初始化好的和tasklet相关的软中断。</p>
+<h4 id="自定义软中断">7.1.1.1 自定义软中断</h4><p>我们也可以自己定义属于自己的软中断，方法如下:</p>
+<ol>
+<li><p>添加我们自己的软中断</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span></span><br><span class="line">&#123;</span><br><span class="line">    HI_SOFTIRQ=<span class="number">0</span>,</span><br><span class="line">    TIMER_SOFTIRQ,</span><br><span class="line">    NET_TX_SOFTIRQ,</span><br><span class="line">    NET_RX_SOFTIRQ,</span><br><span class="line">    BLOCK_SOFTIRQ,</span><br><span class="line">    BLOCK_IOPOLL_SOFTIRQ,</span><br><span class="line">    TASKLET_SOFTIRQ,</span><br><span class="line">    SCHED_SOFTIRQ,</span><br><span class="line">    HRTIMER_SOFTIRQ,</span><br><span class="line">    MY_SOFTIRQ,      <span class="comment">/*我自己添加的软中断*/</span> </span><br><span class="line">    RCU_SOFTIRQ,    <span class="comment">/* Preferable RCU should always be the last softirq */</span></span><br><span class="line"></span><br><span class="line">    NR_SOFTIRQS</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在kernel/softirq.c中定义自己的软中断处理函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//我自己定义的软中断处理函数</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">my_softirq_action</span><span class="params">(struct softirq_action *a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>初始化</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> __init <span class="title">softirq_init</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> cpu;</span><br><span class="line"></span><br><span class="line">    for_each_possible_cpu(cpu) &#123;</span><br><span class="line">        per_cpu(tasklet_vec, cpu).tail =</span><br><span class="line">            &amp;per_cpu(tasklet_vec, cpu).head;</span><br><span class="line">        per_cpu(tasklet_hi_vec, cpu).tail =</span><br><span class="line">            &amp;per_cpu(tasklet_hi_vec, cpu).head;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    open_softirq(TASKLET_SOFTIRQ, tasklet_action);</span><br><span class="line">    open_softirq(HI_SOFTIRQ, tasklet_hi_action);</span><br><span class="line">    open_softirq(MY_SOFTIRQ, tasklet_hi_action);<span class="comment">//我自己定义的软中断</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>激活</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">raise_softirq(MY_SOFTIRQ);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>以上就是自己定义的软中断的流程。</p>
+<h4 id="软中断的执行">7.1.1.2 软中断的执行</h4><p>软中断的执行既可以守护进程(ksoftirqd)中执行，也可以在中断的退出阶段执行。实际上，软中断更多的是在中断的退出阶段执行（irq_exit），以便达到更快的响应，加入守护进程机制，只是担心一旦有大量的软中断等待执行，会使得内核过长地留在中断上下文中。</p>
+<h5 id="在irq-exit中执行">7.1.1.2.1 在irq_exit中执行</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">irq_exit</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">        ......</span><br><span class="line">	sub_preempt_count(IRQ_EXIT_OFFSET);</span><br><span class="line">	<span class="keyword">if</span> (!in_interrupt() &amp;&amp; local_softirq_pending())</span><br><span class="line">		invoke_softirq();</span><br><span class="line">        ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果中断发生嵌套，in_interrupt()保证了只有在最外层的中断的irq_exit阶段，invoke_interrupt才会被调用，当然，local_softirq_pending也会实现判断当前cpu有无待决的软中断。代码最终会进入<strong>do_softirq中，内核会保证调用</strong>do_softirq时，本地cpu的中断处于关闭状态，进入__do_softirq：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">asmlinkage <span class="keyword">void</span> __do_softirq(<span class="keyword">void</span>)</span><br><span class="line">&#123;</span><br><span class="line">        ......</span><br><span class="line">	pending = local_softirq_pending();</span><br><span class="line"> </span><br><span class="line">	__local_bh_disable((<span class="keyword">unsigned</span> <span class="keyword">long</span>)__builtin_return_address(<span class="number">0</span>),</span><br><span class="line">				SOFTIRQ_OFFSET);</span><br><span class="line">restart:</span><br><span class="line">	<span class="comment">/* Reset the pending bitmask before enabling irqs */</span></span><br><span class="line">	set_softirq_pending(<span class="number">0</span>);</span><br><span class="line"> </span><br><span class="line">	local_irq_enable();</span><br><span class="line"> </span><br><span class="line">	h = softirq_vec;</span><br><span class="line"> </span><br><span class="line">	<span class="keyword">do</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> (pending &amp; <span class="number">1</span>) &#123;</span><br><span class="line">	                ......</span><br><span class="line">			trace_softirq_entry(vec_nr);</span><br><span class="line">			h-&gt;action(h);</span><br><span class="line">			trace_softirq_exit(vec_nr);</span><br><span class="line">                        ......</span><br><span class="line">		&#125;</span><br><span class="line">		h++;</span><br><span class="line">		pending &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">	&#125; <span class="keyword">while</span> (pending);</span><br><span class="line"> </span><br><span class="line">	local_irq_disable();</span><br><span class="line"> </span><br><span class="line">	pending = local_softirq_pending();</span><br><span class="line">	<span class="keyword">if</span> (pending &amp;&amp; --max_restart)</span><br><span class="line">		<span class="keyword">goto</span> restart;</span><br><span class="line"> </span><br><span class="line">	<span class="keyword">if</span> (pending)</span><br><span class="line">		wakeup_softirqd();</span><br><span class="line"> </span><br><span class="line">	lockdep_softirq_exit();</span><br><span class="line"> </span><br><span class="line">	__local_bh_enable(SOFTIRQ_OFFSET);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>首先取出pending的状态；</li>
+<li>禁止软中断，主要是为了防止和软中断守护进程发生竞争；</li>
+<li>清除所有的软中断待决标志</li>
+<li>打开本地cpu中断；</li>
+<li>循环执行待决软中断的回调函数</li>
+<li>如果循环完毕，发现新的软中断被触发，则重新启动循环，直到以下条件满足，才退出：<ul>
+<li>没有新的软中断等待执行</li>
+<li>循环已经达到最大的循环次数MAX_SOFTIRQ_RESTART，目前的设定值时10次；</li>
+</ul>
+</li>
+<li>如果经过MAX_SOFTIRQ_RESTART次循环后还未处理完，则激活守护进程，处理剩下的软中断；</li>
+<li>退出前恢复软中断</li>
+</ul>
+<h5 id="在ksoftirqd进程中执行">7.1.1.2.2 在ksoftirqd进程中执行</h5><p>软中断也可能由ksoftirqd守护进程执行，这要发生在以下两种情况下：</p>
+<ul>
+<li>在irq_exit中执行软中断，但是在经过MAX_SOFTIRQ_RESTART次循环后，软中断还未处理完，这种情况虽然极少发生，但毕竟有可能；</li>
+<li>内核的其它代码主动调用raise_softirq，而这时正好不是在中断上下文中，守护进程将被唤醒；</li>
+</ul>
+<p>守护进程最终也会调用__do_softirq执行软中断的回调，具体的代码位于run_ksoftirqd函数中，内核会关闭抢占的情况下执行__do_softirq。</p>
+<h3 id="tasklet">7.1.2 tasklet</h3><p>因为内核已经定义好了10种软中断类型，并且不建议我们自行添加额外的软中断，所以对软中断的实现方式，我们主要是做一个简单的了解，对于驱动程序的开发者来说，无需实现自己的软中断。但是，对于某些情况下，我们不希望一些操作直接在中断的handler中执行，但是又希望在稍后的时间里得到快速地处理，这就需要使用tasklet机制。 tasklet是建立在软中断上的一种延迟执行机制，它的实现基于TASKLET_SOFTIRQ和HI_SOFTIRQ这两个软中断类型。</p>
+<p>tasklet示例如下：</p>
+<ol>
+<li><p>定一个tasklet类型的结构体变量</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*使用tasklet机制的中断下半部*/</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">tasklet_struct</span> <span class="title">my_tasklet</span>;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编写软中断处理函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">my_tasklet_fun</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">long</span> arg)</span></span>&#123;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>初始化，将tasklet软中断处理函数和tasklet挂钩</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tasklet_init(my_tasklet,my_tasklet_fun,(<span class="keyword">unsigned</span> <span class="keyword">long</span>) sport);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>调用tasklet_schedule触发调度tasklet</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tasklet_schedule(&amp;sport-&gt;my_tasklet);<span class="comment">//调度tasklet</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>定义tasklet变量，实现软中断处理函数，初始化，调度，以上这些就是tasklet的使用步骤了，内核帮我们省略了很多麻烦的实现，所以使用起来比较简单。</p>
+<h3 id="工作队列work-queue">7.1.3 工作队列work queue</h3><p>软中断和tasklet是运行于中断上下文的，它们属于内核态没有进程的切换，因此在执行过程中不能休眠，不能阻塞，一旦休眠或者阻塞，则系统直接挂死。因此软中断和tasklet是有一定的使用局限性的，工作队列的出现正是用在软中断和tasklet不能使用的场合，比如需要调用一个具有可延迟函数的特质，但是这个函数又有可能引起休眠、阻塞。</p>
+<p>工作队列的使用步骤如下：</p>
+<ol>
+<li><p>定义一个工作队列对象</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*工作队列机制*/</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">work_struct</span>    <span class="title">my_work</span>;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编写工作队列处理函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*工作队列机制*/</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">my_work_fun</span><span class="params">(struct work_struct *w)</span></span>&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>初始化工作队列</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INIT_WORK(&amp;my_work, my_work_fun);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>调度工作队列</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">schedule_work(&amp;my_work);</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<h2 id="linux中断响应的执行流程">7.2 linux中断响应的执行流程</h2><p><img src="/2020/06/25/面试-驱动开发/%E4%B8%AD%E6%96%AD%E7%9B%B8%E5%BA%94%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt></p>
+<p>这个序列图展示了整个通用中断子系统的中断响应过程，flow_handle一栏就是中断流控层的生命周期</p>
+<h2 id="中断注册函数和中断注销函数">7.3 中断注册函数和中断注销函数</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">request_threaded_irq(<span class="keyword">unsigned</span> <span class="keyword">int</span> irq,</span><br><span class="line">                     <span class="keyword">irq_handler_t</span> handler,</span><br><span class="line">                     <span class="keyword">irq_handler_t</span> thread_fn,</span><br><span class="line">                     <span class="keyword">unsigned</span> <span class="keyword">long</span> flags,</span><br><span class="line">                     <span class="keyword">const</span> <span class="keyword">char</span> *name,</span><br><span class="line">                     <span class="keyword">void</span> *dev);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>irq</p>
+<p>需要申请的irq编号，对于ARM体系，irq编号通常在平台级的代码中事先定义好，有时候也可以动态申请。</p>
+</li>
+<li><p>handler</p>
+<p>中断服务回调函数，该回调运行在中断上下文中，并且cpu的本地中断处于关闭状态，所以该回调函数应该只是执行需要快速响应的操作，执行时间应该尽可能短小，耗时的工作最好留给下面的thread_fn回调处理。</p>
+</li>
+<li><p>thread_fn</p>
+<p>如果该参数不为NULL，内核会为该irq创建一个内核线程，当中断发生时，如果handler回调返回值是IRQ_WAKE_THREAD，内核将会激活中断线程，在中断线程中，该回调函数将被调用，所以，该回调函数运行在进程上下文中，允许进行阻塞操作。</p>
+</li>
+<li><p>flags</p>
+<p>控制中断行为的位标志。例如：IRQF_TRIGGER_RISING，IRQF_TRIGGER_LOW，IRQF_SHARED等，在include/linux/interrupt.h中定义。</p>
+</li>
+<li><p>name</p>
+<p>申请本中断服务的设备名称，同时也作为中断线程的名称，该名称可以在/proc/interrupts文件中显示。</p>
+</li>
+<li><p>dev</p>
+<p>当多个设备的中断线共享同一个irq时，它会作为handler的参数，用于区分不同的设备。</p>
+</li>
+</ul>
+<h2 id="中断和轮询哪个效率高？怎样决定是采用中断方式还是采用轮询方式去实现驱动？">7.4 中断和轮询哪个效率高？怎样决定是采用中断方式还是采用轮询方式去实现驱动？</h2><p>中断是CPU处于被动状态下来接受设备的信号，而轮询是CPU主动去查询该设备是否有请求。凡事都是两面性，所以，看效率不能简单的说那个效率高。如果是请求设备是一个频繁请求cpu的设备，或者有大量数据请求的网络设备，那么轮询的效率是比中断高。如果是一般设备，并且该设备请求cpu的频率比较底，则用中断效率要高一些。主要是看请求频率</p>
+<h2 id="写一个中断服务需要注意哪些？如果中断产生之后要做比较多的事情你是怎么做的？">7.5 写一个中断服务需要注意哪些？如果中断产生之后要做比较多的事情你是怎么做的？</h2><ul>
+<li>中断处理例程应该尽量短<strong>，</strong>把能放在后半段(tasklet，等待队列等)的任务尽量放在后半段</li>
+<li>中断服务程序中不能有阻塞操作。应为中断期间是完全占用CPU的（即不存在内核调度），中断被阻塞住，其他进程将无法操作；</li>
+<li>中断服务程序注意返回值，要用操作系统定义的宏做为返回值，而不是自己定义的OK，FAIL之类的。</li>
+</ul>
+<h2 id="驱动中操作物理绝对地址为什么要先ioremap">7.6 驱动中操作物理绝对地址为什么要先ioremap?</h2><p>因为内核没有办法直接访问物理内存地址，必须先<strong>通过ioremap获得对应的虚拟地址</strong>。</p>
+<h2 id="IRQ和FIQ有什么区别？">7.7 IRQ和FIQ有什么区别？</h2><p>一般的中断控制器里我们可以配置与控制器相连的某个中断输入是FIQ还是IRQ,所以一个中断是可以指定为FIQ或者IRQ的，为了合理，要求系统更快响应，自身处理所耗时间也很短的中断设置为FIQ，否则就设置了IRQ。</p>
+<p>区别如下：</p>
+<ul>
+<li>FIQ比IRQ有更高优先级</li>
+<li>IRQ可以被FIQ所中断，但FIQ不能被IRQ所中断。</li>
+<li>FIQ模式下，比IRQ模式多了几个独立的寄存器</li>
+</ul>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text/javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.2.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.2.0/dist/mindmap.min.css">
       
     </div>
 
@@ -534,9 +687,18 @@
 
 		
 		  
+			<ul class="sidebar-nav motion-element">
+			  <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+				文章目录
+			  </li>
+			  <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+				站点概览
+			  </li>
+			</ul>
+		  
 		
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -689,6 +851,22 @@
       </section></div>
 
 		
+		  
+		  <!--noindex-->
+			<section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+			  <div class="post-toc">
+
+				
+				  
+				
+
+				
+				  <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux相关"><span class="nav-text">1 Linux相关</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux中用户模式和内核模式是什么含意？"><span class="nav-text">1.1 Linux中用户模式和内核模式是什么含意？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux用户进程间通信主要有哪几种方式？"><span class="nav-text">1.2 linux用户进程间通信主要有哪几种方式？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux内存如何划分及如何使用？虚拟地址及物理地址的概念及转换，高端内存的概念？"><span class="nav-text">1.3 linux内存如何划分及如何使用？虚拟地址及物理地址的概念及转换，高端内存的概念？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux中内核空间和用户空间区别？用户空间和内核空间通信方式有哪些？"><span class="nav-text">1.4 linux中内核空间和用户空间区别？用户空间和内核空间通信方式有哪些？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux中系统调用过程？如应用程序中read-在linux中执行过程（从用户空间到内核空间）？"><span class="nav-text">1.5 linux中系统调用过程？如应用程序中read()在linux中执行过程（从用户空间到内核空间）？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux调度原理"><span class="nav-text">1.6 linux调度原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux-RCU原理"><span class="nav-text">1.7 linux RCU原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux编译时用到的参数含义"><span class="nav-text">1.8 linux编译时用到的参数含义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux内核的启动过程（源代码级）"><span class="nav-text">1.9 linux内核的启动过程（源代码级）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基础相关"><span class="nav-text">2 基础相关</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#怎么用C先嵌入式系统的死循环的？"><span class="nav-text">2.1 怎么用C先嵌入式系统的死循环的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#copy-to-user-和copy-from-user-主要用于实现什么功能？一般用于file-operations结构的哪些函数里面？"><span class="nav-text">2.2 copy_to_user() 和copy_from_user()主要用于实现什么功能？一般用于file_operations结构的哪些函数里面？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ioctl和unlock-ioctl有什么区别？"><span class="nav-text">2.3 ioctl和unlock_ioctl有什么区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kmalloc和vmalloc的区别"><span class="nav-text">2.4 kmalloc和vmalloc的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内核函数mmap的实现原理，机制？"><span class="nav-text">2.5 内核函数mmap的实现原理，机制？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#怎样申请大块内核内存？"><span class="nav-text">2.6 怎样申请大块内核内存？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#framebuffer机制"><span class="nav-text">2.7 framebuffer机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内核配置编译及Makefile"><span class="nav-text">2.8 内核配置编译及Makefile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#列举最少3种你所知道的嵌入式的体系结构，并请说明什么时ARM体系结构？"><span class="nav-text">2.9 列举最少3种你所知道的嵌入式的体系结构，并请说明什么时ARM体系结构？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#驱动模型相关"><span class="nav-text">3 驱动模型相关</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#字符设备和块设备的区别，请分别列举一些实际的设备说出它们是属于哪一类设备？"><span class="nav-text">3.1 字符设备和块设备的区别，请分别列举一些实际的设备说出它们是属于哪一类设备？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#请简述主设备号和次设备号的用途。如果执行mknod-chartest-c-4-64，创建chartest设备。请分析chartest使用的是哪一类设备驱动程序？"><span class="nav-text">3.2 请简述主设备号和次设备号的用途。如果执行mknod chartest c 4 64，创建chartest设备。请分析chartest使用的是哪一类设备驱动程序？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设备驱动程序中如何注册一个字符设备？分别解释下它的几个参数的含义？"><span class="nav-text">3.3 设备驱动程序中如何注册一个字符设备？分别解释下它的几个参数的含义？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符型驱动设备怎么创建文件？"><span class="nav-text">3.4 字符型驱动设备怎么创建文件？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#insmod一个驱动模块，会执行模块中的哪个函数？rmmod呢？这两个函数在设计上要注意哪些？遇到过卸载驱动出现异常没？是什么问题引起的？"><span class="nav-text">3.5 insmod一个驱动模块，会执行模块中的哪个函数？rmmod呢？这两个函数在设计上要注意哪些？遇到过卸载驱动出现异常没？是什么问题引起的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设备驱动模型三个重要的成员是？platform总线的匹配规则是？在具体应用上要不要先注册驱动在注册设备？有先后顺序没？"><span class="nav-text">3.6 设备驱动模型三个重要的成员是？platform总线的匹配规则是？在具体应用上要不要先注册驱动在注册设备？有先后顺序没？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#驱动中操作物理绝对地址为什么要先ioremap？"><span class="nav-text">3.7 驱动中操作物理绝对地址为什么要先ioremap？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看驱动模块中打印信息应该使用什么命令？如何查看内核中已有的字符设备的信息？如何查看正在使用的哪些中断号？"><span class="nav-text">3.8 查看驱动模块中打印信息应该使用什么命令？如何查看内核中已有的字符设备的信息？如何查看正在使用的哪些中断号？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Bus相关"><span class="nav-text">4 Bus相关</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IIC原理，总线框架，设备编写方法，i2c-msg"><span class="nav-text">4.1 IIC原理，总线框架，设备编写方法，i2c_msg</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Debug相关"><span class="nav-text">5 Debug相关</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#kernel-panic"><span class="nav-text">5.1 kernel panic</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在驱动调试过程中遇到过oops没？怎么处理的？"><span class="nav-text">5.2 在驱动调试过程中遇到过oops没？怎么处理的？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#同步相关"><span class="nav-text">6 同步相关</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#spinlock与信号量的区别？"><span class="nav-text">6.1 spinlock与信号量的区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux中的同步机制？"><span class="nav-text">6.2 linux中的同步机制？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux系统实现原子操作有哪些方法？"><span class="nav-text">6.3 linux系统实现原子操作有哪些方法？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自旋锁和信号量在互斥使用时需要注意哪些？在中断服务程序里面的互斥是使用自旋锁还是信号量？还是两者都能用？为什么"><span class="nav-text">6.4 自旋锁和信号量在互斥使用时需要注意哪些？在中断服务程序里面的互斥是使用自旋锁还是信号量？还是两者都能用？为什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#驱动里面为什么要有并发、互斥的控制？如何实现？讲个例子？"><span class="nav-text">6.5 驱动里面为什么要有并发、互斥的控制？如何实现？讲个例子？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#中断相关"><span class="nav-text">7 中断相关</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#系统软中断、tasklet、工作队列work-queue的区别及使用"><span class="nav-text">7.1 系统软中断、tasklet、工作队列work queue的区别及使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#软中断"><span class="nav-text">7.1.1 软中断</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#自定义软中断"><span class="nav-text">7.1.1.1 自定义软中断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#软中断的执行"><span class="nav-text">7.1.1.2 软中断的执行</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#在irq-exit中执行"><span class="nav-text">7.1.1.2.1 在irq_exit中执行</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#在ksoftirqd进程中执行"><span class="nav-text">7.1.1.2.2 在ksoftirqd进程中执行</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tasklet"><span class="nav-text">7.1.2 tasklet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工作队列work-queue"><span class="nav-text">7.1.3 工作队列work queue</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux中断响应的执行流程"><span class="nav-text">7.2 linux中断响应的执行流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#中断注册函数和中断注销函数"><span class="nav-text">7.3 中断注册函数和中断注销函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#中断和轮询哪个效率高？怎样决定是采用中断方式还是采用轮询方式去实现驱动？"><span class="nav-text">7.4 中断和轮询哪个效率高？怎样决定是采用中断方式还是采用轮询方式去实现驱动？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写一个中断服务需要注意哪些？如果中断产生之后要做比较多的事情你是怎么做的？"><span class="nav-text">7.5 写一个中断服务需要注意哪些？如果中断产生之后要做比较多的事情你是怎么做的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#驱动中操作物理绝对地址为什么要先ioremap"><span class="nav-text">7.6 驱动中操作物理绝对地址为什么要先ioremap?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IRQ和FIQ有什么区别？"><span class="nav-text">7.7 IRQ和FIQ有什么区别？</span></a></li></ol></li></ol></div>
+				
+
+			  </div>
+			</section>
+		  <!--/noindex-->
 		  
 		
 
