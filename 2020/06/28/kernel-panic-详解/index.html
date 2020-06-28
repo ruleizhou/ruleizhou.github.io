@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="google-site-verification" content="Ezui-oQp8Pno7S0Zg3T794uNOShGTYHv9PGKQ5Y1Au0">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.2" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.1.2',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+<script src="https://cdn.bootcss.com/echarts/4.1.0-release/echarts.min.js"></script>
+
+
+  
+
+
+
+
+  <meta name="description" content="1 概述​    在项目开发过程中，很多时候会出现由于某种原因经常会导致手机系统死机重启的情况（重启分Android重启跟kernel重启，而这里只讨论kernel重启也就是 kernel panic  的情况），死机重启基本算是影响最严重的系统问题了，有稳定复现的，也有概率出现的，解题难度也千差万别，出现问题后，通常我们会拿到类似这样的kernel log信息（下面log仅以调用BUG()为例，">
+<meta name="keywords" content="Kernel,面试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kernel panic 详解">
+<meta property="og:url" content="https://ruleizhou.github.io/2020/06/28/kernel-panic-详解/index.html">
+<meta property="og:site_name" content="ZRL">
+<meta property="og:description" content="1 概述​    在项目开发过程中，很多时候会出现由于某种原因经常会导致手机系统死机重启的情况（重启分Android重启跟kernel重启，而这里只讨论kernel重启也就是 kernel panic  的情况），死机重启基本算是影响最严重的系统问题了，有稳定复现的，也有概率出现的，解题难度也千差万别，出现问题后，通常我们会拿到类似这样的kernel log信息（下面log仅以调用BUG()为例，">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://ruleizhou.github.io/2020/06/28/kernel-panic-详解/kernel_panic_bug.jpg">
+<meta property="og:image" content="https://ruleizhou.github.io/2020/06/28/kernel-panic-详解/kernel_panic_die.jpg">
+<meta property="og:image" content="https://ruleizhou.github.io/2020/06/28/kernel-panic-详解/kernel_panic_die_1.jpg">
+<meta property="og:image" content="https://ruleizhou.github.io/2020/06/28/kernel-panic-详解/dump_PC.jpg">
+<meta property="og:image" content="https://ruleizhou.github.io/2020/06/28/kernel-panic-详解/kernel_panic.jpg">
+<meta property="og:image" content="https://ruleizhou.github.io/2020/06/28/kernel-panic-详解/panic.jpg">
+<meta property="og:updated_time" content="2020-06-28T14:45:12.554Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="kernel panic 详解">
+<meta name="twitter:description" content="1 概述​    在项目开发过程中，很多时候会出现由于某种原因经常会导致手机系统死机重启的情况（重启分Android重启跟kernel重启，而这里只讨论kernel重启也就是 kernel panic  的情况），死机重启基本算是影响最严重的系统问题了，有稳定复现的，也有概率出现的，解题难度也千差万别，出现问题后，通常我们会拿到类似这样的kernel log信息（下面log仅以调用BUG()为例，">
+<meta name="twitter:image" content="https://ruleizhou.github.io/2020/06/28/kernel-panic-详解/kernel_panic_bug.jpg">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="https://ruleizhou.github.io/2020/06/28/kernel-panic-详解/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>kernel panic 详解 | ZRL</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ZRL</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ruleizhou.github.io/2020/06/28/kernel-panic-详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rulei.Zhou">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/han.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ZRL">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">kernel panic 详解
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-06-28 21:08:54 / 修改时间：22:45:12" itemprop="dateCreated datePublished" datetime="2020-06-28T21:08:54+08:00">2020-06-28</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Kernel/" itemprop="url" rel="index"><span itemprop="name">Kernel</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="概述">1 概述</h1><p>​    在项目开发过程中，很多时候会出现由于某种原因经常会导致手机系统死机重启的情况（重启分Android重启跟kernel重启，而这里只讨论kernel重启也就是 kernel panic  的情况），死机重启基本算是影响最严重的系统问题了，有稳定复现的，也有概率出现的，解题难度也千差万别，出现问题后，通常我们会拿到类似这样的kernel log信息（下面log仅以调用BUG()为例，其它异常所致的死机log信息会有一些不同之处）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[    2.052157] &lt;2&gt;-(2)[1:swapper/0]------------[ cut here ]------------</span><br><span class="line">[    2.052163] &lt;2&gt;-(2)[1:swapper/0]Kernel BUG at c04289dc [verbose debug info unavailable]</span><br><span class="line">[    2.052169] &lt;2&gt;-(2)[1:swapper/0]Internal error: Oops - BUG: 0 [#1] PREEMPT SMP ARM</span><br><span class="line">[    2.052178] &lt;2&gt;-(2)[1:swapper/0]disable aee kernel api</span><br><span class="line">[    3.052192] &lt;2&gt;-(2)[1:swapper/0]Non-crashing CPUs did not react to IPI</span><br><span class="line">[    3.052204] &lt;2&gt;-(2)[1:swapper/0]CPU: 2 PID: 1 Comm: swapper/0 Tainted: G  W      3.18.35+ #3</span><br><span class="line">[    3.052211] &lt;2&gt;-(2)[1:swapper/0]task: df060000 ti: df04a000 task.ti: df04a000</span><br><span class="line">[    3.052227] &lt;2&gt;-(2)[1:swapper/0]PC is at ltr553_i2c_probe+0x94/0x9c</span><br><span class="line">[    3.052233] &lt;2&gt;-(2)[1:swapper/0]LR is at 0x0</span><br><span class="line">[    3.052242] &lt;2&gt;-(2)[1:swapper/0]pc : [&lt;c04289dc&gt;]    lr : [&lt;00000000&gt;]    psr: a0000113</span><br><span class="line">[    3.052242] &lt;2&gt;sp : df04bd30  ip : 00000000  fp : df04bd4c</span><br><span class="line">[    3.052249] &lt;2&gt;-(2)[1:swapper/0]r10: 00000003  r9 : de348fc0  r8 : c0428948</span><br><span class="line">[    3.052255] &lt;2&gt;-(2)[1:swapper/0]r7 : dea1bc00  r6 : dea1bc04  r5 : dea1bc20  r4 : c0b53358</span><br><span class="line">[    3.052262] &lt;2&gt;-(2)[1:swapper/0]r3 : c115ef4c  r2 : 00000000  r1 : 00000000  r0 : de366a00</span><br><span class="line">[    4.354655] &lt;2&gt;-(2)[1:swapper/0] oops_end, 1, 11</span><br><span class="line">[    4.354740] &lt;2&gt;-(2)[1:swapper/0]Kernel panic - not syncing: Fatal exception</span><br></pre></td></tr></table></figure>
+
+<p>这是linux 内核在死机之前输出的相关重要信息，包括PC指针、调用栈等在内的非常重要的便于Debug的线索，比如我们可以借助GUN  tools（add2Line）工具结合内核符号映射表vmlinux来定位当前PC指针所在的代码具体行数(定位到出错代码行并不意味着就找到了问题的根本原因跟修复异常，这个需要根据异常的复杂程度而论)。深入理解这些关键打印log信息的含义和机制非常有助于我们对于此类死机问题的定位和分析（对于内存被踩、硬件不稳定导致的一类问题分析有局限性），这也是我们需要深入学习内核异常流程的初衷。</p>
+<p>这里我们必须弄清楚几个问题：</p>
+<ul>
+<li>这些死机前留下的关键register信息是怎么来的，有什么用，具体含义是什么？</li>
+<li>如何利用这些遗留的线索找到出问题代码具体在哪支文件，在哪一行？</li>
+<li>内核发生致命异常到死机的总流程是怎样的，类似死机问题应该如何着手分析？</li>
+</ul>
+<p>为此，本文就从最常见的主动触发BUG()为例解析上面的疑问及分析整个kernel panic流程。</p>
+<h1 id="什么时BUG">2 什么时BUG()</h1><p>​    BUG()其实是linux  kernel中用于拦截内核程序超出预期的行为，属于软件主动汇报异常的一种机制。这里有个疑问，就是什么时候会用到呢？一般来说有两种用到的情况，一是软件开发过程中，若发现代码逻辑出现致命fault后就可以调用BUG()让kernel死掉(类似于assert)，这样方便于定位问题，从而修正代码执行逻辑;另外一种情况就是，由于某种特殊原因（通常是为了debug而需抓ramdump），我们需要系统进入kernel panic的情况下使用.</p>
+<p>​    BUG()跟BUG_ON(1)其实本质是一回事，后者只是在前者的基础上做了简单的封装而已，BUG()的实现 本质是埋入一条未定义指令:0xe7f001f2，触发ARM发起Undefined Instruction异常</p>
+<h1 id="BUG-流程分析">3 BUG()流程分析</h1><p><img src="/2020/06/28/kernel-panic-详解/kernel_panic_bug.jpg" alt></p>
+<p>调用BUG()会向CPU下发一条未定义指令而触发ARM发起未定义指令异常，随后进入kernel异常处理流程历经  Oops，die()，__die()等流程输出用于调试分析的关键线索，最后进入panic()结束自己再获得重生的过程,这个就是整个过程的基本流程，下面先来看die()具体做了什么呢？</p>
+<h1 id="die-流程">4 die()流程</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">die</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *str, struct pt_regs *regs, <span class="keyword">int</span> err)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">enum</span> bug_trap_type bug_type = BUG_TRAP_TYPE_NONE;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">long</span> flags = oops_begin();</span><br><span class="line">	<span class="keyword">int</span> sig = SIGSEGV;</span><br><span class="line"> </span><br><span class="line">	<span class="keyword">if</span> (!user_mode(regs))</span><br><span class="line">		bug_type = report_bug(regs-&gt;ARM_pc, regs);</span><br><span class="line">	<span class="keyword">if</span> (bug_type != BUG_TRAP_TYPE_NONE)</span><br><span class="line">		str = <span class="string">"Oops - BUG"</span>;</span><br><span class="line">	<span class="keyword">if</span> (__die(str, err, regs))</span><br><span class="line">		sig = <span class="number">0</span>;</span><br><span class="line">	oops_end(flags, regs, sig);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>总体流程大致如下：</p>
+<p><img src="/2020/06/28/kernel-panic-详解/kernel_panic_die.jpg" alt></p>
+<p>通常来说，代码分析过程结合kernel log一起看会理解来得更加深刻，如果是BUG()/BUG_ON(1)导致的异常，那么走到report_bug 就可以看到下面标志性 log：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">enum</span> bug_trap_type <span class="title">report_bug</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">long</span> bugaddr, struct pt_regs *regs)</span> </span>&#123;</span><br><span class="line">	...</span><br><span class="line">	<span class="keyword">if</span> (!is_valid_bugaddr(bugaddr))</span><br><span class="line">		<span class="keyword">return</span> BUG_TRAP_TYPE_NONE;</span><br><span class="line">	...</span><br><span class="line">	printk(KERN_DEFAULT <span class="string">"------------[ cut here ]------------\n"</span>);</span><br><span class="line">	<span class="keyword">if</span> (file)</span><br><span class="line">		pr_crit(<span class="string">"kernel BUG at %s:%u!\n"</span>, file, line);</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		pr_crit(<span class="string">"Kernel BUG at %p [verbose debug info unavailable]\n"</span>,</span><br><span class="line">			(<span class="keyword">void</span> *)bugaddr);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[    2.052157] &lt;2&gt;-(2)[1:swapper/0]------------[ cut here ]------------</span><br><span class="line">[    2.052163] &lt;2&gt;-(2)[1:swapper/0]Kernel BUG at c04289dc [verbose debug info unavailable]</span><br><span class="line">[    2.052169] &lt;2&gt;-(2)[1:swapper/0]Internal error: Oops - BUG: 0 [#1] PREEMPT SMP ARM</span><br></pre></td></tr></table></figure>
+
+<p>所以如果在log中看到了这个 “[ cut here ]” 的信息就推断是软件发生致命fault而主动call了BUG()所致的系统重启了，就可以根据相关信息尝试定位分析修复异常了.这里要注意的是还有另外一种__WARN()的情况也会打印出 “[ cut here ]” 的标志性log但是内核并不会挂掉，容易造成误导.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[    1.106219] &lt;2&gt;-(2)[1:swapper/0]------------[ cut here ]------------</span><br><span class="line">[    1.107018] &lt;2&gt;-(2)[1:swapper/0]WARNING: CPU: 2 PID: 1 at /home/android/work/prj/n-6580/kernel-3.18/kernel/irq/manage.c:454 __enable_irq+0x50/0x8c()</span><br></pre></td></tr></table></figure>
+
+<p>所以其实从显现上很好区分两种情况，如果是BUG()/BUG_ON(1)那么内核一定会挂掉重启，而__WARN()只会dump_stack()而不会死机,  从源码跟log信息也可以容易区分两种情况，如果是BUG()/BUG_ON(1)的话一定有类似下面的log输出，只要搜索关键字：“Internal error: Oops” 即可.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[    2.052163] &lt;2&gt;-(2)[1:swapper/0]Kernel BUG at c04289dc [verbose debug info unavailable]</span><br><span class="line">[    2.052169] &lt;2&gt;-(2)[1:swapper/0]Internal error: Oops - BUG: 0 [#1] PREEMPT SMP ARM</span><br></pre></td></tr></table></figure>
+
+<h1 id="die-流程分析">5 _die()流程分析</h1><p>从上面输出的log信息还不足以定位具体出问题的代码位置，包括定位异常所需要的最关键的 PC指针、调用栈等这些对于调试来说至关重要的线索信息都是在__die()中输出.</p>
+<p><img src="/2020/06/28/kernel-panic-详解/kernel_panic_die_1.jpg" alt></p>
+<p>打印出标志性log信息：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">int</span> __die(<span class="keyword">const</span> <span class="keyword">char</span> *str, <span class="keyword">int</span> err, struct pt_regs *regs)&#123;</span><br><span class="line">	...</span><br><span class="line">	printk(KERN_EMERG <span class="string">"Internal error: %s: %x [#%d]"</span> S_PREEMPT S_SMP</span><br><span class="line">	       S_ISA <span class="string">"\n"</span>, str, err, ++die_counter);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[    2.052169] &lt;2&gt;-(2)[1:swapper/0]Internal error: Oops - BUG: 0 [#1] PREEMPT SMP ARM</span><br></pre></td></tr></table></figure>
+
+<p>log 显示异常str是Oops - BUG，error-code 为0，die计数器次数：1</p>
+<p>Oops 的本意为 “哎呀” 的一个俚语，这里意形象的意指kernel出现了一件意外而不知道该如何处理的事件.</p>
+<p>notify_die() 会通知对Oops感兴趣的模块执行相关回调，比如mtk的aee异常引擎模块就是通过注册到die_chain通知链上的.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> notrace <span class="title">notify_die</span><span class="params">(<span class="keyword">enum</span> die_val val, <span class="keyword">const</span> <span class="keyword">char</span> *str,struct pt_regs *regs, <span class="keyword">long</span> err, <span class="keyword">int</span> trap, <span class="keyword">int</span> sig)</span></span>&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">die_args</span> <span class="title">args</span> = &#123;</span></span><br><span class="line">		.regs	= regs,</span><br><span class="line">		.str	= str,</span><br><span class="line">		.err	= err,</span><br><span class="line">		.trapnr	= trap,</span><br><span class="line">		.signr	= sig,</span><br><span class="line">	&#125;;</span><br><span class="line">	<span class="keyword">return</span> atomic_notifier_call_chain(&amp;die_chain, val, &amp;args);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>而对我们调试追踪有用的关键信息是在 __show_regs() 里面打印的：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> __show_regs(struct pt_regs *regs)&#123;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">long</span> flags;</span><br><span class="line">	<span class="keyword">char</span> buf[<span class="number">64</span>];</span><br><span class="line"> </span><br><span class="line">	show_regs_print_info(KERN_DEFAULT);</span><br><span class="line">	print_symbol(<span class="string">"PC is at %s\n"</span>, instruction_pointer(regs));</span><br><span class="line">	print_symbol(<span class="string">"LR is at %s\n"</span>, regs-&gt;ARM_lr);</span><br><span class="line">	printk(<span class="string">"pc : [&lt;%08lx&gt;]    lr : [&lt;%08lx&gt;]    psr: %08lx\n"</span></span><br><span class="line">	       <span class="string">"sp : %08lx  ip : %08lx  fp : %08lx\n"</span>,</span><br><span class="line">		regs-&gt;ARM_pc, regs-&gt;ARM_lr, regs-&gt;ARM_cpsr,</span><br><span class="line">		regs-&gt;ARM_sp, regs-&gt;ARM_ip, regs-&gt;ARM_fp);</span><br><span class="line">	printk(<span class="string">"r10: %08lx  r9 : %08lx  r8 : %08lx\n"</span>,</span><br><span class="line">		regs-&gt;ARM_r10, regs-&gt;ARM_r9,</span><br><span class="line">		regs-&gt;ARM_r8);</span><br><span class="line">	printk(<span class="string">"r7 : %08lx  r6 : %08lx  r5 : %08lx  r4 : %08lx\n"</span>,</span><br><span class="line">		regs-&gt;ARM_r7, regs-&gt;ARM_r6,</span><br><span class="line">		regs-&gt;ARM_r5, regs-&gt;ARM_r4);</span><br><span class="line">	printk(<span class="string">"r3 : %08lx  r2 : %08lx  r1 : %08lx  r0 : %08lx\n"</span>,</span><br><span class="line">		regs-&gt;ARM_r3, regs-&gt;ARM_r2,</span><br><span class="line">		regs-&gt;ARM_r1, regs-&gt;ARM_r0);</span><br><span class="line">	flags = regs-&gt;ARM_cpsr;</span><br><span class="line">	buf[<span class="number">0</span>] = flags &amp; PSR_N_BIT ? <span class="string">'N'</span> : <span class="string">'n'</span>;</span><br><span class="line">	buf[<span class="number">1</span>] = flags &amp; PSR_Z_BIT ? <span class="string">'Z'</span> : <span class="string">'z'</span>;</span><br><span class="line">	buf[<span class="number">2</span>] = flags &amp; PSR_C_BIT ? <span class="string">'C'</span> : <span class="string">'c'</span>;</span><br><span class="line">	buf[<span class="number">3</span>] = flags &amp; PSR_V_BIT ? <span class="string">'V'</span> : <span class="string">'v'</span>;</span><br><span class="line">	buf[<span class="number">4</span>] = <span class="string">'\0'</span>;</span><br><span class="line">	printk(<span class="string">"Flags: %s  IRQs o%s  FIQs o%s  Mode %s  ISA %s  Segment %s\n"</span>,</span><br><span class="line">		buf, interrupts_enabled(regs) ? <span class="string">"n"</span> : <span class="string">"ff"</span>,</span><br><span class="line">		fast_interrupts_enabled(regs) ? <span class="string">"n"</span> : <span class="string">"ff"</span>,</span><br><span class="line">		processor_modes[processor_mode(regs)],</span><br><span class="line">		isa_modes[isa_mode(regs)],</span><br><span class="line">		get_fs() == get_ds() ? <span class="string">"kernel"</span> : <span class="string">"user"</span>);</span><br><span class="line">	show_extra_register_data(regs, <span class="number">128</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dump_stack_print_info</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *log_lvl)</span></span>&#123;</span><br><span class="line">	printk(<span class="string">"%sCPU: %d PID: %d Comm: %.20s %s %s %.*s\n"</span>,</span><br><span class="line">	       log_lvl, raw_smp_processor_id(), current-&gt;pid, current-&gt;comm,</span><br><span class="line">	       print_tainted(), init_utsname()-&gt;release,</span><br><span class="line">	       (<span class="keyword">int</span>)<span class="built_in">strcspn</span>(init_utsname()-&gt;version, <span class="string">" "</span>),</span><br><span class="line">	       init_utsname()-&gt;version);</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里打印出了重要的pc停下的位置、相关寄存器信息，发生的是user还是kernel的异常、发生异常的cpu、进程pid等信息.</p>
+<p><img src="/2020/06/28/kernel-panic-详解/dump_PC.jpg" alt></p>
+<p>接下来 dump_mem() 用于dump出当前线程的内存信息：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dump_mem(KERN_EMERG, <span class="string">"Stack: "</span>, regs-&gt;ARM_sp,THREAD_SIZE + (<span class="keyword">unsigned</span> <span class="keyword">long</span>)task_stack_page(tsk));</span><br></pre></td></tr></table></figure>
+
+<p>使用 dump_backtrace(regs, tsk) 打印出调试最直观的调用栈信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[    3.056363] &lt;2&gt;-(2)[1:swapper/0]Backtrace: -(2)[1:swapper/0]</span><br><span class="line">[    3.056386] &lt;2&gt;-(2)[1:swapper/0][&lt;c010badc&gt;] (dump_backtrace) from [&lt;c010bc7c&gt;] (show_stack+0x18/0x1c)</span><br><span class="line">[    3.056393] &lt;2&gt;-(2)[1:swapper/0] r6:c103d790-(2)[1:swapper/0] r5:ffffffff-(2)[1:swapper/0] r4:00000000-(2)[1:swapper/0] r3:00000000-(2)[1:swapper/0]</span><br><span class="line">[    3.056426] &lt;2&gt;-(2)[1:swapper/0][&lt;c010bc64&gt;] (show_stack) from [&lt;c0a91e64&gt;] (dump_stack+0x90/0xa4)</span><br><span class="line">[    3.056439] &lt;2&gt;-(2)[1:swapper/0][&lt;c0a91dd4&gt;] (dump_stack) from [&lt;c072d264&gt;] (ipan6503] &lt;2&gt;-(2)[1:swapper/0][&lt;c013e6bc&gt;] (notifier_call_chain) from [&lt;c013eb84&gt;] (atomic_notifier_call_chain+0x3c/0x50)</span><br><span class="line">[    3.056509] &lt;2&gt;-(2)[1:swapper/0] r10:c10efec4-(2)[1:swapper/0] r9:df060000-(2)[1:swapper/0] r8:df04a020-(2)[1:swapper/0] r7:c0caaaf0-(2)[1:swapper/0] r6:c10f0c88-(2)[1:swapper/0] r5:00000001</span><br><span class="line">[    3.056539] &lt;2&gt;-(2)[1:swapper/0] r4:df04bb74-(2)[1:swapper/0]</span><br><span class="line">[    3.056554] &lt;2&gt;-(2)[1:swapper/0][&lt;c013eb48&gt;] (atomic_notifier_call_chain) from [&lt;c013f244&gt;] (notify_die+0x44/0x4c)</span><br><span class="line">[    3.056560] &lt;2&gt;-(2)[1:swapper/0] r6:df04bce8-(2)[1:swapper/0] r5:00000000-(2)[1:swapper/0] r4:00000001-(2)[1:swapper/0]</span><br><span class="line">[    3.056585] &lt;2&gt;-(2)[1:swapper/0][&lt;c013f200&gt;] (notify_die) from [&lt;c010bd94&gt;] (die+0x114/0x41c)</span><br><span class="line">[    3.056590] &lt;2&gt;-(2)[1:swapper/0] r4:c102826c-(2)[1:swapper/0]</span><br><span class="line">[    3.056607] &lt;2&gt;-(2)[1:swapper/0][&lt;c010bc80&gt;] (die) from [&lt;c010c0c0&gt;] (arm_notify_die+0x24/0x5c)</span><br><span class="line">[    3.056612] &lt;2&gt;-(2)[1:swapper/0] r10:df04a000-(2)[1:swapper/0] r9:00000000-(2)[1:swapper/0] r8:df04bce8-(2)[1:swapper/0] r7:e7f001f2-(2)[1:swapper/0] r6:df04a000-(2)[1:swapper/0] r5:c04289dc</span><br><span class="line">[    3.056642] &lt;2&gt;-(2)[1:swapper/0] r4:00000004-(2)[1:swapper/0]</span><br><span class="line">[    3.056658] &lt;2&gt;-(2)[1:swapper/0][&lt;c010c09c&gt;] (arm_notify_die) from [&lt;c01001cc&gt;] (do_undefinstr+0x1a4/0x1ec)</span><br><span class="line">[    3.056670] &lt;2&gt;-(2)[1:swapper/0][&lt;c0100028&gt;] (do_undefinstr) from [&lt;c010c98c&gt;] (__und_svc_finish+0x0/0x34)</span><br><span class="line">[    3.056676] &lt;2&gt;-(2)[1:swapper/0]Exception stack(0xdf04bce8 to 0xdf04bd30)</span><br><span class="line">[    3.056687] &lt;2&gt;-(2)[1:swapper/0]bce0:                   de366a00 00000000 00000000 c115ef4c c0b53358 dea1bc20</span><br><span class="line">[    3.056698] &lt;2&gt;-(2)[1:swapper/0]bd00: dea1bc04 dea1bc00 c0428948 de348fc0 00000003 df04bd4c 00000000 df04bd30</span><br><span class="line">[    3.056706] &lt;2&gt;-(2)[1:swapper/0]bd20: 00000000 c04289dc a0000113 ffffffff</span><br><span class="line">[    3.056711] &lt;2&gt;-(2)[1:swapper/0] r9:c010c98c-(2)[1:swapper/0] r8:e7100000-(2)[1:swapper/0] r7:00000000-(2)[1:swapper/0] r6:c010cd98-(2)[1:swapper/0] r5:00000000-(2)[1:swapper/0] r4:c04289e0</span><br><span class="line">[    3.056750] &lt;2&gt;-(2)[1:swapper/0][&lt;c0428948&gt;] (ltr553_i2c_probe) from [&lt;c07d88d8&gt;] (i2c_device_probe+0xd0/0x12c)</span><br><span class="line">[    3.056756] &lt;2&gt;-(2)[1:swapper/0] r5:dea1bc20-(2)[1:swapper/0] r4:c0b53358-(2)[1:swapper/0]</span><br><span class="line">[    3.056778] &lt;2&gt;-(2)[1:swapper/0][&lt;c07d8808&gt;] (i2c_device_probe) from [&lt;c03c298c&gt;] (driver_probe_device+0x160/0x43c)</span><br></pre></td></tr></table></figure>
+
+<p>通过上面的调用栈信息结合GUN Tools（add2Line）基本就可以定位发生异常的具体代码位置了.</p>
+<p>最后会通过dump_instr(KERN_EMERG, regs) 打印出pc指针和前4条指令：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">dump_instr</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *lvl, struct pt_regs *regs)</span></span>&#123;</span><br><span class="line">	...</span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">-4</span>; i &lt; <span class="number">1</span> + !!thumb; i++) &#123;</span><br><span class="line">		<span class="keyword">unsigned</span> <span class="keyword">int</span> val, bad;</span><br><span class="line">		<span class="keyword">if</span> (thumb)</span><br><span class="line">			bad = __get_user(val, &amp;((u16 *)addr)[i]);</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			bad = __get_user(val, &amp;((u32 *)addr)[i]);</span><br><span class="line">		<span class="keyword">if</span> (!bad)</span><br><span class="line">			p += <span class="built_in">sprintf</span>(p, i == <span class="number">0</span> ? <span class="string">"(%0*x) "</span> : <span class="string">"%0*x "</span>, width, val);</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			p += <span class="built_in">sprintf</span>(p, <span class="string">"bad PC value"</span>);</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	printk(<span class="string">"%sCode: %s\n"</span>, lvl, str);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[    3.226706] &lt;2&gt;-(2)[1:swapper/0][&lt;c0a8ae74&gt;] (/0]Code: e89da830 e30e3f4c e34c3115 e5830000 (e7f001f2)</span><br></pre></td></tr></table></figure>
+
+<p>看到这个 <code>e7f001f2</code> 了吧，是不是很眼熟？这个就是BUG()中埋入的未定义指令！</p>
+<p>到这一步，大部分关键信息都已经输出了，可以通过add2Line工具定位出具体死在的代码行号，大致看看发生了什么，如果是BUG()导致的异常，那么就可以考虑分析和修复异常了，因为BUG()属于主动汇报异常，一般来说debug难度会相对其它的被动上报方式容易得多.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">arm-linux-androideabi-addr2line -e out/target/product/$project/obj/KERNEL_OBJ/vmlinux -f -C c04289dc</span><br><span class="line">ltr553_i2c_probe</span><br><span class="line">/aosp/kernel-3.18/drivers/misc/mediatek/alsps/ltr553/ltr553.c:3278</span><br></pre></td></tr></table></figure>
+
+<p>定位到了具体代码行号就可以进一步分析代码log找出问题原因修复异常了(一般来说BUG()导致的异常比较好解，其它的情况难度就是天差地别了..)。 那么接下来kernel要干什么呢？重要信息都输出完了接下来就直接走 kernel panic 流程了.</p>
+<h1 id="panic流程">6 panic流程</h1><p>panic 本意是“恐慌”的意思，这里意旨kernel发生了致命错误导致无法继续运行下去的情况.</p>
+<p><img src="/2020/06/28/kernel-panic-详解/kernel_panic.jpg" alt></p>
+<p>相关重要的debug信息已经在之前的__die()流程输出完成了，panic()其实要干的主要事情就是让系统先死掉再重生，kernel panic有标志性的log打印，可以作为是否发生panic的搜索关键字.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[    4.354740] &lt;2&gt;-(2)[1:swapper/0]Kernel panic - not syncing: Fatal exception</span><br></pre></td></tr></table></figure>
+
+<p>虽然主要的工作就是让系统复位，但在去的路上还是会做一些事情，尽可能的不遗余力给事后分析提供线索，比如atomic_notifier_call_chain()会去遍历panic_notifier_list链表，依次通知对panic感兴趣的模块做一些事情，如果打开了ramdump支持就直接陷入download模式，抓取ramdump供离线分析用，单从这块来讲MTK/QCOM平台流程差不多。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[    9.772431] Rebooting in 1 seconds..</span><br></pre></td></tr></table></figure>
+
+<p>以上所有的分析都是基于log信息的分析，简单易行，这是系统异常调试中最基本也是最重要的分析手段，对于BUG()导致的问题通常可以比较顺利的分析解决，但是也有其局限性，比如内存被踩、硬件不稳定导致的概率死机等类型问题分析起来就往往很吃力，而这就需要借助ramdump分析手段才能进一步比较顺利的分析解题.</p>
+<h1 id="时序图">7 时序图</h1><p><img src="/2020/06/28/kernel-panic-详解/panic.jpg" alt></p>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text/javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.2.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.2.0/dist/mindmap.min.css">
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/Kernel/" rel="tag"># Kernel</a>
+          
+            <a href="/tags/面试/" rel="tag"># 面试</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/06/25/面试-驱动开发/" rel="next" title="面试-驱动开发">
+                <i class="fa fa-chevron-left"></i> 面试-驱动开发
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+		
+		  
+			<ul class="sidebar-nav motion-element">
+			  <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+				文章目录
+			  </li>
+			  <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+				站点概览
+			  </li>
+			</ul>
+		  
+		
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/han.jpg" alt="Rulei.Zhou">
+            
+              <p class="site-author-name" itemprop="name">Rulei.Zhou</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">40</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/ruleizhou" title="GitHub &rarr; https://github.com/ruleizhou" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:rulei.zhou@foxmail.com" title="E-Mail &rarr; mailto:rulei.zhou@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section></div>
+
+		
+		  
+		  <!--noindex-->
+			<section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+			  <div class="post-toc">
+
+				
+				  
+				
+
+				
+				  <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-text">1 概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#什么时BUG"><span class="nav-text">2 什么时BUG()</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BUG-流程分析"><span class="nav-text">3 BUG()流程分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#die-流程"><span class="nav-text">4 die()流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#die-流程分析"><span class="nav-text">5 _die()流程分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#panic流程"><span class="nav-text">6 panic流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#时序图"><span class="nav-text">7 时序图</span></a></li></ol></div>
+				
+
+			  </div>
+			</section>
+		  <!--/noindex-->
+		  
+		
+
+      
+
+    </aside></div>
+  
+  
+
+
+        
+      </main></div>
+    
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rulei.Zhou</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.2"></script>
+
+  <script src="/js/motion.js?v=7.1.2"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.2"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.2"></script>
+<script src="/js/post-details.js?v=7.1.2"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.2"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: '0a400e1f09cb117f3ea4',
+    clientSecret: 'f7d98253e2a12b03803742f2a506c174d06019a0',
+    repo: 'ruleizhou.github.io',
+    owner: 'ruleizhou',
+    admin: ['ruleizhou'],
+    id: md5(location.pathname),
+    
+      language: window.navigator.language || window.navigator.userLanguage,
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  
+  <script>
+    $('.highlight').each(function (i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap')
+      $(e).after($wrap)
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function (e) {
+        var code = $(this).parent().find('.code').find('.line').map(function (i, e) {
+          return $(e).text()
+        }).toArray().join('\n')
+        var ta = document.createElement('textarea')
+        document.body.appendChild(ta)
+        ta.style.position = 'absolute'
+        ta.style.top = '0px'
+        ta.style.left = '0px'
+        ta.value = code
+        ta.select()
+        ta.focus()
+        var result = document.execCommand('copy')
+        document.body.removeChild(ta)
+        
+          if(result)$(this).text('复制成功')
+          else $(this).text('复制失败')
+        
+        $(this).blur()
+      })).on('mouseleave', function (e) {
+        var $b = $(this).find('.copy-btn')
+        setTimeout(function () {
+          $b.text('复制')
+        }, 300)
+      }).append(e)
+    })
+  </script>
+
+
+  
+
+  
+
+</body>
+</html>
